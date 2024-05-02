@@ -1,4 +1,4 @@
-# Stratum Server Install Manual
+# Stratum Server Install Manual and Mining Guide
 
 Now that the node is installed and synchronized with the network, you can start installing the miner. As of this writing, mining is only possible on NVIDIA graphics cards, so please keep that in mind.
 
