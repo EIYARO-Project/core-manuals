@@ -102,12 +102,12 @@ On the next page, you can see your wallet address at the very bottom.
 
 To send funds to another wallet you need to select the **Transactions** menu item, where you will see the charges and at the top right click the **+New** button to create a new transaction.
 
-![Picture-18](images/PICTURE-18.png)
+![Picture-18](images/PICTURE-18.jpg)
 
 Further in the first field **Account** you specify the name of your account (what you specified when creating a wallet in the field **Alias**), and in the second field Asset - just write "**EY**".
 
-![Picture-19](images/PICTURE-19.png)
+![Picture-19](images/PICTURE-19.jpg)
 
 Below you will need to specify the address in the **ADDRESS** field to which you are sending funds and in the **AMOUNT** field the number of `EY` coins you want to send, then click **Submit transaction** to send the coins to the specified address.
 
-![Picture-20](images/PICTURE-20.png)
+![Picture-20](images/PICTURE-20.jpg)
