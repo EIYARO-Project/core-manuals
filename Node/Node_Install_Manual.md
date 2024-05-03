@@ -25,7 +25,7 @@ Then enter the command:
 ```console
 > eiyarod-windows_amd64 init --chain_id mainnet 
 ```
-and press enter.
+and press `ENTER`.
 
 ![Picture-5](images/PICTURE-5.png)
 
@@ -104,7 +104,7 @@ To send funds to another wallet you need to select the **Transactions** menu ite
 
 ![Picture-18](images/PICTURE-18.jpg)
 
-Further in the first field **Account** you specify the name of your account (what you specified when creating a wallet in the field **Alias**), and in the second field Asset - just write "**EY**".
+Further in the first field **Account** you specify the name of your account (what you specified when creating a wallet in the field **Alias**), and in the second field **Asset** - just write "**EY**".
 
 ![Picture-19](images/PICTURE-19.jpg)
 

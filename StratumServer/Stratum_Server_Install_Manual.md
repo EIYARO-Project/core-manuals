@@ -67,6 +67,7 @@ If you are not mining all the time but occasionally, for convenience you can als
 
 ![Picture-14](images/PICTURE-14.png)
 ![Picture-15](images/PICTURE-15.png)
-![Picture-16](images/PICTURE-16.png)
 
 And you can run them one by one: first `node_start.bat`, then `stratum_start.bat`, then `EIYARO.bat`.
+
+![Picture-16](images/PICTURE-16.png)
