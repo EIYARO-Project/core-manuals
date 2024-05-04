@@ -68,7 +68,47 @@ and press `ENTER`.
 
 ![Picture-9](images/PICTURE-9.png)
 
-Immediately after that, a browser window will open (in our case, it's `Chrome`), in which you need to choose **Create Wallet** to create a wallet, or **Restore by Mnemonic** to restore the wallet by entering a mnemonic phrase. Select **Create Wallet** and click **Create Wallet**.
+Immediately after that, a browser window will open (in our case, it's `Chrome`). 
+
+If not, add the following lines to the `config.toml` file:
+
+```toml
+[web]
+closed = true
+```
+
+To put it this way:
+
+```toml
+# This is a TOML config file.
+# For more information, see https://github.com/toml-lang/toml
+fast_sync = true
+db_backend = "leveldb"
+api_addr = "0.0.0.0:9888"
+node_alias = "MyMostAwesomeNodeAlias"
+moniker = "MyMostAwesomeNode"
+chain_id = "mainnet"
+[p2p]
+laddr = "tcp://0.0.0.0:46657"
+lan_discoverable = false
+seeds = "148.135.99.102:46657,217.194.133.61:46657,154.201.78.187:46657,103.115.46.201:46657,154.44.8.62:46657,24.233.3.133:46657,27.25.156.254:46657"
+keep_dial = "148.135.99.102:46657,217.194.133.61:46657,154.201.78.187:46657,103.115.46.201:46657,154.44.8.62:46657,24.233.3.133:46657,27.25.156.254:46657"
+max_num_peers = 50
+[web]
+closed = true
+```
+
+After that, go back to the command prompt and type the command:
+
+```console
+> eiyarod-windows_amd64 node
+```
+
+and press `ENTER`.
+
+Then, in a browser window (in our case, it's `Chrome`), type http://127.0.0.1:9888/ into the address bar and press `ENTER`.
+
+This will load the EIYARO web interface page, where you will need to select **Create Wallet** to create a wallet, or **Restore by Mnemonic** to restore the wallet by entering a mnemonic phrase. Select **Create Wallet** and click **Create Wallet**.
 
 ![Picture-10](images/PICTURE-10.png)
 

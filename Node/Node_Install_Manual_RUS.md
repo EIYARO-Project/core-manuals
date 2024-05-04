@@ -68,7 +68,46 @@ max_num_peers = 50
 
 ![Picture-9](images/PICTURE-9.png)
 
-Сразу после этого у нас откроется окно браузера (в нашем случае, это `Chrome`), в котором вам нужно выбрать **Create Wallet** для создания кошелька, или **Restore by Mnemonic** для восстановления кошелька путем ввода мнемонической фразы. Выбираем **Create Wallet** и жмем **Create Wallet**.
+Сразу после этого у нас откроется окно браузера (в нашем случае, это `Chrome`). 
+
+Если этого не произошло, добавьте в файле `config.toml` следующие строки:
+
+```toml
+[web]
+closed = true
+```
+
+Чтобы получилось так:
+
+```toml
+# This is a TOML config file.
+# For more information, see https://github.com/toml-lang/toml
+fast_sync = true
+db_backend = "leveldb"
+api_addr = "0.0.0.0:9888"
+node_alias = "MyMostAwesomeNodeAlias"
+moniker = "MyMostAwesomeNode"
+chain_id = "mainnet"
+[p2p]
+laddr = "tcp://0.0.0.0:46657"
+lan_discoverable = false
+seeds = "148.135.99.102:46657,217.194.133.61:46657,154.201.78.187:46657,103.115.46.201:46657,154.44.8.62:46657,24.233.3.133:46657,27.25.156.254:46657"
+keep_dial = "148.135.99.102:46657,217.194.133.61:46657,154.201.78.187:46657,103.115.46.201:46657,154.44.8.62:46657,24.233.3.133:46657,27.25.156.254:46657"
+max_num_peers = 50
+[web]
+closed = true
+```
+
+После этого возвращаемся в командную строку и вводим команду:
+
+```console
+> eiyarod-windows_amd64 node
+```
+и жмем `ENTER`.
+
+После чего в окне браузера (в нашем случае, это `Chrome`) введите в строку адреса http://127.0.0.1:9888/ и нажмите `ENTER`.
+
+После этого загрузится страница веб-интерфейса EIYARO, где вам нужно будет выбрать **Create Wallet** для создания кошелька, или **Restore by Mnemonic** для восстановления кошелька путем ввода мнемонической фразы. Выбираем **Create Wallet** и жмем **Create Wallet**.
 
 ![Picture-10](images/PICTURE-10.png)
 
