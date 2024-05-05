@@ -1,11 +1,11 @@
 # 安装 EIYARO 节点的说明
 
 要开始使用，请访问最新版本所在的链接 https://github.com/EIYARO-Project/core/releases
-Н在编写本说明时，最新版本是 `EIYARO v1.0.3`.
+在编写本说明时，最新版本是 `EIYARO v1.0.3`.
 
 ![Picture-0](images/PICTURE-0.png)
 
-在版本说明下方有下载链接。如果您是 Windows 用户，请选择 `eiyaro-1.0.3-windows_amd64.zip` 如果 Linux 系统的用户 `eiyaro-1.0.3-linux_amd64.tgz` 请注意，如果您是 Windows 用户，您的操作系统必须是 x64 位。关于 `32 位` noda 版本将无法使用！
+在版本说明下方有下载链接。如果您是 Windows 用户，请选择 `eiyaro-1.0.3-windows_amd64.zip` 如果 Linux 系统的用户 `eiyaro-1.0.3-linux_amd64.tgz` 请注意，如果您是 Windows 用户，您的操作系统必须是 x64 位。关于 `32 位` node 版本将无法使用！
 
 ![Picture-1](images/PICTURE-1.png)
 
@@ -17,7 +17,7 @@
 
 ![Picture-3](images/PICTURE-3.png)
 
-这时会打开一个命令行窗口。我们需要导航到文件所在的文件夹 `eiyarod-windows_amd64.exe` 在这种情况下，我们需要转到驱动器 `D:\` 为此，请在命令行中输入 `D:` 并按下 `ENTER`.
+这时会打开一个命令行窗口。我们需要导航到文件所在的文件夹 `eiyarod-windows_amd64.exe` 在这种情况下，我们需要转到驱动器 `D:\` 为此，请在命令行中输入 `D:` 并按下 `回车键`.
 
 ![Picture-4](images/PICTURE-4.png)
 
@@ -25,11 +25,11 @@
 ```console
 > eiyarod-windows_amd64 init --chain_id mainnet 
 ```
-并按下 `ENTER`.
+并按下 `回车键`.
 
 ![Picture-5](images/PICTURE-5.png)
 
-现在我们再按一次 "**开始**" 并选择 "**执行**", 走进 `C:\Users\%username%\AppData\Roaming\Eiyaro\` 并按下 `OK`.
+现在我们再按一次 "**开始**" 并选择 "**执行**", 走进 `C:\Users\%username%\AppData\Roaming\Eiyaro\` 并按下 `回车键`.
 
 ![Picture-6](images/PICTURE-6.png)
 
@@ -64,7 +64,7 @@ max_num_peers = 50
 ```console
 > eiyarod-windows_amd64 node
 ```
-并按下 `ENTER`.
+并按下 `回车键`.
 
 ![Picture-9](images/PICTURE-9.png)
 
@@ -103,7 +103,7 @@ closed = true
 ```console
 > eiyarod-windows_amd64 node
 ```
-并按下 `ENTER`.
+并按下 `回车键`.
 
 然后，在浏览器窗口中（在我们的例子中是 `Chrome`) 在地址栏中输入 http://127.0.0.1:9888/ 并按下 `ENTER`.
 
@@ -115,15 +115,15 @@ closed = true
 
 ![Picture-11](images/PICTURE-11.png)
 
-下一个窗口将为您提供 12 个字的记忆短语. 为方便起见，点击右侧记忆词旁边的图标，将记忆词复制到剪贴板，然后粘贴到记事本的文本文件中，并保存带有记忆词的文件.
+下一个窗口将为您提供 12 个字的助记词. 为方便起见，点击右侧助记词旁边的图标，将助记词复制到剪贴板，然后粘贴到记事本的文本文件中，并保存带有助记词的文件.
 
 ![Picture-12](images/PICTURE-12.png)
 
-不要将文件存储在连接到互联网的计算机上，也不要让您以外的其他人访问该文件. 最好将带有助记符短语的文本文件保存在单独的闪存盘上，或者最好保存在 3 个不同的闪存盘上，以防其中一个闪存盘出现故障.
+不要将文件存储在连接到互联网的计算机上，也不要让您以外的其他人访问该文件. 最好将带有助记词的文本文件保存在单独的U盘上，或者最好保存在 3 个不同的U盘上，以防其中一个U盘出现故障.
 
 ![Picture-13](images/PICTURE-13.png)
 
-要继续前进，请单击按钮 **I have written down the seed** 并在空白栏中输入记忆短语的缺失单词，然后按 **Confirm Seed**.
+要继续前进，请单击按钮 **I have written down the seed** 并在空白栏中输入助记词的缺失单词，然后按 **Confirm Seed**.
 
 ![Picture-14](images/PICTURE-14.png)
 
