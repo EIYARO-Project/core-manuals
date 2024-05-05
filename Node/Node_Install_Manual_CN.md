@@ -9,7 +9,7 @@
 
 ![Picture-1](images/PICTURE-1.png)
 
-将所选压缩包下载到电脑（如 D: 驱动器），使用任何压缩器（如 WinRAR）打开并解压文件 `eiyarod-windows_amd64.exe` 从存档到光盘。之后，存档 `eiyaro-1.0.3-windows_amd64.zip` 可删除.
+将所选压缩包下载到电脑（如 D: 驱动器），使用解压软件（如 WinRAR）打开并解压文件 `eiyarod-windows_amd64.exe` 到硬盘。之后，压缩包 `eiyaro-1.0.3-windows_amd64.zip` 可删除.
 
 ![Picture-2](images/PICTURE-2.png)
 
