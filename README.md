@@ -20,3 +20,7 @@ You can find a detailed manual with images for the stratum server [here](Stratum
 ## API Reference
 
 You can find detailed documentation about the `core`'s `API` [here](API-Reference/api-reference.adoc).
+
+> **NOTE**\
+> Still a work in progress.\
+> This note will be removed when completed.

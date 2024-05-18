@@ -12,6 +12,7 @@
 == Wallet Endpoints
 
 These endpoints are available when we set:
+*config.toml*
 [source,toml]
 ----
 [wallet]
@@ -1004,6 +1005,80 @@ curl -X POST http://localhost:9888/update-asset-alias -d '{"id":"50ec80b6bc48073
 ===== Response
 
 No response in case operation was successful.
+
+=== List Balances Endpoint
+
+Returns the list of all available accounts' balances.
+
+==== Parameters
+
+Optional:
+
+* `String` - *account_id*, account id.
+* `String` - *account_alias*, name of account.
+
+==== Returns
+
+* `Array of Object`, balances owned by the account.
+** `Object`:
+*** `String` - *account_id*, account id.
+*** `String` - *account_alias*, name of account.
+*** `String` - *asset_id*, asset id.
+*** `String` - *asset_alias*, name of asset.
+*** `Integer` - *amount*, specified asset balance of account.
+
+==== Example
+
+List all the available accounts' balances.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/list-balances -d '{}'
+----
+
+===== Response
+[source,json]
+----
+[
+  {
+    "account_alias": "default",
+    "account_id": "0BDQ9AP100A02",
+    "amount": 35508000000000,
+    "asset_alias": "EY",
+    "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  },
+  {
+    "account_alias": "alice",
+    "account_id": "0BDQARM800A04",
+    "amount": 60000000000,
+    "asset_alias": "EY",
+    "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  }
+]
+----
+
+List available accounts' balances by a given `account_id`:
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/list-balances -d '{"account_id":"0BDQ9AP100A02"}'
+----
+
+===== Response
+[source,json]
+----
+[
+  {
+    "account_alias": "default",
+    "account_id": "0BDQ9AP100A02",
+    "amount": 35508000000000,
+    "asset_alias": "EY",
+    "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  }
+]
+----
 
 == Network Endpoints
 
