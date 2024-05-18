@@ -763,6 +763,13 @@ pre.rouge .gs {
 <li><a href="#_example_27">Example</a></li>
 </ul>
 </li>
+<li><a href="#_recovery_wallet_endpoint">Recovery Wallet Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_28">Parameters</a></li>
+<li><a href="#_returns_28">Returns</a></li>
+<li><a href="#_example_28">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#_network_endpoints">Network Endpoints</a></li>
@@ -2966,6 +2973,56 @@ It returns an error message if the address format is incorrect.</p>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_recovery_wallet_endpoint"><a class="anchor" href="#_recovery_wallet_endpoint"></a>Recovery Wallet Endpoint</h3>
+<div class="paragraph">
+<p>Recovers a wallet and it&#8217;s accounts from root <code>xpubs</code>.<br>
+All accounts and balances of <code>bip44</code> multi-account hierarchy for deterministic wallets can be restored via root <code>xpubs</code>.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_28"><a class="anchor" href="#_parameters_28"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Object</code> - <strong>xpubs</strong>, root XPubs.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_28"><a class="anchor" href="#_returns_28"></a>Returns</h4>
+<div class="paragraph">
+<p>Status of recovery wallet operation.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_28"><a class="anchor" href="#_example_28"></a>Example</h4>
+<div class="paragraph">
+<p>Request a wallet&#8217;s recovery via <code>xpubs</code>.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_32"><a class="anchor" href="#_request_32"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/recovery-wallet <span class="nt">-d</span> <span class="s1">'{ "xpubs":["c536a2c11fafd8278e02e9393dcbf5aa420eb51a1761a7e5da7f2b9b37969b52a8f8e2b692e7dcaf79dfa0d1e28c63eb9fda42942f20feaa8a71b383d9a4668c"]}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_32"><a class="anchor" href="#_response_32"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2979,7 +3036,7 @@ It returns an error message if the address format is incorrect.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-18 20:23:46 +0100
+Last updated 2024-05-18 20:29:23 +0100
 </div>
 </div>
 </body>

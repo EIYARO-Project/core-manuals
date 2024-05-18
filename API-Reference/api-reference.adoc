@@ -1350,6 +1350,40 @@ curl -X POST http://localhost:9888/rescan-wallet -d '{}'
 
 No response in case operation was successful.
 
+=== Recovery Wallet Endpoint
+
+Recovers a wallet and it's accounts from root `xpubs`.
+All accounts and balances of `bip44` multi-account hierarchy for deterministic wallets can be restored via root `xpubs`.
+
+==== Parameters
+
+`Object`:
+
+* `Object` - *xpubs*, root XPubs.
+
+==== Returns
+
+Status of recovery wallet operation.
+
+==== Example
+
+Request a wallet's recovery via `xpubs`.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/recovery-wallet -d '{ "xpubs":["c536a2c11fafd8278e02e9393dcbf5aa420eb51a1761a7e5da7f2b9b37969b52a8f8e2b692e7dcaf79dfa0d1e28c63eb9fda42942f20feaa8a71b383d9a4668c"]}'
+----
+
+===== Response
+[source,json]
+----
+{
+    "status": "success"
+}
+----
+
+
 == Network Endpoints
 
 These endpoints are available regardless of the wallet being disabled or not.
