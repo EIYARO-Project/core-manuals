@@ -742,6 +742,13 @@ pre.rouge .gs {
 <li><a href="#_example_24">Example</a></li>
 </ul>
 </li>
+<li><a href="#_backup_wallet_endpoint">Backup Wallet Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_25">Parameters</a></li>
+<li><a href="#_returns_25">Returns</a></li>
+<li><a href="#_example_25">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#_network_endpoints">Network Endpoints</a></li>
@@ -2732,6 +2739,130 @@ It returns an error message if the address format is incorrect.</p>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_backup_wallet_endpoint"><a class="anchor" href="#_backup_wallet_endpoint"></a>Backup Wallet Endpoint</h3>
+<div class="paragraph">
+<p>Backs up a wallet to an image file, it contains the accounts' image, the assets' image and the keys' image.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_25"><a class="anchor" href="#_parameters_25"></a>Parameters</h4>
+<div class="paragraph">
+<p>None.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_25"><a class="anchor" href="#_returns_25"></a>Returns</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Object</code> - <strong>account_image</strong>, account image.</p>
+</li>
+<li>
+<p><code>Object</code> - <strong>asset_image</strong>, asset image.</p>
+</li>
+<li>
+<p><code>Object</code> - <strong>key_images</strong>, key image.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_25"><a class="anchor" href="#_example_25"></a>Example</h4>
+<div class="paragraph">
+<p>Request a backup of the node&#8217;s wallet information.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_29"><a class="anchor" href="#_request_29"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> http://localhost:9888/backup-wallet <span class="nt">-d</span> <span class="s1">'{}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_29"><a class="anchor" href="#_response_29"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"account_image"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"slices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"account"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"account"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"xpubs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"395d6e0ac25978c3f52f9c7bdfdf75ce6af02639fd7875b4b1f40778ab1120c6dcf461b7ab6fd310983afb54a9a0fb3e09b6ec0d4364c4808c94383d50fb0681"</span><span class="w">
+          </span><span class="p">],</span><span class="w">
+          </span><span class="nl">"quorum"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"key_index"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"ID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0CQTA3EOG0A02"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"Alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"def"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"contract_index"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"asset_image"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"assets"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"key_images"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"xkeys"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"crypto"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"cipher"</span><span class="p">:</span><span class="w"> </span><span class="s2">"aes-128-ctr"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"ciphertext"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bf44766fec149478af9500e25ce0a6bc50bb2fa04e40465781da6ff64e9b3a4c9af3d214cd92c5a41d8498db5f4376526740f960ff429b16e52876aec6860e1d"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"cipherparams"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"iv"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1b0fc61ae4dacb15f0f77d2b4ba67635"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="nl">"kdf"</span><span class="p">:</span><span class="w"> </span><span class="s2">"scrypt"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"kdfparams"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"dklen"</span><span class="p">:</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"n"</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"p"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"r"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"salt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e133b1e7caae771ff1ab34b14824d6e27ef399f2b7ded4ad3500f080ede4a1dd"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="nl">"mac"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bc6bf411fb63e61a17bc15b94f29cf0d5a0f084c328955da1f7e2b26757cfc23"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1f40be59-7400-4fdc-b46b-15009f65363a"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eiyaro_kd"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"xpub"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c4ec9bfd5df19d175e17ff7fed89193c37a4a64e1c0928387da01387ca76c3bfd99390e3373ec4d438522cc2d4644214cd2ec3b00965f7a1fa3546809583191c"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"crypto"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"cipher"</span><span class="p">:</span><span class="w"> </span><span class="s2">"aes-128-ctr"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"ciphertext"</span><span class="p">:</span><span class="w"> </span><span class="s2">"f0887c8603cbbafc0a66d5b45f71488e089708c7dea4342625a67858a49d6d08c79cd3f1800627e3c8b4668e8df34fcf0be9df5d9d4503acff05373976c312a9"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"cipherparams"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"iv"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c111b46f9104f49f2c40aedb827e53b5"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="nl">"kdf"</span><span class="p">:</span><span class="w"> </span><span class="s2">"scrypt"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"kdfparams"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"dklen"</span><span class="p">:</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"n"</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"p"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"r"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"salt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d9ef588b258b111dea1d99a4e4c5a4f968ab69072176bb95b111922e3bbea9e6"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="nl">"mac"</span><span class="p">:</span><span class="w"> </span><span class="s2">"336f5fee643776e139f05ebe5e4f209d992ff97e16b906105fadac9e86133554"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"611d407c-9e97-4297-a02a-13cd68e47983"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eiyaro_kd"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"def"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"xpub"</span><span class="p">:</span><span class="w"> </span><span class="s2">"395d6e0ac25978c3f52f9c7bdfdf75ce6af02639fd7875b4b1f40778ab1120c6dcf461b7ab6fd310983afb54a9a0fb3e09b6ec0d4364c4808c94383d50fb0681"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2745,7 +2876,7 @@ It returns an error message if the address format is incorrect.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-18 19:14:30 +0100
+Last updated 2024-05-18 20:13:10 +0100
 </div>
 </div>
 </body>
