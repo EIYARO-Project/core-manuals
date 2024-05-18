@@ -721,6 +721,13 @@ pre.rouge .gs {
 <li><a href="#_example_21">Example</a></li>
 </ul>
 </li>
+<li><a href="#_update_asset_alias_endpoint">Update Asset Alias Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_22">Parameters</a></li>
+<li><a href="#_returns_22">Returns</a></li>
+<li><a href="#_example_22">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#_network_endpoints">Network Endpoints</a></li>
@@ -2354,6 +2361,54 @@ It returns an error message if the address format is incorrect.</p>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_update_asset_alias_endpoint"><a class="anchor" href="#_update_asset_alias_endpoint"></a>Update Asset Alias Endpoint</h3>
+<div class="paragraph">
+<p>Update asset alias by assetID.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_22"><a class="anchor" href="#_parameters_22"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>id</strong>, id of asset.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>alias</strong>, new alias of asset.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_22"><a class="anchor" href="#_returns_22"></a>Returns</h4>
+<div class="paragraph">
+<p>None if the asset alias is updated successfully.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_22"><a class="anchor" href="#_example_22"></a>Example</h4>
+<div class="paragraph">
+<p>Update asset alias.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_24"><a class="anchor" href="#_request_24"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/update-asset-alias <span class="nt">-d</span> <span class="s1">'{"id":"50ec80b6bc48073f6aa8fa045131a71213c33f3681203b15ddc2e4b81f1f4730", "alias":"GOLD"}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_24"><a class="anchor" href="#_response_24"></a>Response</h5>
+<div class="paragraph">
+<p>No response in case operation was successful.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2367,7 +2422,7 @@ It returns an error message if the address format is incorrect.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-18 18:26:34 +0100
+Last updated 2024-05-18 18:39:19 +0100
 </div>
 </div>
 </body>

@@ -976,6 +976,35 @@ curl -X POST http://localhost:9888/list-assets -d '{}'
 ]
 ----
 
+=== Update Asset Alias Endpoint
+
+Update asset alias by assetID.
+
+==== Parameters
+
+`Object`:
+
+* `String` - *id*, id of asset.
+* `String` - *alias*, new alias of asset.
+
+==== Returns
+
+None if the asset alias is updated successfully.
+
+==== Example
+
+Update asset alias.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/update-asset-alias -d '{"id":"50ec80b6bc48073f6aa8fa045131a71213c33f3681203b15ddc2e4b81f1f4730", "alias":"GOLD"}'
+----
+
+===== Response
+
+No response in case operation was successful.
+
 == Network Endpoints
 
 These endpoints are available regardless of the wallet being disabled or not.
