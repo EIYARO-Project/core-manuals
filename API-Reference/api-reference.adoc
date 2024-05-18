@@ -1455,6 +1455,40 @@ curl -X POST http://localhost:9888/sign-message -d '{"address":"ey1qx2qgvvjz734u
 }
 ----
 
+=== Decode Program Endpoint
+
+Decode a program.
+
+==== Parameters
+
+`Object`:
+
+* `String` - *program*, program for account.
+
+==== Returns
+
+`Object`:
+
+* `String` - *instructions*, instructions and data for program.
+
+==== Example
+
+Request to have a program decoded into it's instructions.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/decode-program -d '{"program":"0014a86c83ee12e6d790fb388345cc2e2b87056a0773"}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "instructions": "DUP \nHASH160 \nDATA_20 a86c83ee12e6d790fb388345cc2e2b87056a0773\nEQUALVERIFY \nTXSIGHASH \nSWAP \nCHECKSIG \n"
+}
+----
+
 == Network Endpoints
 
 These endpoints are available regardless of the wallet being disabled or not.

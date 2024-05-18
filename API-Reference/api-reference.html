@@ -784,6 +784,13 @@ pre.rouge .gs {
 <li><a href="#_example_30">Example</a></li>
 </ul>
 </li>
+<li><a href="#_decode_program_endpoint">Decode Program Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_31">Parameters</a></li>
+<li><a href="#_returns_31">Returns</a></li>
+<li><a href="#_example_31">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#_network_endpoints">Network Endpoints</a></li>
@@ -3156,6 +3163,62 @@ All accounts and balances of <code>bip44</code> multi-account hierarchy for dete
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_decode_program_endpoint"><a class="anchor" href="#_decode_program_endpoint"></a>Decode Program Endpoint</h3>
+<div class="paragraph">
+<p>Decode a program.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_31"><a class="anchor" href="#_parameters_31"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>program</strong>, program for account.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_31"><a class="anchor" href="#_returns_31"></a>Returns</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>instructions</strong>, instructions and data for program.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_31"><a class="anchor" href="#_example_31"></a>Example</h4>
+<div class="paragraph">
+<p>Request to have a program decoded into it&#8217;s instructions.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_35"><a class="anchor" href="#_request_35"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/decode-program <span class="nt">-d</span> <span class="s1">'{"program":"0014a86c83ee12e6d790fb388345cc2e2b87056a0773"}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_35"><a class="anchor" href="#_response_35"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"instructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DUP </span><span class="se">\n</span><span class="s2">HASH160 </span><span class="se">\n</span><span class="s2">DATA_20 a86c83ee12e6d790fb388345cc2e2b87056a0773</span><span class="se">\n</span><span class="s2">EQUALVERIFY </span><span class="se">\n</span><span class="s2">TXSIGHASH </span><span class="se">\n</span><span class="s2">SWAP </span><span class="se">\n</span><span class="s2">CHECKSIG </span><span class="se">\n</span><span class="s2">"</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -3169,7 +3232,7 @@ All accounts and balances of <code>bip44</code> multi-account hierarchy for dete
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-18 20:40:05 +0100
+Last updated 2024-05-18 20:46:00 +0100
 </div>
 </div>
 </body>
