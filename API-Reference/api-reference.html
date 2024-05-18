@@ -735,6 +735,13 @@ pre.rouge .gs {
 <li><a href="#_example_23">Example</a></li>
 </ul>
 </li>
+<li><a href="#_list_unspent_outputs_endpoint">List Unspent Outputs Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_24">Parameters</a></li>
+<li><a href="#_returns_24">Returns</a></li>
+<li><a href="#_example_24">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#_network_endpoints">Network Endpoints</a></li>
@@ -2539,6 +2546,192 @@ It returns an error message if the address format is incorrect.</p>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_list_unspent_outputs_endpoint"><a class="anchor" href="#_list_unspent_outputs_endpoint"></a>List Unspent Outputs Endpoint</h3>
+<div class="paragraph">
+<p>Returns the sub list of all available unspent outputs for all accounts in your wallet.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_24"><a class="anchor" href="#_parameters_24"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="paragraph">
+<p>Optional:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>id</strong>, id of unspent output.</p>
+</li>
+<li>
+<p><code>Boolean</code> - <strong>unconfirmed</strong>, is include unconfirmed <code>utxo</code></p>
+</li>
+<li>
+<p><code>Boolean</code> - <strong>smart_contract</strong>, is contract <code>utxo</code></p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>from</strong>, the start position of first <code>utxo</code></p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>count</strong>, the number of returned</p>
+</li>
+<li>
+<p><code>String</code> - <strong>account_id</strong>, account id.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>account_alias</strong>, name of account.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_24"><a class="anchor" href="#_returns_24"></a>Returns</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Array of Object</code>, unspent output array.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Object</code>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>account_id</strong>, account id.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>account_alias</strong>, name of account.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>asset_id</strong>, asset id.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>asset_alias</strong>, name of asset.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>amount</strong>, specified asset balance of account.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>address</strong>, address of account.</p>
+</li>
+<li>
+<p><code>Boolean</code> - <strong>change</strong>, whether the account address is change.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>id</strong>, unspent output id.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>program</strong>, program of account.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>control_program_index</strong>, index of program.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>source_id</strong>, source unspent output id.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>source_pos</strong>, position of source unspent output id in block.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>valid_height</strong>, valid height.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_24"><a class="anchor" href="#_example_24"></a>Example</h4>
+<div class="paragraph">
+<p>List all the available unspent outputs:</p>
+</div>
+<div class="sect4">
+<h5 id="_request_27"><a class="anchor" href="#_request_27"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/list-unspent-outputs <span class="nt">-d</span> <span class="s1">'{}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_27"><a class="anchor" href="#_response_27"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"account_alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"alice"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"account_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0BKBR6VR00A06"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ey1qv3htuvug7qdv46ywcvvzytrwrsyg0swltfa0dm"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"asset_alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GOLD"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1883cce6aab82cf9af8cd085a3115dd4a92cdb8e6a9152acd73d7ae4adb9030a"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"change"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"control_program_index"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"58f29f0f85f7bd2a91088bcbe536dee41cd0642dfb1480d3a88589bdbfd642d9"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0014646ebe3388f01acae88ec318222c6e1c0887c1df"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"source_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5988c1630c1f325e69bb92cb4b19af14286aa107311bc64b8f1a54629a33e0f4"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"source_pos"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"valid_height"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"account_alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"account_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0BKBR2D2G0A02"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ey1qx7ylnhszg24995d5e0nftu9e87kt9vnxcn633r"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">624000000000</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"asset_alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EY"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"change"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"control_program_index"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5af9d3c9b69470983377c1fc0c9125c4ac3bfd32c8d505f2a6042aade8503bc9"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00143789f9de0242aa52d1b4cbe695f0b93facb2b266"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"source_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"233d1dd49e591980f98e11f333c6c28a867e78448e272011f045131df5aa260b"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"source_pos"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"valid_height"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>List the unspent output matching the given id:</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_request_28"><a class="anchor" href="#_request_28"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/list-unspent-outputs <span class="nt">-d</span> <span class="s1">'{"id": "58f29f0f85f7bd2a91088bcbe536dee41cd0642dfb1480d3a88589bdbfd642d9"}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_28"><a class="anchor" href="#_response_28"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"account_alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"alice"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"account_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0BKBR6VR00A06"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ey1qv3htuvug7qdv46ywcvvzytrwrsyg0swltfa0dm"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"asset_alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GOLD"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1883cce6aab82cf9af8cd085a3115dd4a92cdb8e6a9152acd73d7ae4adb9030a"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"change"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"control_program_index"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"58f29f0f85f7bd2a91088bcbe536dee41cd0642dfb1480d3a88589bdbfd642d9"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0014646ebe3388f01acae88ec318222c6e1c0887c1df"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"source_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5988c1630c1f325e69bb92cb4b19af14286aa107311bc64b8f1a54629a33e0f4"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"source_pos"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"valid_height"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2552,7 +2745,7 @@ It returns an error message if the address format is incorrect.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-18 18:48:36 +0100
+Last updated 2024-05-18 19:14:30 +0100
 </div>
 </div>
 </body>

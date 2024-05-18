@@ -1080,6 +1080,117 @@ curl -X POST http://localhost:9888/list-balances -d '{"account_id":"0BDQ9AP100A0
 ]
 ----
 
+=== List Unspent Outputs Endpoint
+
+Returns the sub list of all available unspent outputs for all accounts in your wallet.
+
+==== Parameters
+
+`Object`:
+
+Optional:
+
+* `String` - *id*, id of unspent output.
+* `Boolean` - *unconfirmed*, is include unconfirmed `utxo`
+* `Boolean` - *smart_contract*, is contract `utxo`
+* `Integer` - *from*, the start position of first `utxo`
+* `Integer` - *count*, the number of returned
+* `String` - *account_id*, account id.
+* `String` - *account_alias*, name of account.
+
+==== Returns
+
+* `Array of Object`, unspent output array.
+** `Object`:
+*** `String` - *account_id*, account id.
+*** `String` - *account_alias*, name of account.
+*** `String` - *asset_id*, asset id.
+*** `String` - *asset_alias*, name of asset.
+*** `Integer` - *amount*, specified asset balance of account.
+*** `String` - *address*, address of account.
+*** `Boolean` - *change*, whether the account address is change.
+*** `String` - *id*, unspent output id.
+*** `String` - *program*, program of account.
+*** `String` - *control_program_index*, index of program.
+*** `String` - *source_id*, source unspent output id.
+*** `String` - *source_pos*, position of source unspent output id in block.
+*** `String` - *valid_height*, valid height.
+
+==== Example
+
+List all the available unspent outputs:
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/list-unspent-outputs -d '{}'
+----
+
+===== Response
+[source,json]
+----
+[
+  {
+    "account_alias": "alice",
+    "account_id": "0BKBR6VR00A06",
+    "address": "ey1qv3htuvug7qdv46ywcvvzytrwrsyg0swltfa0dm",
+    "amount": 2000,
+    "asset_alias": "GOLD",
+    "asset_id": "1883cce6aab82cf9af8cd085a3115dd4a92cdb8e6a9152acd73d7ae4adb9030a",
+    "change": false,
+    "control_program_index": 2,
+    "id": "58f29f0f85f7bd2a91088bcbe536dee41cd0642dfb1480d3a88589bdbfd642d9",
+    "program": "0014646ebe3388f01acae88ec318222c6e1c0887c1df",
+    "source_id": "5988c1630c1f325e69bb92cb4b19af14286aa107311bc64b8f1a54629a33e0f4",
+    "source_pos": 2,
+    "valid_height": 0
+  },
+  {
+    "account_alias": "default",
+    "account_id": "0BKBR2D2G0A02",
+    "address": "ey1qx7ylnhszg24995d5e0nftu9e87kt9vnxcn633r",
+    "amount": 624000000000,
+    "asset_alias": "EY",
+    "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "change": false,
+    "control_program_index": 12,
+    "id": "5af9d3c9b69470983377c1fc0c9125c4ac3bfd32c8d505f2a6042aade8503bc9",
+    "program": "00143789f9de0242aa52d1b4cbe695f0b93facb2b266",
+    "source_id": "233d1dd49e591980f98e11f333c6c28a867e78448e272011f045131df5aa260b",
+    "source_pos": 0,
+    "valid_height": 12
+  }
+]
+----
+
+List the unspent output matching the given id:
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/list-unspent-outputs -d '{"id": "58f29f0f85f7bd2a91088bcbe536dee41cd0642dfb1480d3a88589bdbfd642d9"}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "account_alias": "alice",
+  "account_id": "0BKBR6VR00A06",
+  "address": "ey1qv3htuvug7qdv46ywcvvzytrwrsyg0swltfa0dm",
+  "amount": 2000,
+  "asset_alias": "GOLD",
+  "asset_id": "1883cce6aab82cf9af8cd085a3115dd4a92cdb8e6a9152acd73d7ae4adb9030a",
+  "change": false,
+  "control_program_index": 2,
+  "id": "58f29f0f85f7bd2a91088bcbe536dee41cd0642dfb1480d3a88589bdbfd642d9",
+  "program": "0014646ebe3388f01acae88ec318222c6e1c0887c1df",
+  "source_id": "5988c1630c1f325e69bb92cb4b19af14286aa107311bc64b8f1a54629a33e0f4",
+  "source_pos": 2,
+  "valid_height": 0
+}
+----
+
 == Network Endpoints
 
 These endpoints are available regardless of the wallet being disabled or not.
