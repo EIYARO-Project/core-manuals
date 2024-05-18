@@ -1324,6 +1324,32 @@ curl -X POST http://localhost:9888/restore-wallet -d '{"account_image":{"slices"
 
 No response in case operation was successful.
 
+=== Rescan Wallet Endpoint
+
+Trigger a rescan of the block information on the wallet.
+
+==== Parameters
+
+None.
+
+==== Returns
+
+Nothing if operation was a success.
+
+==== Example
+
+Request a rescan of the block information on the node.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/rescan-wallet -d '{}'
+----
+
+===== Response
+
+No response in case operation was successful.
+
 == Network Endpoints
 
 These endpoints are available regardless of the wallet being disabled or not.
