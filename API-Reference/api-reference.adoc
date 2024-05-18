@@ -1383,6 +1383,39 @@ curl -X POST http://localhost:9888/recovery-wallet -d '{ "xpubs":["c536a2c11fafd
 }
 ----
 
+=== Wallet Info Endpoint
+
+Returns the wallet's information.
+
+==== Parameters
+
+None.
+
+==== Returns
+
+`Object`:
+
+* `Integer` - *best_block_height*, current block height.
+* `Integer` - *wallet_height*, current block height for wallet.
+
+==== Example
+
+Request the node's wallet information.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/wallet-info -d '{}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "best_block_height": 150,
+  "wallet_height": 150
+}
+----
 
 == Network Endpoints
 
