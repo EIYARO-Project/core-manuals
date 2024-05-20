@@ -865,6 +865,13 @@ pre.rouge .gs {
 <li><a href="#_example_41">Example</a></li>
 </ul>
 </li>
+<li><a href="#_list_access_tokens_endpoint">List Access Tokens Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_42">Parameters</a></li>
+<li><a href="#_returns_42">Returns</a></li>
+<li><a href="#_example_42">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -5128,12 +5135,90 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_list_access_tokens_endpoint"><a class="anchor" href="#_list_access_tokens_endpoint"></a>List Access Tokens Endpoint</h3>
+<div class="paragraph">
+<p>Returns the list of all available access tokens.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_42"><a class="anchor" href="#_parameters_42"></a>Parameters</h4>
+<div class="paragraph">
+<p>None.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_42"><a class="anchor" href="#_returns_42"></a>Returns</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Array of Object</code>, access token array.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Object</code>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>token</strong>, access token.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>id</strong>, token ID.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>type</strong>, type of token.</p>
+</li>
+<li>
+<p><code>Object</code> - <strong>created_at</strong>, time to create token.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_42"><a class="anchor" href="#_example_42"></a>Example</h4>
+<div class="paragraph">
+<p>List all the available access tokens.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_52"><a class="anchor" href="#_request_52"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/list-access-tokens <span class="nt">-d</span> <span class="s1">'{}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_47"><a class="anchor" href="#_response_47"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"token1:1fee70f537128a201338bd5f25a3adbf33dad02eae4f4c9ac43f336a069df8f3"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"token1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2024-03-20T18:56:01.043919771+08:00"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"alice:78598c6d9fb9e3258d01f78005d4e5725ad0d45e20af90a30b577b407d4a2edd"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"alice"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2024-03-20T18:56:01.043919771+08:00"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-20 12:16:22 +0100
+Last updated 2024-05-20 12:20:21 +0100
 </div>
 </div>
 </body>

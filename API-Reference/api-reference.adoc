@@ -2709,3 +2709,47 @@ curl -X POST http://localhost:9888/create-access-token -d '{"id":"token1"}'
   "created_at": "2024-03-20T18:56:01.043919771+08:00"
 }
 ----
+
+=== List Access Tokens Endpoint
+
+Returns the list of all available access tokens.
+
+==== Parameters
+
+None.
+
+==== Returns
+
+* `Array of Object`, access token array.
+** `Object`:
+*** `String` - *token*, access token.
+*** `String` - *id*, token ID.
+*** `String` - *type*, type of token.
+*** `Object` - *created_at*, time to create token.
+
+==== Example
+
+List all the available access tokens.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/list-access-tokens -d '{}'
+----
+
+===== Response
+[source,json]
+----
+[
+  {
+    "token": "token1:1fee70f537128a201338bd5f25a3adbf33dad02eae4f4c9ac43f336a069df8f3",
+    "id": "token1",
+    "created_at": "2024-03-20T18:56:01.043919771+08:00"
+  },
+  {
+    "token": "alice:78598c6d9fb9e3258d01f78005d4e5725ad0d45e20af90a30b577b407d4a2edd",
+    "id": "alice",
+    "created_at": "2024-03-20T18:56:01.043919771+08:00"
+  }
+]
+----
