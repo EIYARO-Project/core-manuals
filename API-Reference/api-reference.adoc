@@ -2665,3 +2665,47 @@ curl -X POST http://localhost:9888/estimate-transaction-gas -d '{"transaction_te
   "vm_neu": 1419000
 }
 ----
+
+=== Create Access Token Endpoint
+
+Create a named access token that provides basic authentication for the HTTP protocol.
+This endpoint teturns a token containing a username and password, separated by a colon.
+
+==== Parameters
+
+`Object`:
+
+* `String` - *id*, token ID.
+
+Optional:
+
+* `String` - *type*, type of token.
+
+==== Returns
+
+`Object`:
+
+* `String` - *token*, access token, authentication username and password are separated by a colon.
+* `String` - *id*, token ID.
+* `String` - *type*, type of token.
+* `Object` - *created_at*, time to create token.
+
+==== Example
+
+Create an named access token.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/create-access-token -d '{"id":"token1"}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "token": "token1:1fee70f537128a201338bd5f25a3adbf33dad02eae4f4c9ac43f336a069df8f3",
+  "id": "token1",
+  "created_at": "2024-03-20T18:56:01.043919771+08:00"
+}
+----
