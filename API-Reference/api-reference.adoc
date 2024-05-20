@@ -2554,3 +2554,37 @@ curl -X POST http://localhost:9888/sign-transactions -d '{"password":"123456","t
 == Network Endpoints
 
 These endpoints are available regardless of the wallet being disabled or not.
+
+=== Submit Transaction Endpoint
+
+Submit transaction.
+
+==== Parameters
+
+`Object`:
+
+* `Object` - *raw_transaction*, `raw_transaction` of signed transaction.
+
+==== Returns
+
+`Object`:
+
+* `String` - *tx_id*, transaction id, hash of transaction.
+
+==== Example
+
+Submit a raw transaction.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/submit-transaction -d '{"raw_transaction":"07010000010161015ffe8bdb49bbd08f711a54f0fbed4141b74c276de44c831999aac43bdd56f98309ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80c0b1ca94120001160014d61f9b3354771283461e6cb269bec98e7ee975f6630240403d7b35ec72a80816b21822d645adc98af2c1f07d5b379dda4527d8585ec12ef213ada312e3807ae0ccf7206575f313ffe2b405a286309d3172feabe07e7e0620d013706a314a57e84c2b262c2a291e8e2b063785aea9338476a66d41be4de4f202013effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80bc82eb931201160014bdf260424fd2f322dbec9ce4ddbaed8618d8e959000139ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff6301160014a3f9111f3b0ee96cbd119a3ea5c60058f506fb1900"}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "tx_id": "2c0624a7d251c29d4d1ad14297c69919214e78d995affd57e73fbf84ece316cb"
+}
+----

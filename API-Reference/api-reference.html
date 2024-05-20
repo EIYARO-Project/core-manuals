@@ -835,7 +835,17 @@ pre.rouge .gs {
 </li>
 </ul>
 </li>
-<li><a href="#_network_endpoints">Network Endpoints</a></li>
+<li><a href="#_network_endpoints">Network Endpoints</a>
+<ul class="sectlevel2">
+<li><a href="#_submit_transaction_endpoint">Submit Transaction Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_38">Parameters</a></li>
+<li><a href="#_returns_38">Returns</a></li>
+<li><a href="#_example_38">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -4840,12 +4850,68 @@ All accounts and balances of <code>bip44</code> multi-account hierarchy for dete
 <div class="paragraph">
 <p>These endpoints are available regardless of the wallet being disabled or not.</p>
 </div>
+<div class="sect2">
+<h3 id="_submit_transaction_endpoint"><a class="anchor" href="#_submit_transaction_endpoint"></a>Submit Transaction Endpoint</h3>
+<div class="paragraph">
+<p>Submit transaction.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_38"><a class="anchor" href="#_parameters_38"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Object</code> - <strong>raw_transaction</strong>, <code>raw_transaction</code> of signed transaction.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_38"><a class="anchor" href="#_returns_38"></a>Returns</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>tx_id</strong>, transaction id, hash of transaction.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_38"><a class="anchor" href="#_example_38"></a>Example</h4>
+<div class="paragraph">
+<p>Submit a raw transaction.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_48"><a class="anchor" href="#_request_48"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/submit-transaction <span class="nt">-d</span> <span class="s1">'{"raw_transaction":"07010000010161015ffe8bdb49bbd08f711a54f0fbed4141b74c276de44c831999aac43bdd56f98309ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80c0b1ca94120001160014d61f9b3354771283461e6cb269bec98e7ee975f6630240403d7b35ec72a80816b21822d645adc98af2c1f07d5b379dda4527d8585ec12ef213ada312e3807ae0ccf7206575f313ffe2b405a286309d3172feabe07e7e0620d013706a314a57e84c2b262c2a291e8e2b063785aea9338476a66d41be4de4f202013effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80bc82eb931201160014bdf260424fd2f322dbec9ce4ddbaed8618d8e959000139ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff6301160014a3f9111f3b0ee96cbd119a3ea5c60058f506fb1900"}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_43"><a class="anchor" href="#_response_43"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"tx_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2c0624a7d251c29d4d1ad14297c69919214e78d995affd57e73fbf84ece316cb"</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-20 11:42:29 +0100
+Last updated 2024-05-20 11:47:37 +0100
 </div>
 </div>
 </body>
