@@ -886,6 +886,13 @@ pre.rouge .gs {
 <li><a href="#_example_44">Example</a></li>
 </ul>
 </li>
+<li><a href="#_create_transaction_feed_endpoint">Create Transaction Feed Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_45">Parameters</a></li>
+<li><a href="#_returns_45">Returns</a></li>
+<li><a href="#_example_45">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -5296,7 +5303,7 @@ This endpoint teturns a token containing a username and password, separated by a
 <div class="sect3">
 <h4 id="_returns_44"><a class="anchor" href="#_returns_44"></a>Returns</h4>
 <div class="paragraph">
-<p>None if the access token is checked valid.</p>
+<p>None if the access token&#8217;s validity checks out.</p>
 </div>
 </div>
 <div class="sect3">
@@ -5320,12 +5327,60 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_create_transaction_feed_endpoint"><a class="anchor" href="#_create_transaction_feed_endpoint"></a>Create Transaction Feed Endpoint</h3>
+<div class="paragraph">
+<p>Create a transaction feed.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_45"><a class="anchor" href="#_parameters_45"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>alias</strong>, name of the transaction feed.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>filter</strong>, filter of the transaction feed.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_45"><a class="anchor" href="#_returns_45"></a>Returns</h4>
+<div class="paragraph">
+<p>None if the transaction feed is created successfully.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_45"><a class="anchor" href="#_example_45"></a>Example</h4>
+<div class="paragraph">
+<p>Create a transaction feed by alias.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_55"><a class="anchor" href="#_request_55"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/create-transaction-feed <span class="nt">-d</span> <span class="s1">'{"alias": "test1", "filter": "asset_id='</span>84778a666fe453cf73b2e8c783dbc9e04bc4fd7cbb4f50caeaee99cf9967ebed<span class="s1">' AND amount_lower_limit = 50 AND amount_upper_limit = 100"}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_50"><a class="anchor" href="#_response_50"></a>Response</h5>
+<div class="paragraph">
+<p>Nothing if the operation was successful.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-20 12:33:15 +0100
+Last updated 2024-05-20 12:38:08 +0100
 </div>
 </div>
 </body>

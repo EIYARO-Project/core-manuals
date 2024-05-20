@@ -2795,7 +2795,7 @@ Check if an access token is valid.
 
 ==== Returns
 
-None if the access token is checked valid.
+None if the access token's validity checks out.
 
 ==== Example
 
@@ -2805,6 +2805,35 @@ Check whether the access token is vaild or not.
 [source,bash]
 ----
 curl -X POST http://localhost:9888/check-access-token -d '{"id": "token1", "secret": "1fee70f537128a201338bd5f25a3adbf33dad02eae4f4c9ac43f336a069df8f3"}'
+----
+
+===== Response
+
+Nothing if the operation was successful.
+
+=== Create Transaction Feed Endpoint
+
+Create a transaction feed.
+
+==== Parameters
+
+`Object`:
+
+* `String` - *alias*, name of the transaction feed.
+* `String` - *filter*, filter of the transaction feed.
+
+==== Returns
+
+None if the transaction feed is created successfully.
+
+==== Example
+
+Create a transaction feed by alias.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/create-transaction-feed -d '{"alias": "test1", "filter": "asset_id='84778a666fe453cf73b2e8c783dbc9e04bc4fd7cbb4f50caeaee99cf9967ebed' AND amount_lower_limit = 50 AND amount_upper_limit = 100"}'
 ----
 
 ===== Response
