@@ -1626,6 +1626,478 @@ curl -X POST http://localhost:9888/get-transaction -d '{"tx_id": "15b8d66e227fef
 }
 ----
 
+=== List Transactions Endpoint
+
+Returns the sub list of all the account related transactions.
+
+==== Parameters
+
+`Object`:
+
+Optional:
+
+* `String` - *id*, transaction id, hash of transaction.
+* `String` - *account_id*, id of account.
+* `Boolean` - *detail* , flag of detail transactions, default false (only return transaction summary)
+* `Boolean` - *unconfirmed*, flag of unconfirmed transactions(query result include all confirmed and unconfirmed transactions), default false.
+* `Integer` - *from*, the start position of first transaction
+* `Integer` - *count*, the number of returned
+
+==== Returns
+
+`Array of Object`, transaction array.
+
+Optional:
+
+* `Object`:(summary transaction)
+** `String` - *tx_id*, transaction id, hash of the transaction.
+** `Integer` - *block_time*, the unix timestamp for when the requst was responsed.
+** `Array of Object` - *inputs*, object of summary inputs for the transaction.
+*** `String` - *type*, the type of input action, available option include: 'spend', 'issue', 'coinbase'.
+*** `String` - *asset_id*, asset id.
+*** `String` - *asset_alias*, name of asset.
+*** `Integer` - *amount*, amount of asset.
+*** `String` - *account_id*, account id.
+*** `String` - *account_alias*, name of account.
+*** `Object` - *arbitrary*, arbitrary infomation can be set by miner, it only exist when type is 'coinbase'.
+** `Array of Object` - *outputs*, object of summary outputs for the transaction.
+*** `String` - *type*, the type of output action, available option include: 'retire', 'control'.
+*** `String` - *asset_id*, asset id.
+*** `String` - *asset_alias*, name of asset.
+*** `Integer` - *amount*, amount of asset.
+*** `String` - *account_id*, account id.
+*** `String` - *account_alias*, name of account.
+*** `Object` - *arbitrary*, arbitrary infomation can be set by miner, it only exist when type is input 'coinbase'(this place is empty).
+
+* `Object`:(detail transaction)
+** `String` - *tx_id*, transaction id, hash of the transaction.
+** `Integer` - *block_time*, the unix timestamp for when the requst was responsed.
+** `String` - *block_hash*, hash of the block where this transaction was in.
+** `Integer` - *block_height*, block height where this transaction was in.
+** `Integer` - *block_index*, position of the transaction in the block.
+** `Integer` - *block_transactions_count*, transactions count where this transaction was in the block.
+** `Boolean` - *status_fail*, whether the state of the transaction request has failed.
+** `Integer` - *size*, size of transaction.
+** `Array of Object` - *inputs*, object of inputs for the transaction.
+*** `String` - *type*, the type of input action, available option include: 'spend', 'issue', 'coinbase'.
+*** `String` - *asset_id*, asset id.
+*** `String` - *asset_alias*, name of asset.
+*** `Object` - *asset_definition*, definition of asset(json object).
+*** `Integer` - *amount*, amount of asset.
+*** `Object` - *issuance_program*, issuance program, it only exist when type is 'issue'.
+*** `Object` - *control_program*, control program of account, it only exist when type is 'spend'.
+*** `String` - *address*, address of account, it only exist when type is 'spend'.
+*** `String` - *spent_output_id*, the front of outputID to be spent in this input, it only exist when type is 'spend'.
+*** `String` - *account_id*, account id.
+*** `String` - *account_alias*, name of account.
+*** `Object` - *arbitrary*, arbitrary infomation can be set by miner, it only exist when type is 'coinbase'.
+*** `String` - *input_id*, hash of input action.
+*** `Array of String` - *witness_arguments*, witness arguments.
+** `Array of Object` - *outputs*, object of outputs for the transaction.
+*** `String` - *type*, the type of output action, available option include: 'retire', 'control'.
+*** `String` - *id*, outputid related to utxo.
+*** `Integer` - *position*, position of outputs.
+*** `String` - *asset_id*, asset id.
+*** `String` - *asset_alias*, name of asset.
+*** `Object` - *asset_definition*, definition of asset(json object).
+*** `Integer` - *amount*, amount of asset.
+*** `String` - *account_id*, account id.
+*** `String` - *account_alias*, name of account.
+*** `Object` - *control_program*, control program of account.
+*** `String` - *address*, address of account.
+
+==== Example
+
+List all the available transactions:
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/list-transactions -d '{}'
+----
+
+===== Response
+[source,json]
+----
+[
+  {
+    "block_time": 1521771059,
+    "inputs": [
+      {
+        "arbitrary": "06",
+        "asset_id": "0000000000000000000000000000000000000000000000000000000000000000",
+        "type": "coinbase"
+      }
+    ],
+    "outputs": [
+      {
+        "account_alias": "default",
+        "account_id": "0BMHBOBVG0A02",
+        "amount": 41250000000,
+        "asset_alias": "EY",
+        "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "type": "control"
+      }
+    ],
+    "tx_id": "c631a8de401913a512c338bcf4a61cb2de6cede12a7385d9d11637eaa6578f33"
+  },
+  {
+    "block_time": 1521770515,
+    "inputs": [
+      {
+        "account_alias": "default",
+        "account_id": "0BMHBOBVG0A02",
+        "amount": 41250000000,
+        "asset_alias": "EY",
+        "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "type": "spend"
+      }
+    ],
+    "outputs": [
+      {
+        "account_alias": "default",
+        "account_id": "0BMHBOBVG0A02",
+        "amount": 34649500000,
+        "asset_alias": "EY",
+        "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "type": "control"
+      },
+      {
+        "account_alias": "alice",
+        "account_id": "0BMHDI1P00A04",
+        "amount": 6600000000,
+        "asset_alias": "EY",
+        "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "type": "control"
+      }
+    ],
+    "tx_id": "1151ce5c7b32b8755b5e48109ec7ed956fb1783eaea9558bf5a2ad957825e4b7"
+  }
+]
+----
+
+List the transaction matching the given `tx_id` with detail:
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/list-transactions -d '{"id": "7e9f9b999381da936e3cae48b5bac2b9bc28bb56c6c862be6c110448f7e2f6b3","detail": true}'
+----
+
+##### Response
+[source,json]
+----
+[
+  {
+    "block_hash": "1b2d0efa025256603e9330273d37f5a900cd3dfb213e015ac53cf645e2315a6d",
+    "block_height": 72,
+    "block_index": 1,
+    "block_time": 1528528584,
+    "block_transactions_count": 2,
+    "inputs": [
+      {
+        "account_alias": "default",
+        "account_id": "0ER7MEFGG0A02",
+        "address": "sy1q4pkg8msjumtep7ecsdzuct3tsuzk5pmnm3p8nr",
+        "amount": 41250000000,
+        "asset_alias": "EY",
+        "asset_definition": {
+          "decimals": 8,
+          "description": "Eiyaro Official Issue",
+          "name": "EY",
+          "symbol": "EY"
+        },
+        "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "control_program": "0014a86c83ee12e6d790fb388345cc2e2b87056a0773",
+        "input_id": "adcef046c3f61fb6ba0d6a7107122f6e31cd4b49c7a3b05aa3391e5b0529d69a",
+        "spent_output_id": "0072a2c1cee30a7c7b7b006ca08a48c2b479bc81c0ec6463fe4865ef37626ab6",
+        "type": "spend",
+        "witness_arguments": [
+          "944a35f256a49712f95319743671152b12360df859deedbfa9f37f9fe6a81b5ff2dce36d9ee6fc19e8be8b1dd5915719d4341f66f5569aad26283859d3c1bc05",
+          "bedfd27f48007c59555da672b6207ac997add62241894ff181bb9d8cba3b7e25"
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "account_alias": "default",
+        "account_id": "0ER7MEFGG0A02",
+        "address": "sy1qskj096x5w7ejcmk746g3djmv84dpxts62dewvd",
+        "amount": 34649500000,
+        "asset_alias": "EY",
+        "asset_definition": {
+          "decimals": 8,
+          "description": "Eiyaro Official Issue",
+          "name": "EY",
+          "symbol": "EY"
+        },
+        "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "control_program": "001485a4f2e8d477b32c6edeae9116cb6c3d5a132e1a",
+        "id": "b08c9bfc816064ca33da8b569998229774fc9552da7d4f16870b2c5a8f645b3b",
+        "position": 0,
+        "type": "control"
+      },
+      {
+        "account_alias": "alice",
+        "account_id": "0ER7OAK400A02",
+        "address": "sy1qxe4jwhkekgnxkezu7xutu5gqnnpmyc8ppq98me",
+        "amount": 6600000000,
+        "asset_alias": "EY",
+        "asset_definition": {
+          "decimals": 8,
+          "description": "Eiyaro Official Issue",
+          "name": "EY",
+          "symbol": "EY"
+        },
+        "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "control_program": "0014366b275ed9b2266b645cf1b8be51009cc3b260e1",
+        "id": "0e8f8dc83a39b2b6d00a77759a797102d047f82f800fe21f5b1d80bb4d5e2e39",
+        "position": 1,
+        "type": "control"
+      }
+    ],
+    "size": 333,
+    "status_fail": false,
+    "tx_id": "7e9f9b999381da936e3cae48b5bac2b9bc28bb56c6c862be6c110448f7e2f6b3"
+  }
+]
+----
+
+List the transaction matching the given `account_id` and unconfirmed flag(unconfirmed transaction's `block_hash`, `block_height` and `block_index` is default for zero):
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/list-transactions -d '{"account_id": "0F1MQVI500A02", "unconfirmed": true, "detail": true}'
+----
+
+===== Response
+[source,json]
+----
+[
+  {
+    "block_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "block_height": 0,
+    "block_index": 0,
+    "block_time": 1529032899,
+    "inputs": [
+      {
+        "account_alias": "default",
+        "account_id": "0F1L5Q3V00A02",
+        "address": "sy1ql67n04pj8mfqzv3wjq8num3yrltdykemgrr45j",
+        "amount": 41250000000,
+        "asset_alias": "EY",
+        "asset_definition": {
+          "decimals": 8,
+          "description": "Eiyaro Official Issue",
+          "name": "EY",
+          "symbol": "EY"
+        },
+        "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "control_program": "0014febd37d4323ed201322e900f3e6e241fd6d25b3b",
+        "input_id": "192ac93bad580cd53626b7f11c17e6eca64f66d1947add13a5620b78f666693e",
+        "spent_output_id": "00570443cbac4f68638ff565e8b04db2062800b9e23b7701913ddf6b190dbe65",
+        "type": "spend",
+        "witness_arguments": [
+          "512a2b60324433de96cd4274bd298b4b109a29c4d9d68582952065dfd0d7c00663cbc49e8e42fdef740a7e1b78622ee31abf2e9b0d5609755f275afd6751590b",
+          "bedfd27f48007c59555da672b6207ac997add62241894ff181bb9d8cba3b7e25"
+        ]
+      },
+      {
+        "account_alias": "default",
+        "account_id": "0F1L5Q3V00A02",
+        "address": "sy1ql67n04pj8mfqzv3wjq8num3yrltdykemgrr45j",
+        "amount": 41250000000,
+        "asset_alias": "EY",
+        "asset_definition": {
+          "decimals": 8,
+          "description": "Eiyaro Official Issue",
+          "name": "EY",
+          "symbol": "EY"
+        },
+        "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "control_program": "0014febd37d4323ed201322e900f3e6e241fd6d25b3b",
+        "input_id": "83713c02b52eb18f782de67b322c43571d83793e082596b6410e2d3a8a41387d",
+        "spent_output_id": "01df9011ca0bed4bb9b95dc84da4c5103fed06ca28c03d92d34ee3d61b945288",
+        "type": "spend",
+        "witness_arguments": [
+          "512a2b60324433de96cd4274bd298b4b109a29c4d9d68582952065dfd0d7c00663cbc49e8e42fdef740a7e1b78622ee31abf2e9b0d5609755f275afd6751590b",
+          "bedfd27f48007c59555da672b6207ac997add62241894ff181bb9d8cba3b7e25"
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "account_alias": "default",
+        "account_id": "0F1L5Q3V00A02",
+        "address": "sy1qdcfprk7wjy6flavkzhcjh3dxyrwlm935trrs5m",
+        "amount": 41249100000,
+        "asset_alias": "EY",
+        "asset_definition": {
+          "decimals": 8,
+          "description": "Eiyaro Official Issue",
+          "name": "EY",
+          "symbol": "EY"
+        },
+        "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "control_program": "00146e1211dbce91349ff59615f12bc5a620ddfd9634",
+        "id": "09fabb1a2bac44c45054175453e23e81a764557147523d8df70d8a190cf2eb17",
+        "position": 0,
+        "type": "control"
+      },
+      {
+        "account_alias": "default",
+        "account_id": "0F1L5Q3V00A02",
+        "address": "sy1qt92xx2f4ys63dyhy58jle87nttcf37zftweklh",
+        "amount": 39150000000,
+        "asset_alias": "EY",
+        "asset_definition": {
+          "decimals": 8,
+          "description": "Eiyaro Official Issue",
+          "name": "EY",
+          "symbol": "EY"
+        },
+        "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "control_program": "0014595463293524351692e4a1e5fc9fd35af098f849",
+        "id": "6efae48663e872193e8a672eb85b8bbf29d8aee98e42816340fa0b2340cc355d",
+        "position": 1,
+        "type": "control"
+      },
+      {
+        "account_alias": "alice",
+        "account_id": "0F1MQVI500A02",
+        "address": "sy1qum6ly8aq9u9k7xrkuck9pq64xg67gw40khnnxu",
+        "amount": 2100000000,
+        "asset_alias": "EY",
+        "asset_definition": {
+          "decimals": 8,
+          "description": "Eiyaro Official Issue",
+          "name": "EY",
+          "symbol": "EY"
+        },
+        "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "control_program": "0014e6f5f21fa02f0b6f1876e62c5083553235e43aaf",
+        "id": "aca1ecc59d8bcf548e4f5afb8a97e38f0eb56e1387b17400fd3c693c074a703d",
+        "position": 2,
+        "type": "control"
+      }
+    ],
+    "size": 1194,
+    "status_fail": false,
+    "tx_id": "9c28a6a2a039ed5bdebe81eea44cdb22a951c472bc25cb1e8188ae423a98f251"
+  },
+  {
+    "block_hash": "474b9c28b225fba02278ad3b097d561bf8f5c562ff2a548226fc10fc1d75b7ed",
+    "block_height": 255,
+    "block_index": 1,
+    "block_time": 1528963126,
+    "block_transactions_count": 2,
+    "inputs": [
+      {
+        "account_alias": "alice",
+        "account_id": "0F1MQVI500A02",
+        "address": "sy1qum6ly8aq9u9k7xrkuck9pq64xg67gw40khnnxu",
+        "amount": 10000000000,
+        "asset_alias": "EY",
+        "asset_definition": {
+          "decimals": 8,
+          "description": "Eiyaro Official Issue",
+          "name": "EY",
+          "symbol": "EY"
+        },
+        "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "control_program": "0014e6f5f21fa02f0b6f1876e62c5083553235e43aaf",
+        "input_id": "0705bb7f4aea4ef869f22ab5e4a26e051b066e41290c1b74734a82aee8c03dfc",
+        "spent_output_id": "767649aafdfe2c22d46d641a5b74d934e2590330f7280b0fc55b978812a99a58",
+        "type": "spend",
+        "witness_arguments": [
+          "a4d4f09a04371516d37e1d27f92c9cb41e4b1e7f62762cf23ed3904a9dfd2d794195862fffd00bf7ac373e5891c8d2eb660dc5ff9c040ec4e01f973bbfd31c23",
+          "2ecb3f55bfde18ec95a93c456dd3d44cb55da83148a68cbc059ea04e7b12d3bc"
+        ]
+      },
+      {
+        "account_alias": "alice",
+        "account_id": "0F1MQVI500A02",
+        "address": "sy1qum6ly8aq9u9k7xrkuck9pq64xg67gw40khnnxu",
+        "amount": 1000000000000,
+        "asset_alias": "GOLD",
+        "asset_definition": {
+          "decimals": 8,
+          "description": {},
+          "name": "",
+          "symbol": ""
+        },
+        "asset_id": "71deb74415f16a1f7bffb04c61d427bb1f93adfba257ffba2673f102d602e78f",
+        "control_program": "0014e6f5f21fa02f0b6f1876e62c5083553235e43aaf",
+        "input_id": "35764d80217d0d2a3c1b000dc2dd47cf0c8bc152c842ce6e3a7783140087d3d6",
+        "spent_output_id": "5d7a88851f5696ded279cb9bc380e050024c555258ea7851dfdedc2797b0d820",
+        "type": "spend",
+        "witness_arguments": [
+          "a4d4f09a04371516d37e1d27f92c9cb41e4b1e7f62762cf23ed3904a9dfd2d794195862fffd00bf7ac373e5891c8d2eb660dc5ff9c040ec4e01f973bbfd31c23",
+          "2ecb3f55bfde18ec95a93c456dd3d44cb55da83148a68cbc059ea04e7b12d3bc"
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "account_alias": "alice",
+        "account_id": "0F1MQVI500A02",
+        "address": "sy1q39sztlh4jq5nknstn2udvvpm6v5ugussx2djc0",
+        "amount": 9980000000,
+        "asset_alias": "EY",
+        "asset_definition": {
+          "decimals": 8,
+          "description": "Eiyaro Official Issue",
+          "name": "EY",
+          "symbol": "EY"
+        },
+        "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "control_program": "0014896025fef590293b4e0b9ab8d6303bd329c47210",
+        "id": "2b44969d28d79544006e792411d6cd1d245f9af20419f6138494b4b5aac2a72e",
+        "position": 0,
+        "type": "control"
+      },
+      {
+        "account_alias": "alice",
+        "account_id": "0F1MQVI500A02",
+        "address": "sy1q258yd0gvatje4pn0qc8z9w8cdv45j9tvhfpjh8",
+        "amount": 999999999901,
+        "asset_alias": "GOLD",
+        "asset_definition": {
+          "decimals": 8,
+          "description": {},
+          "name": "",
+          "symbol": ""
+        },
+        "asset_id": "71deb74415f16a1f7bffb04c61d427bb1f93adfba257ffba2673f102d602e78f",
+        "control_program": "0014550e46bd0ceae59a866f060e22b8f86b2b49156c",
+        "id": "54be1bc876d1deccb9845acec79eabf62d7eacd5935e337850233657914d0f9d",
+        "position": 1,
+        "type": "control"
+      },
+      {
+        "amount": 99,
+        "asset_alias": "GOLD",
+        "asset_definition": {
+          "decimals": 8,
+          "description": {},
+          "name": "",
+          "symbol": ""
+        },
+        "asset_id": "71deb74415f16a1f7bffb04c61d427bb1f93adfba257ffba2673f102d602e78f",
+        "control_program": "20e864761d8181103b6476435a805cba97361df9a05c40fae644c27f69ce045d3c16001464d928e181900d382fa33def66534c7323c778c4015820684d6683d014abb4e019878b50fbbb547bcbf9c4739498d8eeef565d37f9a82f741a547a6413000000007b7b51547ac1631a000000547a547aae7cac00c0",
+        "id": "347553923bb550c236a703e46600d53f25161e3eb74ee3183884d398e5d894b0",
+        "position": 2,
+        "type": "control"
+      }
+    ],
+    "size": 691,
+    "status_fail": false,
+    "tx_id": "383f8636842301b2fe292c5b8b2f540c6ed7867ba5751680b2e77827c300e41e"
+  }
+]
+----
+
 == Network Endpoints
 
 These endpoints are available regardless of the wallet being disabled or not.
