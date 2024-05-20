@@ -879,6 +879,13 @@ pre.rouge .gs {
 <li><a href="#_example_43">Example</a></li>
 </ul>
 </li>
+<li><a href="#_check_access_token_endpoint">Check Access Token Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_44">Parameters</a></li>
+<li><a href="#_returns_44">Returns</a></li>
+<li><a href="#_example_44">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -5265,12 +5272,60 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_check_access_token_endpoint"><a class="anchor" href="#_check_access_token_endpoint"></a>Check Access Token Endpoint</h3>
+<div class="paragraph">
+<p>Check if an access token is valid.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_44"><a class="anchor" href="#_parameters_44"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>id</strong>, token ID.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>secret</strong>, secret of token, the second part of the colon division for token.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_44"><a class="anchor" href="#_returns_44"></a>Returns</h4>
+<div class="paragraph">
+<p>None if the access token is checked valid.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_44"><a class="anchor" href="#_example_44"></a>Example</h4>
+<div class="paragraph">
+<p>Check whether the access token is vaild or not.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_54"><a class="anchor" href="#_request_54"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/check-access-token <span class="nt">-d</span> <span class="s1">'{"id": "token1", "secret": "1fee70f537128a201338bd5f25a3adbf33dad02eae4f4c9ac43f336a069df8f3"}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_49"><a class="anchor" href="#_response_49"></a>Response</h5>
+<div class="paragraph">
+<p>Nothing if the operation was successful.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-20 12:29:37 +0100
+Last updated 2024-05-20 12:33:15 +0100
 </div>
 </div>
 </body>

@@ -2781,3 +2781,32 @@ curl -X POST http://localhost:9888/delete-access-token -d '{"id": "token1"}'
 ===== Response
 
 Nothing if the operation was successful.
+
+=== Check Access Token Endpoint
+
+Check if an access token is valid.
+
+==== Parameters
+
+`Object`:
+
+* `String` - *id*, token ID.
+* `String` - *secret*, secret of token, the second part of the colon division for token.
+
+==== Returns
+
+None if the access token is checked valid.
+
+==== Example
+
+Check whether the access token is vaild or not.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/check-access-token -d '{"id": "token1", "secret": "1fee70f537128a201338bd5f25a3adbf33dad02eae4f4c9ac43f336a069df8f3"}'
+----
+
+===== Response
+
+Nothing if the operation was successful.
