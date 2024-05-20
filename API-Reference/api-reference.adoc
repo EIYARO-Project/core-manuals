@@ -2237,6 +2237,112 @@ curl -X POST http://localhost:9888/build-transaction -d '{"base_transaction":nul
 }
 ----
 
+=== Build Chain Transactions Endpoint
+
+Build chain transactions. To solve the problem of excessive `utxo` causing the transaction to fail, the `utxo` merge will be performed automatically. Currently, only `EY` transactions are supported.
+
+[WARNING]
+====
+This feature requires the `core` software to be higher than `v1.0.1`.
+====
+
+==== Parameters
+
+`Object`:
+
+* `String` - *base_transaction*, base data for the transaction, default is null.
+* `Integer` - *ttl*, integer of the time to live in milliseconds, it means utxo will be reserved(locked) for builded transaction in this time range, if the transaction will not to be submitted into block, it will be auto unlocked for build transaction again after this ttl time. it will be set to 5 minutes(300 seconds) defaultly when ttl is 0.
+* `Integer` - *time_range*, time stamp(block height)is maximum survival time for the transaction, the transaction will be not submit into block after this time stamp.
+* `Arrary of Object` - *actions*:
+** `Object`:
+*** `String` - *account_id* | *account_alias*, (type is spend_account) alias or ID of account.
+*** `String` - *asset_id* | *asset_alias*, (type is spend_account, issue, retire, control_program and control_address) alias or ID of asset.
+*** `Integer` - *amount*, (type is spend_account, issue, retire, control_program and control_address) the specified asset of the amount sent with this transaction.
+*** `String`- *type*, type of transaction, valid types: 'spend_account', 'issue', 'spend_account_unspent_output', 'control_address', 'control_program', 'retire'.
+*** `String` - *address*, (type is control_address) address of receiver, the style of address is P2PKH or P2SH.
+*** `String` - *control_program*, (type is control_program) control program of receiver.
+*** `String` - *use_unconfirmed*, (type is spend_account and spend_account_unspent_output) flag of use unconfirmed UTXO, default is false.
+*** `Arrary of Object` - *arguments*, (type is issue and spend_account_unspent_output) arguments of contract, null when it's not contract.
+**** `String`- *type*, type of argument, valid types: 'raw_tx_signature', 'data'.
+**** `Object`- *raw_data*, json object of argument content.
+***** `String`- *xpub*, (type is raw_tx_signature) root xpub.
+***** `String`- *derivation_path*, (type is raw_tx_signature) derived path.
+***** `String`- *value*, (type is data) string of binary value.
+
+==== Returns
+
+* `Object of raw_transaction` - *raw_transaction*, builded transactions.
+* `Object of signing_instructions` - *signing_instructions*, Information used to sign a transactions.
+
+==== Example
+
+Build chain transaction of type `spend`.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888//build-chain-transactions -d '{"base_transaction": null,"actions":[{"account_id":"0JCH28A600A02","amount":30000500000000,"asset_id":"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff","type": "spend_account"}, {"amount": 30000490000000,"asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff","address": "sm1qx93sge8jkgzclc7pled7uqr596hjm2xe558lkr","type": "control_address"}],"ttl": 1000000,"time_range": 0}'
+----
+
+===== Response
+[source,json]
+----
+{
+	"status": "success",
+	"data": [{
+		"raw_transaction": "0701000201620160a0d36052ca3d1335120ae48e1ffb2fb6b25588628eff90fa88bef3117dfb4301ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80ddb2c490e906010116001431630464f2b2058fe3c1fe5bee00742eaf2da8d901000161015f72de2064ab999acf22c05b5cf9c7d53164f80038b46b1ce426708514a30a3485ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80d4f4f69901000116001431630464f2b2058fe3c1fe5bee00742eaf2da8d9010001013fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8084c5b6aaea060116001431630464f2b2058fe3c1fe5bee00742eaf2da8d900",
+		"signing_instructions": [{
+			"position": 0,
+			"witness_components": [{
+				"type": "raw_tx_signature",
+				"quorum": 1,
+				"keys": [{
+					"xpub": "b4d084e77bcda7fd8a37e31135200b2a6af98d19018674125dc6290dd14176f92523f229d9f1f3514b461f6931ac2073f586a35cd628c90270063725e6e1e983",
+					"derivation_path": ["010100000000000000", "0100000000000000"]
+				}],
+				"signatures": null
+			}, {
+				"type": "data",
+				"value": "a86ab33efa9d71994270898ad99f198d60889ef617d5eaf25e776929a8973919"
+			}]
+		}, {
+			"position": 1,
+			"witness_components": [{
+				"type": "raw_tx_signature",
+				"quorum": 1,
+				"keys": [{
+					"xpub": "b4d084e77bcda7fd8a37e31135200b2a6af98d19018674125dc6290dd14176f92523f229d9f1f3514b461f6931ac2073f586a35cd628c90270063725e6e1e983",
+					"derivation_path": ["010100000000000000", "0100000000000000"]
+				}],
+				"signatures": null
+			}, {
+				"type": "data",
+				"value": "a86ab33efa9d71994270898ad99f198d60889ef617d5eaf25e776929a8973919"
+			}]
+		}],
+		"allow_additional_actions": false
+	}, {
+		"raw_transaction": "0701000101620160571cc5d99a2994ff6b192bc9387838a3651245cb66dad4a6bc5f660310cebfa9ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8084c5b6aaea06000116001431630464f2b2058fe3c1fe5bee00742eaf2da8d9010002013effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80faafed99010116001431630464f2b2058fe3c1fe5bee00742eaf2da8d900013fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80ddb2c490e9060116001431630464f2b2058fe3c1fe5bee00742eaf2da8d900",
+		"signing_instructions": [{
+			"position": 0,
+			"witness_components": [{
+				"type": "raw_tx_signature",
+				"quorum": 1,
+				"keys": [{
+					"xpub": "b4d084e77bcda7fd8a37e31135200b2a6af98d19018674125dc6290dd14176f92523f229d9f1f3514b461f6931ac2073f586a35cd628c90270063725e6e1e983",
+					"derivation_path": ["010100000000000000", "0100000000000000"]
+				}],
+				"signatures": null
+			}, {
+				"type": "data",
+				"value": "a86ab33efa9d71994270898ad99f198d60889ef617d5eaf25e776929a8973919"
+			}]
+		}],
+		"allow_additional_actions": false
+	}]
+}
+----
+
 == Network Endpoints
 
 These endpoints are available regardless of the wallet being disabled or not.
