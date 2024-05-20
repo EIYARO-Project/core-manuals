@@ -1489,6 +1489,143 @@ curl -X POST http://localhost:9888/decode-program -d '{"program":"0014a86c83ee12
 }
 ----
 
+=== Get Transaction Endpoint
+
+Query the account related transaction by transaction ID.
+
+==== Parameters
+
+`Object`:
+
+* `String` - *tx_id*, transaction id, hash of transaction.
+
+==== Returns
+
+`Object`:
+
+* `String` - *tx_id*, transaction id, hash of the transaction.
+* `Integer` - *block_time*, the unix timestamp for when the requst was responsed.
+* `String` - *block_hash*, hash of the block where this transaction was in.
+* `Integer` - *block_height*, block height where this transaction was in.
+* `Integer` - *block_index*, position of the transaction in the block.
+* `Integer` - *block_transactions_count*, transactions count where this transaction was in the block.
+* `Boolean` - *status_fail*, whether the state of the transaction request has failed.
+* `Integer` - *size*, size of transaction.
+* `Array of Object` - *inputs*, object of inputs for the transaction.
+** `String` - *type*, the type of input action, available option include: 'spend', 'issue', 'coinbase'.
+** `String` - *asset_id*, asset id.
+** `String` - *asset_alias*, name of asset.
+** `Object` - *asset_definition*, definition of asset(json object).
+** `Integer` - *amount*, amount of asset.
+** `Object` - *issuance_program*, issuance program, it only exist when type is 'issue'.
+** `Object` - *control_program*, control program of account, it only exist when type is 'spend'.
+** `String` - *address*, address of account, it only exist when type is 'spend'.
+** `String` - *spent_output_id*, the front of outputID to be spent in this input, it only exist when type is 'spend'.
+** `String` - *account_id*, account id.
+** `String` - *account_alias*, name of account.
+** `Object` - *arbitrary*, arbitrary infomation can be set by miner, it only exist when type is 'coinbase'.
+** `String` - *input_id*, hash of input action.
+** `Array of String` - *witness_arguments*, witness arguments.
+* `Array of Object` - *outputs*, object of outputs for the transaction.
+** `String` - *type*, the type of output action, available option include: 'retire', 'control'.
+** `String` - *id*, outputid related to utxo.
+** `Integer` - *position*, position of outputs.
+** `String` - *asset_id*, asset id.
+** `String` - *asset_alias*, name of asset.
+** `Object` - *asset_definition*, definition of asset(json object).
+** `Integer` - *amount*, amount of asset.
+** `String` - *account_id*, account id.
+** `String` - *account_alias*, name of account.
+** `Object` - *control_program*, control program of account.
+** `String` - *address*, address of account.
+
+==== Example
+
+Retrieve a transaction by it ID.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/get-transaction -d '{"tx_id": "15b8d66e227feff47b3de0f278934ea16d6c828371ec6c13c8f84713dd11703b"}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "block_hash": "1fa9bb389cf974a9b37b63ca38c0cf3453c30f394b9e8ae7f04f2d1b52c329b4",
+  "block_height": 530,
+  "block_index": 1,
+  "block_time": 1528772056,
+  "block_transactions_count": 2,
+  "inputs": [
+    {
+      "account_alias": "default",
+      "account_id": "0ER7MEFGG0A02",
+      "address": "sy1q4pkg8msjumtep7ecsdzuct3tsuzk5pmnm3p8nr",
+      "amount": 41250000000,
+      "asset_alias": "EY",
+      "asset_definition": {
+        "decimals": 8,
+        "description": "Eiyaro Official Issue",
+        "name": "EY",
+        "symbol": "EY"
+      },
+      "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "control_program": "0014a86c83ee12e6d790fb388345cc2e2b87056a0773",
+      "input_id": "02702fe116e052aaf4473b034ed40720bfb3aba77df64625311ca3947d367336",
+      "spent_output_id": "002025b727148d04197cc7b9cf7eafd9986041f07641ca82dc0a1d9e227b52f6",
+      "type": "spend",
+      "witness_arguments": [
+        "944a35f256a49712f95319743671152b12360df859deedbfa9f37f9fe6a81b5ff2dce36d9ee6fc19e8be8b1dd5915719d4341f66f5569aad26283859d3c1bc05",
+        "bedfd27f48007c59555da672b6207ac997add62241894ff181bb9d8cba3b7e25"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "account_alias": "default",
+      "account_id": "0ER7MEFGG0A02",
+      "address": "sy1qmt6jxrr8etssufr8qp98emyaly3lknxyndh5cj",
+      "amount": 29450000000,
+      "asset_alias": "EY",
+      "asset_definition": {
+        "decimals": 8,
+        "description": "Eiyaro Official Issue",
+        "name": "EY",
+        "symbol": "EY"
+      },
+      "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "control_program": "0014daf5230c67cae10e2467004a7cec9df923fb4cc4",
+      "id": "35a46dd36eb27b1ffdfdefbe5366175b6325e8f56e5bc3dd2aa1a47197e26e6c",
+      "position": 0,
+      "type": "control"
+    },
+    {
+      "account_alias": "alice",
+      "account_id": "0ER7OAK400A02",
+      "address": "sy1qxe4jwhkekgnxkezu7xutu5gqnnpmyc8ppq98me",
+      "amount": 11700000000,
+      "asset_alias": "EY",
+      "asset_definition": {
+        "decimals": 8,
+        "description": "Eiyaro Official Issue",
+        "name": "EY",
+        "symbol": "EY"
+      },
+      "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "control_program": "0014366b275ed9b2266b645cf1b8be51009cc3b260e1",
+      "id": "ae791bbde0cc5b370e28a505933b85082d67be8db81bdcc56b8202f200b883e7",
+      "position": 1,
+      "type": "control"
+    }
+  ],
+  "size": 332,
+  "status_fail": false,
+  "tx_id": "15b8d66e227feff47b3de0f278934ea16d6c828371ec6c13c8f84713dd11703b"
+}
+----
+
 == Network Endpoints
 
 These endpoints are available regardless of the wallet being disabled or not.

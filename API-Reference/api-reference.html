@@ -791,6 +791,13 @@ pre.rouge .gs {
 <li><a href="#_example_31">Example</a></li>
 </ul>
 </li>
+<li><a href="#_get_transaction_endpoint">Get Transaction Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_32">Parameters</a></li>
+<li><a href="#_returns_32">Returns</a></li>
+<li><a href="#_example_32">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#_network_endpoints">Network Endpoints</a></li>
@@ -3219,6 +3226,241 @@ All accounts and balances of <code>bip44</code> multi-account hierarchy for dete
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_get_transaction_endpoint"><a class="anchor" href="#_get_transaction_endpoint"></a>Get Transaction Endpoint</h3>
+<div class="paragraph">
+<p>Query the account related transaction by transaction ID.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_32"><a class="anchor" href="#_parameters_32"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>tx_id</strong>, transaction id, hash of transaction.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_32"><a class="anchor" href="#_returns_32"></a>Returns</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>tx_id</strong>, transaction id, hash of the transaction.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>block_time</strong>, the unix timestamp for when the requst was responsed.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>block_hash</strong>, hash of the block where this transaction was in.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>block_height</strong>, block height where this transaction was in.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>block_index</strong>, position of the transaction in the block.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>block_transactions_count</strong>, transactions count where this transaction was in the block.</p>
+</li>
+<li>
+<p><code>Boolean</code> - <strong>status_fail</strong>, whether the state of the transaction request has failed.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>size</strong>, size of transaction.</p>
+</li>
+<li>
+<p><code>Array of Object</code> - <strong>inputs</strong>, object of inputs for the transaction.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>type</strong>, the type of input action, available option include: 'spend', 'issue', 'coinbase'.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>asset_id</strong>, asset id.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>asset_alias</strong>, name of asset.</p>
+</li>
+<li>
+<p><code>Object</code> - <strong>asset_definition</strong>, definition of asset(json object).</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>amount</strong>, amount of asset.</p>
+</li>
+<li>
+<p><code>Object</code> - <strong>issuance_program</strong>, issuance program, it only exist when type is 'issue'.</p>
+</li>
+<li>
+<p><code>Object</code> - <strong>control_program</strong>, control program of account, it only exist when type is 'spend'.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>address</strong>, address of account, it only exist when type is 'spend'.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>spent_output_id</strong>, the front of outputID to be spent in this input, it only exist when type is 'spend'.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>account_id</strong>, account id.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>account_alias</strong>, name of account.</p>
+</li>
+<li>
+<p><code>Object</code> - <strong>arbitrary</strong>, arbitrary infomation can be set by miner, it only exist when type is 'coinbase'.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>input_id</strong>, hash of input action.</p>
+</li>
+<li>
+<p><code>Array of String</code> - <strong>witness_arguments</strong>, witness arguments.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>Array of Object</code> - <strong>outputs</strong>, object of outputs for the transaction.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>type</strong>, the type of output action, available option include: 'retire', 'control'.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>id</strong>, outputid related to utxo.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>position</strong>, position of outputs.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>asset_id</strong>, asset id.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>asset_alias</strong>, name of asset.</p>
+</li>
+<li>
+<p><code>Object</code> - <strong>asset_definition</strong>, definition of asset(json object).</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>amount</strong>, amount of asset.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>account_id</strong>, account id.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>account_alias</strong>, name of account.</p>
+</li>
+<li>
+<p><code>Object</code> - <strong>control_program</strong>, control program of account.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>address</strong>, address of account.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_32"><a class="anchor" href="#_example_32"></a>Example</h4>
+<div class="paragraph">
+<p>Retrieve a transaction by it ID.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_36"><a class="anchor" href="#_request_36"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/get-transaction <span class="nt">-d</span> <span class="s1">'{"tx_id": "15b8d66e227feff47b3de0f278934ea16d6c828371ec6c13c8f84713dd11703b"}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_36"><a class="anchor" href="#_response_36"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"block_hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1fa9bb389cf974a9b37b63ca38c0cf3453c30f394b9e8ae7f04f2d1b52c329b4"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"block_height"</span><span class="p">:</span><span class="w"> </span><span class="mi">530</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"block_index"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"block_time"</span><span class="p">:</span><span class="w"> </span><span class="mi">1528772056</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"block_transactions_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"inputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"account_alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"account_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0ER7MEFGG0A02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sy1q4pkg8msjumtep7ecsdzuct3tsuzk5pmnm3p8nr"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">41250000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EY"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_definition"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"decimals"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Eiyaro Official Issue"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EY"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EY"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"control_program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0014a86c83ee12e6d790fb388345cc2e2b87056a0773"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"input_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"02702fe116e052aaf4473b034ed40720bfb3aba77df64625311ca3947d367336"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"spent_output_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"002025b727148d04197cc7b9cf7eafd9986041f07641ca82dc0a1d9e227b52f6"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spend"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"witness_arguments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"944a35f256a49712f95319743671152b12360df859deedbfa9f37f9fe6a81b5ff2dce36d9ee6fc19e8be8b1dd5915719d4341f66f5569aad26283859d3c1bc05"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"bedfd27f48007c59555da672b6207ac997add62241894ff181bb9d8cba3b7e25"</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"account_alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"account_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0ER7MEFGG0A02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sy1qmt6jxrr8etssufr8qp98emyaly3lknxyndh5cj"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">29450000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EY"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_definition"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"decimals"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Eiyaro Official Issue"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EY"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EY"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"control_program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0014daf5230c67cae10e2467004a7cec9df923fb4cc4"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"35a46dd36eb27b1ffdfdefbe5366175b6325e8f56e5bc3dd2aa1a47197e26e6c"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"control"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"account_alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"alice"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"account_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0ER7OAK400A02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sy1qxe4jwhkekgnxkezu7xutu5gqnnpmyc8ppq98me"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">11700000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EY"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_definition"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"decimals"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Eiyaro Official Issue"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EY"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EY"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"control_program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0014366b275ed9b2266b645cf1b8be51009cc3b260e1"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ae791bbde0cc5b370e28a505933b85082d67be8db81bdcc56b8202f200b883e7"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"control"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">332</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"status_fail"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"tx_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15b8d66e227feff47b3de0f278934ea16d6c828371ec6c13c8f84713dd11703b"</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -3232,7 +3474,7 @@ All accounts and balances of <code>bip44</code> multi-account hierarchy for dete
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-18 20:46:00 +0100
+Last updated 2024-05-20 09:52:39 +0100
 </div>
 </div>
 </body>
