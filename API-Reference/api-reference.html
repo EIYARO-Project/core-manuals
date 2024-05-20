@@ -851,6 +851,13 @@ pre.rouge .gs {
 <li><a href="#_example_39">Example</a></li>
 </ul>
 </li>
+<li><a href="#_estimate_transaction_gas_endpoint">Estimate Transaction Gas Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_40">Parameters</a></li>
+<li><a href="#_returns_40">Returns</a></li>
+<li><a href="#_example_40">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -4972,12 +4979,76 @@ All accounts and balances of <code>bip44</code> multi-account hierarchy for dete
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_estimate_transaction_gas_endpoint"><a class="anchor" href="#_estimate_transaction_gas_endpoint"></a>Estimate Transaction Gas Endpoint</h3>
+<div class="paragraph">
+<p>Estimate consumed neu(<span class="image"><img src="api-reference-files/stem-1b567cee985458f7190d7e28a71d5ff7.png" alt="stem 1b567cee985458f7190d7e28a71d5ff7" width="86" height="10"></span>) for the transaction.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_40"><a class="anchor" href="#_parameters_40"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Object</code> - <strong>transaction_template</strong>, builded transaction response.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_40"><a class="anchor" href="#_returns_40"></a>Returns</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Integer</code> - <strong>total_neu</strong>, total consumed neu(<span class="image"><img src="api-reference-files/stem-1b567cee985458f7190d7e28a71d5ff7.png" alt="stem 1b567cee985458f7190d7e28a71d5ff7" width="86" height="10"></span>) for execute transaction, <code>total_neu</code> is rounded up <code>storage_neu</code> + <code>vm_neu</code>.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>storage_neu</strong>, consumed neu for storage transaction .</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>vm_neu</strong>, consumed neu for execute VM.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_40"><a class="anchor" href="#_example_40"></a>Example</h4>
+<div class="paragraph">
+<p>Query about a transaction&#8217;s gas.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_50"><a class="anchor" href="#_request_50"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/estimate-transaction-gas <span class="nt">-d</span> <span class="s1">'{"transaction_template":{"allow_additional_actions":false,"raw_transaction":"070100010161015ffe8a1209937a6a8b22e8c01f056fd5f1730734ba8964d6b79de4a639032cecddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8099c4d59901000116001485eb6eee8023332da85df60157dc9b16cc553fb2010002013dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80afa08b4f011600142b4fd033bc76b4ddf5cb00f625362c4bc7b10efa00013dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8090dfc04a011600146eea1ce6cfa5b718ae8094376be9bc1a87c9c82700","signing_instructions":[{"position":0,"witness_components":[{"keys":[{"derivation_path":["010100000000000000","0100000000000000"],"xpub":"cb4e5932d808ee060df9552963d87f60edac42360b11d4ad89558ef2acea4d4aaf4818f2ebf5a599382b8dfce0a0c798c7e44ec2667b3a1d34c61ba57609de55"}],"quorum":1,"signatures":null,"type":"raw_tx_signature"},{"type":"data","value":"1c9b5c1db7f4afe31fd1b7e0495a8bb042a271d8d7924d4fc1ff7cf1bff15813"}]}]}}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_45"><a class="anchor" href="#_response_45"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"storage_neu"</span><span class="p">:</span><span class="w"> </span><span class="mi">3840000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"total_neu"</span><span class="p">:</span><span class="w"> </span><span class="mi">5259000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"vm_neu"</span><span class="p">:</span><span class="w"> </span><span class="mi">1419000</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-20 11:57:21 +0100
+Last updated 2024-05-20 12:09:22 +0100
 </div>
 </div>
 </body>
