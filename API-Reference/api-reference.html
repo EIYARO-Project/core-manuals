@@ -872,6 +872,13 @@ pre.rouge .gs {
 <li><a href="#_example_42">Example</a></li>
 </ul>
 </li>
+<li><a href="#_delete_access_token_endpoint">Delete Access Token Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_43">Parameters</a></li>
+<li><a href="#_returns_43">Returns</a></li>
+<li><a href="#_example_43">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1123,7 +1130,7 @@ pre.rouge .gs {
 <div class="sect4">
 <h5 id="_response_4"><a class="anchor" href="#_response_4"></a>Response</h5>
 <div class="paragraph">
-<p>No response in case operation was successful.</p>
+<p>Nothing if the operation was successful.</p>
 </div>
 </div>
 </div>
@@ -1185,7 +1192,7 @@ pre.rouge .gs {
 <div class="sect4">
 <h5 id="_response_5"><a class="anchor" href="#_response_5"></a>Response</h5>
 <div class="paragraph">
-<p>No response in case operation was successful.</p>
+<p>Nothing if the operation was successful.</p>
 </div>
 </div>
 </div>
@@ -1542,7 +1549,7 @@ curl <span class="nt">-X</span> POST http://localhost:9888/update-account-alias 
 <div class="sect4">
 <h5 id="_response_10"><a class="anchor" href="#_response_10"></a>Response</h5>
 <div class="paragraph">
-<p>No response in case operation was successful.</p>
+<p>Nothing if the operation was successful.</p>
 </div>
 </div>
 </div>
@@ -1609,7 +1616,7 @@ curl <span class="nt">-X</span> POST http://localhost:9888/delete-account <span 
 <div class="sect4">
 <h5 id="_response_11"><a class="anchor" href="#_response_11"></a>Response</h5>
 <div class="paragraph">
-<p>No response in case operation was successful.</p>
+<p>Nothing if the operation was successful.</p>
 </div>
 </div>
 </div>
@@ -2548,7 +2555,7 @@ It returns an error message if the address format is incorrect.</p>
 <div class="sect4">
 <h5 id="_response_24"><a class="anchor" href="#_response_24"></a>Response</h5>
 <div class="paragraph">
-<p>No response in case operation was successful.</p>
+<p>Nothing if the operation was successful.</p>
 </div>
 </div>
 </div>
@@ -3012,7 +3019,7 @@ It returns an error message if the address format is incorrect.</p>
 <div class="sect3">
 <h4 id="_returns_26"><a class="anchor" href="#_returns_26"></a>Returns</h4>
 <div class="paragraph">
-<p>None if restore of the wallet was successful.</p>
+<p>Nothing if the operation was successful.</p>
 </div>
 </div>
 <div class="sect3">
@@ -3031,7 +3038,7 @@ It returns an error message if the address format is incorrect.</p>
 <div class="sect4">
 <h5 id="_response_30"><a class="anchor" href="#_response_30"></a>Response</h5>
 <div class="paragraph">
-<p>No response in case operation was successful.</p>
+<p>Nothing if the operation was successful.</p>
 </div>
 </div>
 </div>
@@ -3069,7 +3076,7 @@ It returns an error message if the address format is incorrect.</p>
 <div class="sect4">
 <h5 id="_response_31"><a class="anchor" href="#_response_31"></a>Response</h5>
 <div class="paragraph">
-<p>No response in case operation was successful.</p>
+<p>Nothing if the operation was successful.</p>
 </div>
 </div>
 </div>
@@ -5213,12 +5220,57 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_delete_access_token_endpoint"><a class="anchor" href="#_delete_access_token_endpoint"></a>Delete Access Token Endpoint</h3>
+<div class="paragraph">
+<p>Delete existing access token.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_43"><a class="anchor" href="#_parameters_43"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>id</strong>, token ID.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_43"><a class="anchor" href="#_returns_43"></a>Returns</h4>
+<div class="paragraph">
+<p>Nothing if the access token is deleted successfully.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_43"><a class="anchor" href="#_example_43"></a>Example</h4>
+<div class="paragraph">
+<p>Delete an existing access token.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_53"><a class="anchor" href="#_request_53"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/delete-access-token <span class="nt">-d</span> <span class="s1">'{"id": "token1"}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_48"><a class="anchor" href="#_response_48"></a>Response</h5>
+<div class="paragraph">
+<p>Nothing if the operation was successful.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-20 12:20:21 +0100
+Last updated 2024-05-20 12:29:37 +0100
 </div>
 </div>
 </body>
