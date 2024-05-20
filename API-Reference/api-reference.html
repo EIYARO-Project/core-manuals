@@ -893,6 +893,13 @@ pre.rouge .gs {
 <li><a href="#_example_45">Example</a></li>
 </ul>
 </li>
+<li><a href="#_get_transaction_feed_endpoint">Get Transaction Feed Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_46">Parameters</a></li>
+<li><a href="#_returns_46">Returns</a></li>
+<li><a href="#_example_46">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -5375,12 +5382,95 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_get_transaction_feed_endpoint"><a class="anchor" href="#_get_transaction_feed_endpoint"></a>Get Transaction Feed Endpoint</h3>
+<div class="paragraph">
+<p>Query details of a transaction feed by alias.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_46"><a class="anchor" href="#_parameters_46"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>alias</strong>, alias of the transaction feed.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_46"><a class="anchor" href="#_returns_46"></a>Returns</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>id</strong>, id of the transaction feed.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>alias</strong>, alias of the transaction feed.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>filter</strong>, filter of the transaction feed.</p>
+</li>
+<li>
+<p><code>Object</code> - <strong>param</strong>, param of the transaction feed.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>assetid</strong>, asset id.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>lowerlimit</strong>, the lower limit of asset amount.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>upperlimit</strong>, the upper limit of asset amount.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>transtype</strong>, type of transaction.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_46"><a class="anchor" href="#_example_46"></a>Example</h4>
+<div class="paragraph">
+<p>List the available transaction feed by alias.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_56"><a class="anchor" href="#_request_56"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/get-transaction-feed <span class="nt">-d</span> <span class="s1">'{"alias": "test1"}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_51"><a class="anchor" href="#_response_51"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test1"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"filter"</span><span class="p">:</span><span class="w"> </span><span class="s2">"asset_id='84778a666fe453cf73b2e8c783dbc9e04bc4fd7cbb4f50caeaee99cf9967ebed' AND amount_lower_limit = 50 AND amount_upper_limit = 100"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"param"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-20 12:38:08 +0100
+Last updated 2024-05-20 12:43:03 +0100
 </div>
 </div>
 </body>
