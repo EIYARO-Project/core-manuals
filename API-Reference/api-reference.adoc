@@ -3460,3 +3460,44 @@ curl -X POST http://localhost:9888/get-difficulty -d '{"block_height": 506, "blo
   "height": 506
 }
 ----
+
+=== Get Hash Rate Endpoint
+
+Returns the block hash rate by block height or block hash, it returns the current block hash rate when request is empty.
+
+==== Parameters
+
+`Object`:
+
+Optional:
+
+* `String` - *block_hash*, hash of block.
+* `Integer` - *block_height*, height of block.
+
+==== Returns
+
+`Object`:
+
+* `Integer` - *hash_rate*, difficulty of block.
+* `String` - *hash*, block hash.
+* `Integer` - *height*, block height.
+
+==== Example
+
+Get hash rate for specified block hash / height.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/get-hash-rate -d '{"block_height": 506, "block_hash": "d1fce60caea5466eae2b812e4586b55120c52aca27b6c92bd7c51e9cda82dcdf"}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "hash": "d1fce60caea5466eae2b812e4586b55120c52aca27b6c92bd7c51e9cda82dcdf",
+  "hash_rate": 7577403,
+  "height": 506
+}
+----
