@@ -991,6 +991,12 @@ pre.rouge .gs {
 <li><a href="#_example_59">Example</a></li>
 </ul>
 </li>
+<li><a href="#_is_mining_endpoint">Is Mining Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_60">Parameters</a></li>
+<li><a href="#_example_60">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -6699,12 +6705,61 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_is_mining_endpoint"><a class="anchor" href="#_is_mining_endpoint"></a>Is Mining Endpoint</h3>
+<div class="paragraph">
+<p>Returns the mining status.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_60"><a class="anchor" href="#_parameters_60"></a>Parameters</h4>
+<div class="paragraph">
+<p>None.</p>
+</div>
+<div class="sect4">
+<h5 id="_returns_60"><a class="anchor" href="#_returns_60"></a>Returns</h5>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Boolean</code> - <strong>is_mining</strong>, whether the node is mining.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_60"><a class="anchor" href="#_example_60"></a>Example</h4>
+<div class="paragraph">
+<p>Retrieve the mining status.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_70"><a class="anchor" href="#_request_70"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/is-mining</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_65"><a class="anchor" href="#_response_65"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"is_mining"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-21 19:56:05 +0100
+Last updated 2024-05-21 19:58:41 +0100
 </div>
 </div>
 </body>

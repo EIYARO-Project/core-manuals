@@ -3557,3 +3557,35 @@ curl -X POST http://localhost:9888/net-info
   }
 }
 ----
+
+=== Is Mining Endpoint
+
+Returns the mining status.
+
+==== Parameters
+
+None.
+
+##### Returns
+
+`Object`:
+
+* `Boolean` - *is_mining*, whether the node is mining.
+
+==== Example
+
+Retrieve the mining status.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/is-mining
+----
+
+===== Response
+[source,json]
+----
+{
+  "is_mining": true
+}
+----
