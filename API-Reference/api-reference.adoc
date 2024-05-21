@@ -3190,3 +3190,35 @@ curl -X POST http://localhost:9888/decode-raw-transaction -d '{"raw_transaction"
   "version": 1
 }
 ----
+
+=== Get Block Count Endpoint
+
+Returns the current block height for the blockchain.
+
+==== Parameters
+
+None.
+
+==== Returns
+
+`Object`:
+
+* `Integer` - *block_count*, recent block height of the blockchain.
+
+==== Example
+
+Retrieve the current block height.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/get-block-count
+----
+
+===== Response
+[source,json]
+----
+{
+    "block_count": 519
+}
+----
