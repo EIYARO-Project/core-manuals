@@ -3071,3 +3071,40 @@ curl -X POST http://localhost:9888/get-unconfirmed-transaction -d '{"tx_id": "38
   "version": 1
 }
 ----
+
+=== List Unconfirmed Transactions Endpoint
+
+Returns the total number of `mempool` transactions and the list of transaction IDs.
+
+==== Parameters
+
+None.
+
+==== Returns
+
+`Object`:
+
+* `Integer` - *total*, version of transaction.
+* `Array of Object` - *tx_ids*, list of transaction id.
+
+==== Example
+
+Retrieve the total of `mempool` transactions and their respective IDs.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/list-unconfirmed-transactions -d '{}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "total": 2,
+  "tx_ids": [
+    "382090f24fbfc2f737fa7372b9d161a43f00d1c597a7130a56589d1f469d04b5",
+    "fc2da5dfa094c2170144f149fa07a312983157aec0ec95063a1319eedcb2d23b"
+  ]
+}
+----

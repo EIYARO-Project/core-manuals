@@ -928,6 +928,13 @@ pre.rouge .gs {
 <li><a href="#_example_50">Example</a></li>
 </ul>
 </li>
+<li><a href="#_list_unconfirmed_transactions_endpoint">List Unconfirmed Transactions Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_51">Parameters</a></li>
+<li><a href="#_returns_51">Returns</a></li>
+<li><a href="#_example_51">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -5800,12 +5807,68 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_list_unconfirmed_transactions_endpoint"><a class="anchor" href="#_list_unconfirmed_transactions_endpoint"></a>List Unconfirmed Transactions Endpoint</h3>
+<div class="paragraph">
+<p>Returns the total number of <code>mempool</code> transactions and the list of transaction IDs.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_51"><a class="anchor" href="#_parameters_51"></a>Parameters</h4>
+<div class="paragraph">
+<p>None.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_51"><a class="anchor" href="#_returns_51"></a>Returns</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Integer</code> - <strong>total</strong>, version of transaction.</p>
+</li>
+<li>
+<p><code>Array of Object</code> - <strong>tx_ids</strong>, list of transaction id.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_51"><a class="anchor" href="#_example_51"></a>Example</h4>
+<div class="paragraph">
+<p>Retrieve the total of <code>mempool</code> transactions and their respective IDs.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_61"><a class="anchor" href="#_request_61"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/list-unconfirmed-transactions <span class="nt">-d</span> <span class="s1">'{}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_56"><a class="anchor" href="#_response_56"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"tx_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"382090f24fbfc2f737fa7372b9d161a43f00d1c597a7130a56589d1f469d04b5"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"fc2da5dfa094c2170144f149fa07a312983157aec0ec95063a1319eedcb2d23b"</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-21 18:42:04 +0100
+Last updated 2024-05-21 18:48:04 +0100
 </div>
 </div>
 </body>
