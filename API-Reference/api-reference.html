@@ -907,6 +907,13 @@ pre.rouge .gs {
 <li><a href="#_example_47">Example</a></li>
 </ul>
 </li>
+<li><a href="#_delete_transaction_feed_endpoint">Delete Transaction Feed Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_48">Parameters</a></li>
+<li><a href="#_returns_48">Returns</a></li>
+<li><a href="#_example_48">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -5566,12 +5573,57 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_delete_transaction_feed_endpoint"><a class="anchor" href="#_delete_transaction_feed_endpoint"></a>Delete Transaction Feed Endpoint</h3>
+<div class="paragraph">
+<p>Delete a transaction feed by alias.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_48"><a class="anchor" href="#_parameters_48"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>alias</strong>, alias of the transaction feed.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_48"><a class="anchor" href="#_returns_48"></a>Returns</h4>
+<div class="paragraph">
+<p>None if the transaction feed is deleted successfully.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_48"><a class="anchor" href="#_example_48"></a>Example</h4>
+<div class="paragraph">
+<p>Delete a transaction feed by it&#8217;s alias.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_58"><a class="anchor" href="#_request_58"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/delete-transaction-feed <span class="nt">-d</span> <span class="s1">'{"alias": "test1"}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_53"><a class="anchor" href="#_response_53"></a>Response</h5>
+<div class="paragraph">
+<p>Nothing if the operation was successful.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-21 18:22:31 +0100
+Last updated 2024-05-21 18:29:17 +0100
 </div>
 </div>
 </body>

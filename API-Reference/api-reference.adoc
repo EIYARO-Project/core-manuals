@@ -2930,3 +2930,31 @@ curl -X POST http://localhost:9888/list-transaction-feeds -d '{}'
   }
 ]
 ----
+
+=== Delete Transaction Feed Endpoint
+
+Delete a transaction feed by alias.
+
+==== Parameters
+
+`Object`:
+
+* `String` - *alias*, alias of the transaction feed.
+
+==== Returns
+
+None if the transaction feed is deleted successfully.
+
+==== Example
+
+Delete a transaction feed by it's alias.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/delete-transaction-feed -d '{"alias": "test1"}'
+----
+
+===== Response
+
+Nothing if the operation was successful.
