@@ -3566,7 +3566,7 @@ Returns the mining status.
 
 None.
 
-##### Returns
+==== Returns
 
 `Object`:
 
@@ -3589,3 +3589,31 @@ curl -X POST http://localhost:9888/is-mining
   "is_mining": true
 }
 ----
+
+=== Set Mining Endpoint
+
+Start up node mining.
+
+==== Parameters
+
+`Object`:
+
+* `Boolean` - *is_mining*, sets the value for the node's mining.
+
+==== Returns
+
+Nothing in case the mining has been turned on or off.
+
+==== Example
+
+Turn node mining on of off.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/set-mining -d '{"is_mining": true}'
+----
+
+===== Response
+
+Nothing if the operation was successful.
