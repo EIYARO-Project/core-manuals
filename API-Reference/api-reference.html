@@ -935,6 +935,13 @@ pre.rouge .gs {
 <li><a href="#_example_51">Example</a></li>
 </ul>
 </li>
+<li><a href="#_decode_raw_transaction_endpoint">Decode Raw Transaction Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_52">Parameters</a></li>
+<li><a href="#_returns_52">Returns</a></li>
+<li><a href="#_example_52">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -5863,12 +5870,128 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_decode_raw_transaction_endpoint"><a class="anchor" href="#_decode_raw_transaction_endpoint"></a>Decode Raw Transaction Endpoint</h3>
+<div class="paragraph">
+<p>Decode a serialized transaction hex string into a JSON object describing the transaction.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_52"><a class="anchor" href="#_parameters_52"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>raw_transaction</strong>, hexstring of raw transaction.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_52"><a class="anchor" href="#_returns_52"></a>Returns</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>tx_id</strong>, transaction ID.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>version</strong>, version of transaction.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>size</strong>, size of transaction.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>time_range</strong>, time range of transaction.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>fee</strong>, fee for sending transaction.</p>
+</li>
+<li>
+<p><code>Array of Object</code> - <strong>inputs</strong>, object of inputs for the transaction(input struct please refer to get-transction API description).</p>
+</li>
+<li>
+<p><code>Array of Object</code> - <strong>outputs</strong>, object of outputs for the transaction</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_52"><a class="anchor" href="#_example_52"></a>Example</h4>
+<div class="paragraph">
+<p>Ask for a decoded transaction from the contents of a raw transaction.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_62"><a class="anchor" href="#_request_62"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/decode-raw-transaction <span class="nt">-d</span> <span class="s1">'{"raw_transaction": "070100010161015fc8215913a270d3d953ef431626b19a89adf38e2486bb235da732f0afed515299ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8099c4d59901000116001456ac170c7965eeac1cc34928c9f464e3f88c17d8630240b1e99a3590d7db80126b273088937a87ba1e8d2f91021a2fd2c36579f7713926e8c7b46c047a43933b008ff16ecc2eb8ee888b4ca1fe3fdf082824e0b3899b02202fb851c6ed665fcd9ebc259da1461a1e284ac3b27f5e86c84164aa518648222602013effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80bbd0ec980101160014c3d320e1dc4fe787e9f13c1464e3ea5aae96a58f00013cffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8084af5f01160014bb93cdb4eca74b068321eeb84ac5d33686281b6500"}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_57"><a class="anchor" href="#_response_57"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"fee"</span><span class="p">:</span><span class="w"> </span><span class="mi">20000000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"inputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sy1q26kpwrrevhh2c8xrfy5vnaryu0ugc97csrdy69"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">41250000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_definition"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"control_program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"001456ac170c7965eeac1cc34928c9f464e3f88c17d8"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"input_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9963265eb601df48501cc240e1480780e9ed6e0c8f18fd7dd57954068c5dfd02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"spent_output_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01bb3309666618a1507cb5be845b17dee5eb8028ee7e71b17d74b4dc97085bc8"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spend"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"witness_arguments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"b1e99a3590d7db80126b273088937a87ba1e8d2f91021a2fd2c36579f7713926e8c7b46c047a43933b008ff16ecc2eb8ee888b4ca1fe3fdf082824e0b3899b02"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"2fb851c6ed665fcd9ebc259da1461a1e284ac3b27f5e86c84164aa5186482226"</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sy1qc0fjpcwuflnc06038s2xfcl2t2hfdfv0lxzg7s"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">41030000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_definition"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"control_program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0014c3d320e1dc4fe787e9f13c1464e3ea5aae96a58f"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"567b34857614d16292220beaca16ce34b939c75023a49cc43fa432fff51ca0dd"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"control"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sy1qhwfumd8v5a9sdqepa6uy43wnx6rzsxm9essn4l"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">200000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_definition"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"control_program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0014bb93cdb4eca74b068321eeb84ac5d33686281b65"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a8069d412e48c2b2994d2816758078cff46b215421706b4bad41f72a32928d92"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"control"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">332</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"time_range"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"tx_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4c97d7412b04d49acc33762fc748cd0780d8b44086c229c1a6d0f2adfaaac2db"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-21 18:48:04 +0100
+Last updated 2024-05-21 19:12:15 +0100
 </div>
 </div>
 </body>
