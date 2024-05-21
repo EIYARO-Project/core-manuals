@@ -3378,3 +3378,42 @@ curl -X POST http://localhost:9888/get-block -d '{"block_height": 43, "block_has
   "version": 1
 }
 ----
+
+=== Get Block Header Endpoint
+
+Returns the details of a block header by block height or block hash.
+
+==== Parameters
+
+`Object`: *block_height* | *block_hash*
+
+Optional:
+
+* `String` - *block_hash*, hash of block.
+* `Integer` - *block_height*, height of block.
+
+==== Returns
+
+`Object`:
+
+* `Object` - *block_header*, header of block.
+* `Integer` - *reward*, reward.
+
+==== Example
+
+Retrieve the block header details.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/get-block-header -d '{"block_height": 43, "block_hash": "886a8e85b275e7d65b569ba510875c0e63dece1a94569914d7624c0dac8002f9"}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "block_header": "01019601e87da37e7d73f31d54304c719c9058ec7bc7de7819deda89a7c8834a99bc05b8fbdbe6d60540eba9e5d5cb79fd87b3c0fad32f6772c1e4483f2a070e093a6176d85226d986a8c9c377e5192668bc0a367e4a4764f11e7c725ecced1d7b6a492974fab1b6d5bc00ad918480808080801e",
+  "reward": 41250000000
+}
+----

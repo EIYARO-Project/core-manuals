@@ -963,6 +963,13 @@ pre.rouge .gs {
 <li><a href="#_example_55">Example</a></li>
 </ul>
 </li>
+<li><a href="#_get_block_header_endpoint">Get Block Header Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_56">Parameters</a></li>
+<li><a href="#_returns_56">Returns</a></li>
+<li><a href="#_example_56">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -6354,12 +6361,78 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_get_block_header_endpoint"><a class="anchor" href="#_get_block_header_endpoint"></a>Get Block Header Endpoint</h3>
+<div class="paragraph">
+<p>Returns the details of a block header by block height or block hash.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_56"><a class="anchor" href="#_parameters_56"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>: <strong>block_height</strong> | <strong>block_hash</strong></p>
+</div>
+<div class="paragraph">
+<p>Optional:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>block_hash</strong>, hash of block.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>block_height</strong>, height of block.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_56"><a class="anchor" href="#_returns_56"></a>Returns</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Object</code> - <strong>block_header</strong>, header of block.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>reward</strong>, reward.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_56"><a class="anchor" href="#_example_56"></a>Example</h4>
+<div class="paragraph">
+<p>Retrieve the block header details.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_66"><a class="anchor" href="#_request_66"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/get-block-header <span class="nt">-d</span> <span class="s1">'{"block_height": 43, "block_hash": "886a8e85b275e7d65b569ba510875c0e63dece1a94569914d7624c0dac8002f9"}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_61"><a class="anchor" href="#_response_61"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"block_header"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01019601e87da37e7d73f31d54304c719c9058ec7bc7de7819deda89a7c8834a99bc05b8fbdbe6d60540eba9e5d5cb79fd87b3c0fad32f6772c1e4483f2a070e093a6176d85226d986a8c9c377e5192668bc0a367e4a4764f11e7c725ecced1d7b6a492974fab1b6d5bc00ad918480808080801e"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"reward"</span><span class="p">:</span><span class="w"> </span><span class="mi">41250000000</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-21 19:27:43 +0100
+Last updated 2024-05-21 19:40:29 +0100
 </div>
 </div>
 </body>
