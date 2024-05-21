@@ -3254,3 +3254,127 @@ curl -X http://localhost:9888/POST get-block-hash
   "block_hash": "997bf5cecb4df097991a7a121a7fd3cb5a404fa856e3d6032c791ac07bc7c74c"
 }
 ----
+
+=== Get Block Endpoint
+
+Returns the details of a block by block height or block hash.
+
+==== Parameters
+
+`Object`: *block_height* | *block_hash*
+
+Optional:
+
+* `String` - *block_hash*, hash of block.
+* `Integer` - *block_height*, height of block.
+
+==== Returns
+
+`Object`:
+
+* `String` - *hash*, hash of block.
+* `Integer` - *size*, size of block.
+* `Integer` - *version*, version of block.
+* `Integer` - *height*, height of block.
+* `String` - *previous_block_hash*, previous block hash.
+* `Integer` - *timestamp*, timestamp of block.
+* `Integer` - *nonce*, nonce value.
+* `Integer` - *bits*, bits of difficulty.
+* `String` - *difficulty*, difficulty value(String type).
+* `String` - *transaction_merkle_root*, merkle root of transaction.
+* `String` - *transaction_status_hash*, merkle root of transaction status.
+* `Array of Object` - *transactions*, transaction object:
+** `String` - *id*, transaction id, hash of the transaction.
+** `Integer` - *version*, version of transaction.
+** `Integer` - *size*, size of transaction.
+** `Integer` - *time_range*, the unix timestamp for when the requst was responsed.
+** `Boolean` - *status_fail*, whether the state of the request has failed.
+** `String` - *mux_id*, the previous transaction mux id(source id of utxo).
+** `Array of Object` - *inputs*, object of inputs for the transaction.
+*** `String` - *type*, the type of input action, available option include: 'spend', 'issue', 'coinbase'.
+*** `String` - *asset_id*, asset id.
+*** `String` - *asset_alias*, name of asset.
+*** `Object` - *asset_definition*, definition of asset(json object).
+*** `Integer` - *amount*, amount of asset.
+*** `Object` - *issuance_program*, issuance program, it only exist when type is 'issue'.
+*** `Object` - *control_program*, control program of account, it only exist when type is 'spend'.
+*** `String` - *address*, address of account, it only exist when type is 'spend'.
+*** `String` - *spent_output_id*, the front of outputID to be spent in this input, it only exist when type is 'spend'.
+*** `String` - *account_id*, account id.
+*** `String` - *account_alias*, name of account.
+*** `Object` - *arbitrary*, arbitrary infomation can be set by miner, it only exist when type is 'coinbase'.
+*** `String` - *input_id*, hash of input action.
+*** `Array of String` - *witness_arguments*, witness arguments.
+** `Array of Object` - *outputs*, object of outputs for the transaction.
+*** `String` - *type*, the type of output action, available option include: 'retire', 'control'.
+*** `String` - *id*, outputid related to utxo.
+*** `Integer` - *position*, position of outputs.
+*** `String` - *asset_id*, asset id.
+*** `String` - *asset_alias*, name of asset.
+*** `Object` - *asset_definition*, definition of asset(json object).
+*** `Integer` - *amount*, amount of asset.
+*** `String` - *account_id*, account id.
+*** `String` - *account_alias*, name of account.
+*** `Object` - *control_program*, control program of account.
+*** `String` - *address*, address of account.
+
+==== Example
+
+Get specified block information by `block_hash` or `block_height`, if both exists, the block result is queried by hash.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/get-block -d '{"block_height": 43, "block_hash": "886a8e85b275e7d65b569ba510875c0e63dece1a94569914d7624c0dac8002f9"}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "bits": 2305843009222082600,
+  "difficulty": "5549086336",
+  "hash": "886a8e85b275e7d65b569ba510875c0e63dece1a94569914d7624c0dac8002f9",
+  "height": 43,
+  "nonce": 3,
+  "previous_block_hash": "2c72ccbd53b92a4f9423c5b610b4e106bbe8fbf3ecf2e16a1266b17ee323ff9d",
+  "size": 386,
+  "timestamp": 1521614189,
+  "transaction_merkle_root": "77d40262cfeca3a16d4587132974552ef00951e43ce567a26801ebc3dbdb4d96",
+  "transaction_status_hash": "53c0ab896cb7a3778cc1d35a271264d991792b7c44f5c334116bb0786dbc5635",
+  "transactions": [
+    {
+      "id": "4576b1b1ec251da3263dbdd5486bcbf9a1cd1f712172dbe7a7a5fe46ab194629",
+      "inputs": [
+        {
+          "amount": 0,
+          "arbitrary": "09",
+          "asset_definition": "7b7d",
+          "asset_id": "0000000000000000000000000000000000000000000000000000000000000000",
+          "input_id": "6cb8491e4b1cbdc052c2fdb5f2849194d59118b954d5ea5244bbd20e3cff3b80",
+          "type": "coinbase",
+          "witness_arguments": null
+        }
+      ],
+      "mux_id": "2383cefe8a34ea5810cc0706f2cf8cf08a106f90fc3eb3441f723cecdbc61331",
+      "outputs": [
+        {
+          "address": "sy1q4pkg8msjumtep7ecsdzuct3tsuzk5pmnm3p8nr",
+          "amount": 624000000000,
+          "asset_definition": "7b7d",
+          "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "control_program": "0014f3403bcd8b443d03882a280b50f6f98986e1a255",
+          "id": "da87b40854a9b93be72ecdc24fe7bb03986ea3530e344b0f918f0788c3d83717",
+          "position": 0,
+          "type": "control"
+        }
+      ],
+      "size": 77,
+      "status_fail": false,
+      "time_range": 0,
+      "version": 1
+    }
+  ],
+  "version": 1
+}
+----
