@@ -2943,7 +2943,7 @@ Delete a transaction feed by alias.
 
 ==== Returns
 
-None if the transaction feed is deleted successfully.
+Nothing if the transaction feed is deleted successfully.
 
 ==== Example
 
@@ -2953,6 +2953,35 @@ Delete a transaction feed by it's alias.
 [source,bash]
 ----
 curl -X POST http://localhost:9888/delete-transaction-feed -d '{"alias": "test1"}'
+----
+
+===== Response
+
+Nothing if the operation was successful.
+
+=== Update Transaction Feed Endpoint
+
+Update transaction feed.
+
+==== Parameters
+
+`Object`:
+
+* `String` - *alias*, name of the transaction feed.
+* `String` - *filter*, filter of the transaction feed.
+
+==== Returns
+
+Nothing if the transaction feed is updated success.
+
+==== Example
+
+Deleted when the `txfeed` exists, and recreate it with alias and filter:
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/update-transaction-feed -d '{"alias": "test1", "filter": "asset_id='84778a666fe453cf73b2e8c783dbc9e04bc4fd7cbb4f50caeaee99cf9967ebed' AND amount_lower_limit = 60 AND amount_upper_limit = 80"}'
 ----
 
 ===== Response
