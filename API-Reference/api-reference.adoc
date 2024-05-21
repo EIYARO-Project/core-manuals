@@ -3501,3 +3501,59 @@ curl -X POST http://localhost:9888/get-hash-rate -d '{"block_height": 506, "bloc
   "height": 506
 }
 ----
+
+=== Net Info Endpoint
+
+Returns the information for the current network state.
+
+==== Parameters
+
+None.
+
+==== Returns
+
+`Object`:
+
+* `Boolean` - *listening*, whether the node is listening.
+* `Boolean` - *syncing*, whether the node is syncing.
+* `Boolean` - *mining*, whether the node is mining.
+* `Integer` - *peer_count*, current count of connected peers.
+* `Integer` - *current_block*, current block height in the node's blockchain.
+* `Integer` - *highest_block*, current highest block of the connected peers.
+* `String` - *network_id*, network id.
+* `Object` - *version_info*, node's version information:
+** `String` - *version*, current version of the running node.
+** `uint16` - *update*, whether there exists an update.
+*** 0: no update;
+*** 1: small update;
+*** 2: significant update.
+** `String` - *new_version*, the newest version of the `core` if there is one.
+
+==== Example
+
+Query the node for it's network state.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/net-info
+----
+
+===== Response
+[source,json]
+----
+{
+  "listening": true,
+  "syncing": false,
+  "mining": false,
+  "peer_count": 6,
+  "current_block": 33409,
+  "highest_block": 33409,
+  "network_id": "mainnet",
+  "version_info": {
+    "version": "1.0.3",
+    "update": 0,
+    "new_version": "1.0.3"
+  }
+}
+----

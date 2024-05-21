@@ -984,6 +984,13 @@ pre.rouge .gs {
 <li><a href="#_example_58">Example</a></li>
 </ul>
 </li>
+<li><a href="#_net_info_endpoint">Net Info Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_59">Parameters</a></li>
+<li><a href="#_returns_59">Returns</a></li>
+<li><a href="#_example_59">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -6585,12 +6592,119 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_net_info_endpoint"><a class="anchor" href="#_net_info_endpoint"></a>Net Info Endpoint</h3>
+<div class="paragraph">
+<p>Returns the information for the current network state.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_59"><a class="anchor" href="#_parameters_59"></a>Parameters</h4>
+<div class="paragraph">
+<p>None.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_59"><a class="anchor" href="#_returns_59"></a>Returns</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Boolean</code> - <strong>listening</strong>, whether the node is listening.</p>
+</li>
+<li>
+<p><code>Boolean</code> - <strong>syncing</strong>, whether the node is syncing.</p>
+</li>
+<li>
+<p><code>Boolean</code> - <strong>mining</strong>, whether the node is mining.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>peer_count</strong>, current count of connected peers.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>current_block</strong>, current block height in the node&#8217;s blockchain.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>highest_block</strong>, current highest block of the connected peers.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>network_id</strong>, network id.</p>
+</li>
+<li>
+<p><code>Object</code> - <strong>version_info</strong>, node&#8217;s version information:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>version</strong>, current version of the running node.</p>
+</li>
+<li>
+<p><code>uint16</code> - <strong>update</strong>, whether there exists an update.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>0: no update;</p>
+</li>
+<li>
+<p>1: small update;</p>
+</li>
+<li>
+<p>2: significant update.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>String</code> - <strong>new_version</strong>, the newest version of the <code>core</code> if there is one.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_59"><a class="anchor" href="#_example_59"></a>Example</h4>
+<div class="paragraph">
+<p>Query the node for it&#8217;s network state.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_69"><a class="anchor" href="#_request_69"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/net-info</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_64"><a class="anchor" href="#_response_64"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"listening"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"syncing"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"mining"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"peer_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"current_block"</span><span class="p">:</span><span class="w"> </span><span class="mi">33409</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"highest_block"</span><span class="p">:</span><span class="w"> </span><span class="mi">33409</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"network_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mainnet"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.3"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"update"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"new_version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.3"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-21 19:47:40 +0100
+Last updated 2024-05-21 19:56:05 +0100
 </div>
 </div>
 </body>
