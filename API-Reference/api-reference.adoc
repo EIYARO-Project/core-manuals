@@ -2987,3 +2987,87 @@ curl -X POST http://localhost:9888/update-transaction-feed -d '{"alias": "test1"
 ===== Response
 
 Nothing if the operation was successful.
+
+=== Get Unconfirmed Transaction Endpoint
+
+Query `mempool` transaction by transaction ID.
+
+==== Parameters
+
+`Object`:
+
+* `String` - *tx_id*, transaction id, hash of transaction.
+
+==== Returns
+
+`Object`:
+
+* `String` - *id*, transaction id, hash of the transaction.
+* `Integer` - *version*, version of transaction.
+* `Integer` - *size*, size of transaction.
+* `Integer` - *time_range*, the time range of transaction.
+* `Boolean` - *status_fail*, whether the state of the request has failed.
+* `String` - *mux_id*, the previous transaction mux id(wallet enable can be acquired, this place is empty).
+* `Array of Object` - *inputs*, object of inputs for the transaction(input struct please refer to get-transction API description).
+* `Array of Object` - *outputs*, object of outputs for the transaction(output struct please refer to get-transction API description).
+
+==== Example
+
+Retrieve a transaction from the `mempool` by `tx_id`.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/get-unconfirmed-transaction -d '{"tx_id": "382090f24fbfc2f737fa7372b9d161a43f00d1c597a7130a56589d1f469d04b5"}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "id": "382090f24fbfc2f737fa7372b9d161a43f00d1c597a7130a56589d1f469d04b5",
+  "inputs": [
+    {
+      "address": "ey1qqrm7ruecx7yrg9smtwmnmgj3umg9vcukgy5sdj",
+      "amount": 41250000000,
+      "asset_definition": {},
+      "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "control_program": "001400f7e1f338378834161b5bb73da251e6d0566396",
+      "input_id": "a0c2fa0719bfe1446681537dcf1f8d0f03add093e29d12481eb807e07778d7b3",
+      "spent_output_id": "161b44e547a6cc68d732eb64fa38031da98211a99319e088cfe632223f9ac6d8",
+      "type": "spend",
+      "witness_arguments": [
+        "cf0e1b217ab92ade8e81fab10f9f307bb5cc1ad947b5629e3f7a760aba722f5044f2ab59ec92fa4264ff5811de4361abb6eabd7e75ffd28a813a98ceff434c01",
+        "6890a19b21c326059eef211cd8414282a79d3b9203f2592064221fd360e778a7"
+      ]
+    }
+  ],
+  "mux_id": "842cd07eed050b547377b5b123f14a5ec0d76933d564f030cf4d5d5c15769645",
+  "outputs": [
+    {
+      "address": "ey1qehxd5cdnepckh5jc72ggn30havd78lsgcqmt7k",
+      "amount": 21230000000,
+      "asset_definition": {},
+      "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "control_program": "0014cdccda61b3c8716bd258f29089c5f7eb1be3fe08",
+      "id": "a8f21ad24689c290634db85278f56d152efe6fe08bc194e5dee5127ed6d3ebee",
+      "position": 0,
+      "type": "control"
+    },
+    {
+      "address": "ey1q2me9gwccnm3ehpnrcr99gcnj730js2zfucms3r",
+      "amount": 20000000000,
+      "asset_definition": {},
+      "asset_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "control_program": "001456f2543b189ee39b8663c0ca546272f45f282849",
+      "id": "78219e422ea3257aeb32f6d952b5ce5560dab1d6440c9f3aebcdaad2a852d2a8",
+      "position": 1,
+      "type": "control"
+    }
+  ],
+  "size": 664,
+  "status_fail": false,
+  "time_range": 0,
+  "version": 1
+}
+----
