@@ -2882,3 +2882,51 @@ curl -X POST http://localhost:9888/get-transaction-feed -d '{"alias": "test1"}'
   "param": {}
 }
 ----
+
+=== List Transaction Feeds Endpoint
+
+Returns the list of all available transaction feeds.
+
+==== Parameters
+
+None.
+
+==== Returns
+
+* `Array of Object`, the transaction feeds.
+** `Object`:
+*** `String` - *id*, id of the transaction feed.
+*** `String` - *alias*, name of the transaction feed.
+*** `String` - *filter*, filter of the transaction feed.
+*** `Object` - *param*, param of the transaction feed.
+**** `String` - *assetid*, asset id.
+**** `Integer` - *lowerlimit*, the lower limit of asset amount.
+**** `Integer` - *upperlimit*, the upper limit of asset amount.
+**** `String` - *transtype*, type of transaction.
+
+==== Example
+
+List all the available `txfeed`.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/list-transaction-feeds -d '{}'
+----
+
+===== Response
+[source,json]
+----
+[
+  {
+    "alias": "test1",
+    "filter": "asset_id='84778a666fe453cf73b2e8c783dbc9e04bc4fd7cbb4f50caeaee99cf9967ebed' AND amount_lower_limit = 50 AND amount_upper_limit = 100",
+    "param": {}
+  },
+  {
+    "alias": "test2",
+    "filter": "asset_id='cee6a588cc3fc280749021ef42d5209952a1e6feceada4e69dd8a424ad22b199' AND amount_lower_limit = 30 AND amount_upper_limit = 100",
+    "param": {}
+  }
+]
+----
