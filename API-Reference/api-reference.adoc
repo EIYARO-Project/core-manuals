@@ -3222,3 +3222,35 @@ curl -X POST http://localhost:9888/get-block-count
     "block_count": 519
 }
 ----
+
+=== Get Block Hash Endpoint
+
+Returns the current block hash for the block height of the blockchain.
+
+==== Parameters
+
+None.
+
+==== Returns
+
+`Object`:
+
+* `String` - *block_hash*, recent block hash of the blockchain.
+
+==== Example
+
+Retrieves the block's hash for the current block height.
+
+===== Request
+[source,bash]
+----
+curl -X http://localhost:9888/POST get-block-hash
+----
+
+===== Response
+[source,json]
+----
+{
+  "block_hash": "997bf5cecb4df097991a7a121a7fd3cb5a404fa856e3d6032c791ac07bc7c74c"
+}
+----

@@ -949,6 +949,13 @@ pre.rouge .gs {
 <li><a href="#_example_53">Example</a></li>
 </ul>
 </li>
+<li><a href="#_get_block_hash_endpoint">Get Block Hash Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_54">Parameters</a></li>
+<li><a href="#_returns_54">Returns</a></li>
+<li><a href="#_example_54">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -6042,12 +6049,61 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_get_block_hash_endpoint"><a class="anchor" href="#_get_block_hash_endpoint"></a>Get Block Hash Endpoint</h3>
+<div class="paragraph">
+<p>Returns the current block hash for the block height of the blockchain.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_54"><a class="anchor" href="#_parameters_54"></a>Parameters</h4>
+<div class="paragraph">
+<p>None.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_54"><a class="anchor" href="#_returns_54"></a>Returns</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>block_hash</strong>, recent block hash of the blockchain.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_54"><a class="anchor" href="#_example_54"></a>Example</h4>
+<div class="paragraph">
+<p>Retrieves the block&#8217;s hash for the current block height.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_64"><a class="anchor" href="#_request_64"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> http://localhost:9888/POST get-block-hash</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_59"><a class="anchor" href="#_response_59"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"block_hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"997bf5cecb4df097991a7a121a7fd3cb5a404fa856e3d6032c791ac07bc7c74c"</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-21 19:15:57 +0100
+Last updated 2024-05-21 19:20:49 +0100
 </div>
 </div>
 </body>
