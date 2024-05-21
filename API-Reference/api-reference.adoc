@@ -3417,3 +3417,46 @@ curl -X POST http://localhost:9888/get-block-header -d '{"block_height": 43, "bl
   "reward": 41250000000
 }
 ----
+
+=== Get Difficulty Endpoint
+
+Returns the block difficulty by block height or block hash.
+
+==== Parameters
+
+`Object`:
+
+Optional:
+
+* `String` - *block_hash*, hash of block.
+* `Integer` - *block_height*, height of block.
+
+==== Returns
+
+`Object`:
+
+* `Integer` - *bits*, bits of block.
+* `String` - *difficulty*, difficulty of block.
+* `String` - *hash*, block hash.
+* `Integer` - *height*, block height.
+
+==== Example
+
+Get difficulty for specified block hash / height.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/get-difficulty -d '{"block_height": 506, "block_hash": "d1fce60caea5466eae2b812e4586b55120c52aca27b6c92bd7c51e9cda82dcdf"}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "bits": 2161727821137910500,
+  "difficulty": "15154807",
+  "hash": "d1fce60caea5466eae2b812e4586b55120c52aca27b6c92bd7c51e9cda82dcdf",
+  "height": 506
+}
+----
