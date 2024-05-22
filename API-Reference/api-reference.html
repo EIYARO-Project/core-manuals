@@ -1072,6 +1072,13 @@ pre.rouge .gs {
 <li><a href="#_example_70">Example</a></li>
 </ul>
 </li>
+<li><a href="#_submit_work_json_endpoint">Submit Work <code>JSON</code> Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_71">Parameters</a></li>
+<li><a href="#_returns_71">Returns</a></li>
+<li><a href="#_example_71">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -7542,12 +7549,94 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_submit_work_json_endpoint"><a class="anchor" href="#_submit_work_json_endpoint"></a>Submit Work <code>JSON</code> Endpoint</h3>
+<div class="paragraph">
+<p>Submit the proof of work by <code>JSON</code>.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_71"><a class="anchor" href="#_parameters_71"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Object</code> - <strong>block_header</strong>, Object of block header.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Integer</code> - <strong>version</strong>, version of block.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>height</strong>, height of block.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>previous_block_hash</strong>, previous block hash.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>timestamp</strong>, timestamp of block.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>nonce</strong>, nonce value.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>bits</strong>, bits of difficulty.</p>
+</li>
+<li>
+<p><code>Object</code> - <strong>block_commitment</strong>, Object of block commitment.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>transaction_merkle_root</strong>, merkle root of transaction.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>transaction_status_hash</strong>, merkle root of transaction status.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_71"><a class="anchor" href="#_returns_71"></a>Returns</h4>
+<div class="paragraph">
+<p>True if success</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_71"><a class="anchor" href="#_example_71"></a>Example</h4>
+<div class="paragraph">
+<p>Submit a share.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_81"><a class="anchor" href="#_request_81"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/submit-work-json <span class="nt">-d</span> <span class="s1">'{"block_header":{"version":1,"height":62960,"previous_block_hash":"dabdb926f8635791ac43f5d5fc62a4597e10e140f00aced3af621a77ead4e9fd","timestamp":1533006396,"nonce":0,"bits":2017612633069711400,"block_commitment":{"transaction_merkle_root":"a13fc86af3852ab73e30c3ae30e8cedbe990560a3c0f20dc37c4c14562b94802","transaction_status_hash":"c9c377e5192668bc0a367e4a4764f11e7c725ecced1d7b6a492974fab1b6d5bc"}}}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_76"><a class="anchor" href="#_response_76"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code>true / error</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-22 20:46:51 +0100
+Last updated 2024-05-22 20:52:06 +0100
 </div>
 </div>
 </body>
