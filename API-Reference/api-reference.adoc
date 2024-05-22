@@ -3954,3 +3954,57 @@ curl -X POST http://localhost:9888/submit-work -d '{"block_header": "0101870103f
 ----
 true / error
 ----
+
+=== Get Work `JSON` Endpoint
+
+Get the proof of work by `JSON`.
+
+==== Parameters
+
+None.
+
+==== Returns
+
+`Object`:
+
+* `Object` - *block_header*, Object of block header.
+** `Integer` - *version*, version of block.
+** `Integer` - *height*, height of block.
+** `String` - *previous_block_hash*, previous block hash.
+** `Integer` - *timestamp*, timestamp of block.
+** `Integer` - *nonce*, nonce value.
+** `Integer` - *bits*, bits of difficulty.
+** `Object` - *block_commitment*, Object of block commitment.
+*** `String` - *transaction_merkle_root*, merkle root of transaction.
+*** `String` - *transaction_status_hash*, merkle root of transaction status.
+* `String` - *seed*, seed.
+
+==== Example
+
+Request work from the node.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/get-work-json -d '{}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "block_header": {
+    "version": 1,
+    "height": 62960,
+    "previous_block_hash": "dabdb926f8635791ac43f5d5fc62a4597e10e140f00aced3af621a77ead4e9fd",
+    "timestamp": 1533006396,
+    "nonce": 0,
+    "bits": 2017612633069711400,
+    "block_commitment": {
+      "transaction_merkle_root": "a13fc86af3852ab73e30c3ae30e8cedbe990560a3c0f20dc37c4c14562b94802",
+      "transaction_status_hash": "c9c377e5192668bc0a367e4a4764f11e7c725ecced1d7b6a492974fab1b6d5bc"
+    }
+  },
+  "seed": "2e2010e11289d6b273b7b1ea947f98cc5ad60d206df184b1501f8ac903fa01a9"
+}
+----
