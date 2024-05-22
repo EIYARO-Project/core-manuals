@@ -4323,3 +4323,37 @@ These are errors pertaining to transactions.
 |VERIFY failed
 |Failure to execute verify command
 |===
+
+=== `EY8XX`: `HMS` errors
+
+These are errors pertaining to `HMS`.
+
+.`EY8XX`: `HMS` Errors
+[cols="1,5,5", frame=none, grid=rows]
+|===
+|Code |Message |Description
+
+|EY800
+|Key Alias already exists
+|Duplicate key aliases
+
+|EY801
+|Invalid after in query
+|This bug is deprecated
+
+|EY802
+|Key not found or wrong password
+|The key does not exist or the password is wrong
+
+|EY803
+|Requested key aliases exceeds limit
+|This bug is deprecated
+
+|EY804
+|Could not decrypt key with given passphrase
+|Decryption process failed
+
+|EY860
+|Request could not be authenticated
+|Access token error
+|===

@@ -1093,6 +1093,7 @@ pre.rouge .gs {
 <li><a href="#_virtual_machine">Virtual Machine</a></li>
 </ul>
 </li>
+<li><a href="#_ey8xx_hms_errors"><code>EY8XX</code>: <code>HMS</code> errors</a></li>
 </ul>
 </li>
 </ul>
@@ -8055,12 +8056,65 @@ This endpoint teturns a token containing a username and password, separated by a
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_ey8xx_hms_errors"><a class="anchor" href="#_ey8xx_hms_errors"></a><code>EY8XX</code>: <code>HMS</code> errors</h3>
+<div class="paragraph">
+<p>These are errors pertaining to <code>HMS</code>.</p>
+</div>
+<table class="tableblock frame-none grid-rows stretch">
+<caption class="title">Table 7. <code>EY8XX</code>: <code>HMS</code> Errors</caption>
+<colgroup>
+<col style="width: 9.0909%;">
+<col style="width: 45.4545%;">
+<col style="width: 45.4546%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Code</th>
+<th class="tableblock halign-left valign-top">Message</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EY800</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key Alias already exists</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Duplicate key aliases</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EY801</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Invalid after in query</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This bug is deprecated</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EY802</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key not found or wrong password</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The key does not exist or the password is wrong</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EY803</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Requested key aliases exceeds limit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This bug is deprecated</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EY804</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Could not decrypt key with given passphrase</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Decryption process failed</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EY860</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Request could not be authenticated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Access token error</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-22 22:24:29 +0100
+Last updated 2024-05-22 22:28:30 +0100
 </div>
 </div>
 </body>
