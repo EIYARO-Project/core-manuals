@@ -3686,3 +3686,80 @@ curl -X POST http://localhost:9888/verify-message -d '{"address":"ey1qx2qgvvjz73
   "result": true
 }
 ----
+
+=== Compile Endpoint
+
+Compile an equity contract.
+
+==== Parameters
+
+`Object`:
+
+* `String` - *contract*, content of equity contract.
+
+Optional:
+
+* `Array of Object` - *args*, parameters of contract.
+** `Boolean` - *boolean*, boolean parameter.
+** `Integer` - *integer*, integer parameter.
+** `String` - *string*, string parameter.
+
+==== Returns
+
+`Object`:
+
+* `String` - *name*, contract name.
+* `String` - *source*, source content of contract.
+* `String` - *program*, generated program by compiling contract.
+* `Array of Object` - *params*, parameters of contract.
+* `String` - *value*, locked value name of contract.
+* `Array of Object` - *clause_info*, clauses of contract.
+* `String` - *opcodes*, opcodes of contract.
+* `String` - *error*, returned error information for compiling contract.
+
+==== Example
+
+Given a contract source code, compile it into an equity contract.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/compile -d '{"contract": "contract LockWithPublicKey(publicKey: PublicKey) locks locked { clause unlockWithSig(sig: Signature) { verify checkTxSi (publicKey, sig) unlock locked }}","args": ["string": "e9108d3ca8049800727f6a3505b3a2710dc579405dde03c250f16d9a7e1e6e78"}]}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "name": "LockWithPublicKey",
+  "source": "contract LockWithPublicKey(publicKey: PublicKey) locks locked { clause unlockWithSig(sig: Signature) { verify checkTxSig(publicKey, sig) unlock locked }}",
+  "program": "20e9108d3ca8049800727f6a3505b3a2710dc579405dde03c250f16d9a7e1e6e787403ae7cac00c0",
+  "params": [
+    {
+      "name": "publicKey",
+      "type": "PublicKey"
+    }
+  ],
+  "value": "locked",
+  "clause_info": [
+    {
+      "name": "unlockWithSig",
+      "args": [
+        {
+          "name": "sig",
+          "type": "Signature"
+        }
+      ],
+      "value_info": [
+        {
+          "name": "locked"
+        }
+      ],
+      "block_heights": [],
+      "hash_calls": null
+    }
+  ],
+  "opcodes": "0xe9108d3ca8049800727f6a3505b3a2710dc579405dde03c250f16d9a7e1e6e78 DEPTH 0xae7cac FALSE CHECKPREDICATE",
+  "error": ""
+}
+----
