@@ -1040,6 +1040,13 @@ pre.rouge .gs {
 <li><a href="#_example_66">Example</a></li>
 </ul>
 </li>
+<li><a href="#_connect_peer_endpoint">Connect Peer Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_67">Parameters</a></li>
+<li><a href="#_returns_67">Returns</a></li>
+<li><a href="#_example_67">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -7232,12 +7239,83 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_connect_peer_endpoint"><a class="anchor" href="#_connect_peer_endpoint"></a>Connect Peer Endpoint</h3>
+<div class="paragraph">
+<p>Connect to specified peer.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_67"><a class="anchor" href="#_parameters_67"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>ip</strong>, peer IP address.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>port</strong>, peer port.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_67"><a class="anchor" href="#_returns_67"></a>Returns</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>peer_id</strong>, peer id.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>remote_addr</strong>, the address(IP and port) of connected peer.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>height</strong>, the current height of connected peer.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>delay</strong>, the delay time of connected peer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_67"><a class="anchor" href="#_example_67"></a>Example</h4>
+<div class="paragraph">
+<p>Request the node to connect to a specified peer.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_77"><a class="anchor" href="#_request_77"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/connect-peer <span class="nt">-d</span> <span class="s1">'{"ip":"139.198.177.164", "port":46657}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_72"><a class="anchor" href="#_response_72"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"peer_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"29661E8BB9A8149F01C6594E49EA80C6B18BF247946A7E2E01D8235BBBFC3594"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"remote_addr"</span><span class="p">:</span><span class="w"> </span><span class="s2">"139.198.177.164:46657"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">65941</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"delay"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-22 20:15:16 +0100
+Last updated 2024-05-22 20:32:33 +0100
 </div>
 </div>
 </body>

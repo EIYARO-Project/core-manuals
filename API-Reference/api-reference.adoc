@@ -3845,3 +3845,44 @@ curl -X POST http://localhost:9888/disconnect-peer -d '{"peer_id":"29661E8BB9A81
 ===== Response
 
 Nothing if the operation was successful.
+
+=== Connect Peer Endpoint
+
+Connect to specified peer.
+
+==== Parameters
+
+`Object`:
+
+* `String` - *ip*, peer IP address.
+* `Integer` - *port*, peer port.
+
+==== Returns
+
+`Object`:
+
+* `String` - *peer_id*, peer id.
+* `String` - *remote_addr*, the address(IP and port) of connected peer.
+* `Integer` - *height*, the current height of connected peer.
+* `Integer` - *delay*, the delay time of connected peer.
+
+==== Example
+
+Request the node to connect to a specified peer.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/connect-peer -d '{"ip":"139.198.177.164", "port":46657}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "peer_id": "29661E8BB9A8149F01C6594E49EA80C6B18BF247946A7E2E01D8235BBBFC3594",
+  "remote_addr": "139.198.177.164:46657",
+  "height": 65941,
+  "delay": 0
+}
+----
