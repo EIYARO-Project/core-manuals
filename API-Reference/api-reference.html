@@ -1081,6 +1081,12 @@ pre.rouge .gs {
 </li>
 </ul>
 </li>
+<li><a href="#_error_codes">Error Codes</a>
+<ul class="sectlevel2">
+<li><a href="#_ey0xx_api_errors"><code>EY0XX</code>: <code>API</code> errors</a></li>
+<li><a href="#_ey1xx_network_errors"><code>EY1XX</code>: Network errors</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -7633,10 +7639,81 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_error_codes"><a class="anchor" href="#_error_codes"></a>Error Codes</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_ey0xx_api_errors"><a class="anchor" href="#_ey0xx_api_errors"></a><code>EY0XX</code>: <code>API</code> errors</h3>
+<div class="paragraph">
+<p>These errors are for the <code>API</code> in general.</p>
+</div>
+<table class="tableblock frame-none grid-rows stretch">
+<caption class="title">Table 1. EY0XX Errors</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Code</th>
+<th class="tableblock halign-left valign-top">Message</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EY000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EIYARO</code> <code>API</code> Error</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Non-EY standard error</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EY001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Request timed out</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>API</code> request timeout</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EY002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Invalid request body</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Illegal <code>API</code> request body</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_ey1xx_network_errors"><a class="anchor" href="#_ey1xx_network_errors"></a><code>EY1XX</code>: Network errors</h3>
+<div class="paragraph">
+<p>These errors pertain to the network.</p>
+</div>
+<table class="tableblock frame-none grid-rows stretch">
+<caption class="title">Table 2. EY1XX Errors</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Code</th>
+<th class="tableblock halign-left valign-top">Message</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EY103</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A peer core is operating on a different blockchain network</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Blockchain network type mismatch</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-22 20:52:06 +0100
+Last updated 2024-05-22 21:15:33 +0100
 </div>
 </div>
 </body>

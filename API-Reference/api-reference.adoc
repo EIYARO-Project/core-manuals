@@ -4047,3 +4047,41 @@ curl -X POST http://localhost:9888/submit-work-json -d '{"block_header":{"versio
 ----
 true / error
 ----
+
+== Error Codes
+
+=== `EY0XX`: `API` errors
+
+These errors are for the `API` in general.
+
+.EY0XX Errors
+[cols="1,1,1", frame=none, grid=rows]
+|===
+|Code |Message |Description
+
+|EY000
+|`EIYARO` `API` Error
+|Non-EY standard error
+
+|EY001
+|Request timed out
+|`API` request timeout
+
+|EY002
+|Invalid request body
+|Illegal `API` request body
+|===
+
+=== `EY1XX`: Network errors
+
+These errors pertain to the network.
+
+.EY1XX Errors
+[cols="1,1,1", frame=none, grid=rows]
+|===
+|Code |Message |Description
+
+|EY103
+|A peer core is operating on a different blockchain network
+|Blockchain network type mismatch
+|===
