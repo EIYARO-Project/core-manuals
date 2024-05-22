@@ -1049,6 +1049,17 @@ pre.rouge .gs {
 </li>
 </ul>
 </li>
+<li><a href="#_mining_endpoints">Mining Endpoints</a>
+<ul class="sectlevel2">
+<li><a href="#_get_work_endpoint">Get Work Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_68">Parameters</a></li>
+<li><a href="#_returns_68">Returns</a></li>
+<li><a href="#_example_68">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -7312,10 +7323,71 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_mining_endpoints"><a class="anchor" href="#_mining_endpoints"></a>Mining Endpoints</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>These endpoints are for the <code>CPU</code> miner.</p>
+</div>
+<div class="sect2">
+<h3 id="_get_work_endpoint"><a class="anchor" href="#_get_work_endpoint"></a>Get Work Endpoint</h3>
+<div class="paragraph">
+<p>Get the proof of work.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_68"><a class="anchor" href="#_parameters_68"></a>Parameters</h4>
+<div class="paragraph">
+<p>None.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_68"><a class="anchor" href="#_returns_68"></a>Returns</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Object</code> - <strong>block_header</strong>, raw block header.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>seed</strong>, seed.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_68"><a class="anchor" href="#_example_68"></a>Example</h4>
+<div class="paragraph">
+<p>Request work from the node.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_78"><a class="anchor" href="#_request_78"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST get-work <span class="nt">-d</span> <span class="s1">'{}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_73"><a class="anchor" href="#_response_73"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"block_header"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0101870103f2c7495164c8f3af43697e81faa21dcb2d60aa5e10ce4f233491e62420742fbeadfcd50540bef2670a5fade2e58ad4955e2375a04ad1e4cb9c104faddab43f4a79e35be253c9c377e5192668bc0a367e4a4764f11e7c725ecced1d7b6a492974fab1b6d5bc00ffffff838080808020"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"seed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"702bef3f1707577fd0d75b6359a2919fa216487fe306771e27710acbaa9164ce"</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-22 20:32:33 +0100
+Last updated 2024-05-22 20:38:08 +0100
 </div>
 </div>
 </body>
