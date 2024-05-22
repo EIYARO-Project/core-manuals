@@ -3763,3 +3763,57 @@ curl -X POST http://localhost:9888/compile -d '{"contract": "contract LockWithPu
   "error": ""
 }
 ----
+
+=== List Peers Endpoint
+
+Returns the list of connected peers.
+
+==== Parameters
+
+None.
+
+==== Returns
+
+* `Array of Object`, connected peers.
+** `Object`:
+*** `String` - *peer_id*, peer id.
+*** `String` - *remote_addr*, the address(IP and port) of connected peer.
+*** `Integer` - *height*, the current height of connected peer.
+*** `String` - *ping*, the delay time of connected peer.
+*** `String` - *duration*, the connected time.
+*** `Integer` - *total_sent*, total data sent in byte.
+*** `Integer` - *total_received*, total data received in byte.
+*** `Integer` - *average_sent_rate*, average data sent rate in byte.
+*** `Integer` - *average_received_rate*, average data received rate in byte.
+*** `Integer` - *current_sent_rate*, current data sent rate in byte.
+*** `Integer` - *current_received_rate*, current data received rate in byte.
+
+==== Example
+
+Retrieve a list of the connected peers.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/list-peers -d '{}'
+----
+
+===== Response
+[source,json]
+----
+[  
+   {  
+      "peer_id":"3B58D7139B53066F2031FC1F027D2B3423FA4CE01F1FB1CC2DC4003C78413C24",
+      "remote_addr":"52.83.251.197:46656",
+      "height":84222,
+      "ping":"40ms",
+      "duration":"17.26s",
+      "total_sent":17565,
+      "total_received":3642187,
+      "average_sent_rate":1018,
+      "average_received_rate":211019,
+      "current_sent_rate":2420,
+      "current_received_rate":157087
+   }
+]
+----

@@ -1026,6 +1026,13 @@ pre.rouge .gs {
 <li><a href="#_example_64">Example</a></li>
 </ul>
 </li>
+<li><a href="#_list_peers_endpoint">List Peers Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_65">Parameters</a></li>
+<li><a href="#_returns_65">Returns</a></li>
+<li><a href="#_example_65">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -7071,12 +7078,114 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_list_peers_endpoint"><a class="anchor" href="#_list_peers_endpoint"></a>List Peers Endpoint</h3>
+<div class="paragraph">
+<p>Returns the list of connected peers.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_65"><a class="anchor" href="#_parameters_65"></a>Parameters</h4>
+<div class="paragraph">
+<p>None.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_65"><a class="anchor" href="#_returns_65"></a>Returns</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Array of Object</code>, connected peers.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Object</code>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code> - <strong>peer_id</strong>, peer id.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>remote_addr</strong>, the address(IP and port) of connected peer.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>height</strong>, the current height of connected peer.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>ping</strong>, the delay time of connected peer.</p>
+</li>
+<li>
+<p><code>String</code> - <strong>duration</strong>, the connected time.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>total_sent</strong>, total data sent in byte.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>total_received</strong>, total data received in byte.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>average_sent_rate</strong>, average data sent rate in byte.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>average_received_rate</strong>, average data received rate in byte.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>current_sent_rate</strong>, current data sent rate in byte.</p>
+</li>
+<li>
+<p><code>Integer</code> - <strong>current_received_rate</strong>, current data received rate in byte.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_65"><a class="anchor" href="#_example_65"></a>Example</h4>
+<div class="paragraph">
+<p>Retrieve a list of the connected peers.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_75"><a class="anchor" href="#_request_75"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/list-peers <span class="nt">-d</span> <span class="s1">'{}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_70"><a class="anchor" href="#_response_70"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">[</span><span class="w">
+   </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"peer_id"</span><span class="p">:</span><span class="s2">"3B58D7139B53066F2031FC1F027D2B3423FA4CE01F1FB1CC2DC4003C78413C24"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"remote_addr"</span><span class="p">:</span><span class="s2">"52.83.251.197:46656"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"height"</span><span class="p">:</span><span class="mi">84222</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"ping"</span><span class="p">:</span><span class="s2">"40ms"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"duration"</span><span class="p">:</span><span class="s2">"17.26s"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"total_sent"</span><span class="p">:</span><span class="mi">17565</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"total_received"</span><span class="p">:</span><span class="mi">3642187</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"average_sent_rate"</span><span class="p">:</span><span class="mi">1018</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"average_received_rate"</span><span class="p">:</span><span class="mi">211019</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"current_sent_rate"</span><span class="p">:</span><span class="mi">2420</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"current_received_rate"</span><span class="p">:</span><span class="mi">157087</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-22 20:05:48 +0100
+Last updated 2024-05-22 20:09:50 +0100
 </div>
 </div>
 </body>
