@@ -1058,6 +1058,13 @@ pre.rouge .gs {
 <li><a href="#_example_68">Example</a></li>
 </ul>
 </li>
+<li><a href="#_submit_work_endpoint">Submit Work Endpoint</a>
+<ul class="sectlevel3">
+<li><a href="#_parameters_69">Parameters</a></li>
+<li><a href="#_returns_69">Returns</a></li>
+<li><a href="#_example_69">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -7365,7 +7372,7 @@ This endpoint teturns a token containing a username and password, separated by a
 <h5 id="_request_78"><a class="anchor" href="#_request_78"></a>Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST get-work <span class="nt">-d</span> <span class="s1">'{}'</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/get-work <span class="nt">-d</span> <span class="s1">'{}'</span></code></pre>
 </div>
 </div>
 </div>
@@ -7382,12 +7389,59 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_submit_work_endpoint"><a class="anchor" href="#_submit_work_endpoint"></a>Submit Work Endpoint</h3>
+<div class="paragraph">
+<p>Submit the proof of work.</p>
+</div>
+<div class="sect3">
+<h4 id="_parameters_69"><a class="anchor" href="#_parameters_69"></a>Parameters</h4>
+<div class="paragraph">
+<p><code>Object</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Object</code> - <strong>block_header</strong>, raw block header.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returns_69"><a class="anchor" href="#_returns_69"></a>Returns</h4>
+<div class="paragraph">
+<p>True if share is correct.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_example_69"><a class="anchor" href="#_example_69"></a>Example</h4>
+<div class="paragraph">
+<p>Submit a share.</p>
+</div>
+<div class="sect4">
+<h5 id="_request_79"><a class="anchor" href="#_request_79"></a>Request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="nt">-X</span> POST http://localhost:9888/submit-work <span class="nt">-d</span> <span class="s1">'{"block_header": "0101870103f2c7495164c8f3af43697e81faa21dcb2d60aa5e10ce4f233491e62420742fbeadfcd50540bef2670a5fade2e58ad4955e2375a04ad1e4cb9c104faddab43f4a79e35be253c9c377e5192668bc0a367e4a4764f11e7c725ecced1d7b6a492974fab1b6d5bc00ffffff838080808020"}'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_74"><a class="anchor" href="#_response_74"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code>true / error</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-22 20:38:08 +0100
+Last updated 2024-05-22 20:42:32 +0100
 </div>
 </div>
 </body>
