@@ -4055,7 +4055,7 @@ true / error
 These errors are for the `API` in general.
 
 .EY0XX Errors
-[cols="1,1,1", frame=none, grid=rows]
+[cols="1,5,5", frame=none, grid=rows]
 |===
 |Code |Message |Description
 
@@ -4077,11 +4077,37 @@ These errors are for the `API` in general.
 These errors pertain to the network.
 
 .EY1XX Errors
-[cols="1,1,1", frame=none, grid=rows]
+[cols="1,5,5", frame=none, grid=rows]
 |===
 |Code |Message |Description
 
 |EY103
 |A peer core is operating on a different blockchain network
 |Blockchain network type mismatch
+|===
+
+=== `EY2XX`: Signature errors
+
+These are errors pertaining to the signature of transactions/messages.
+
+.EY2XX Errors
+[cols="1,5,5", frame=none, grid=rows]
+|===
+|Code |Message |Description
+
+|EY200
+|Quorum must be greater than 1 and less than or equal to the length of `xpubs`
+|The number of signatures required exceeded the number of signatures actually needed
+
+|EY201
+|Invalid `xpub` format
+|Incorrectly formatted signature
+
+|EY202
+|At least one `xpub` is required
+|Lack of master key
+
+|EY204
+|Root `xpubs` cannot contain the same key more than once
+|Master Key Repeat
 |===
