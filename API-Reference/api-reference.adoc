@@ -3817,3 +3817,31 @@ curl -X POST http://localhost:9888/list-peers -d '{}'
    }
 ]
 ----
+
+=== Disconnect Peer Endpoint
+
+Disconnect from the specified peer.
+
+==== Parameters
+
+`Object`:
+
+* `String` - *peer_id*, peer id.
+
+==== Returns
+
+Nothing if peer disconnected successfully.
+
+==== Example
+
+Disconnect from a specific peer.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/disconnect-peer -d '{"peer_id":"29661E8BB9A8149F01C6594E49EA80C6B18BF247946A7E2E01D8235BBBFC3594"}'
+----
+
+===== Response
+
+Nothing if the operation was successful.
