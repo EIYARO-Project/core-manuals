@@ -3617,3 +3617,35 @@ curl -X POST http://localhost:9888/set-mining -d '{"is_mining": true}'
 ===== Response
 
 Nothing if the operation was successful.
+
+=== Gas Rate Endpoint
+
+Query gas rate.
+
+==== Parameters
+
+None.
+
+==== Returns
+
+`Object`:
+
+* `Integer` - *gas_rate*, gas rate.
+
+==== Example
+
+Retreive the current gas rate.
+
+===== Request
+[source,bash]
+----
+curl -X POST http://localhost:9888/gas-rate -d '{}'
+----
+
+===== Response
+[source,json]
+----
+{
+  "gas_rate": 1000
+}
+----
