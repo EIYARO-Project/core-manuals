@@ -5420,3 +5420,83 @@ func NewTxOutput(assetID bc.AssetID, amount uint64, controlProgram []byte) *TxOu
 	}
 }
 ----
+
+==== Step 5: Combine the Input and Output of a Transaction to Form a Transaction Template
+Construct a transaction `txbuilder.Template` from the transaction information already generated above, the function of this part can refer to https://github.com/EIYARO-Project/core/blob/master/blockchain/txbuilder/builder.go#L96[core/blockchain/txbuilder/builder.go#L96,window=_blank] to transform it to.
+[source,go]
+----
+type InputAndSigInst struct {
+	input *types.TxInput
+	sigInst *SigningInstruction
+}
+
+// Build build transactions with template
+func BuildTx(inputs []InputAndSigInst, outputs []*types.TxOutput) (*Template, *types.TxData, error) {
+	tpl := &Template{}
+	tx := &types.TxData{}
+	// Add all the built outputs.
+	tx.Outputs = append(tx.Outputs, outputs...)
+
+	// Add all the built inputs and their corresponding signing instructions.
+	for p, in := range inputs {
+		// Empty signature arrays should be serialized as empty arrays, not null.
+		in.sigInst.Position = uint32(p)
+		if in.sigInst.WitnessComponents == nil {
+			in.sigInst.WitnessComponents = []witnessComponent{}
+		}
+		tpl.SigningInstructions = append(tpl.SigningInstructions, in.sigInst)
+		tx.Inputs = append(tx.Inputs, in.input)
+	}
+
+	tpl.Transaction = types.NewTx(*tx)
+	return tpl, tx, nil
+}
+----
+
+==== Step 6: Signing the Constructed Transaction
+The account model is based on the password to find the corresponding private key to sign the transaction, here the user can directly use the private key to sign the transaction, you can refer to the signature code https://github.com/EIYARO-Project/core/blob/master/blockchain/txbuilder/txbuilder.go#L88[core/blockchain/txbuilder/txbuilder.go#L88,window=_blank] is transformed into: (the following transformation only supports single-signature transactions, multi-signature transactions users can refer to the example for transformation)
+[source,go]
+----
+// Sign will try to sign all the witness
+func Sign(tpl *Template, xprv chainkd.XPrv) error {
+	for i, sigInst := range tpl.SigningInstructions {
+		for _, wc := range sigInst.WitnessComponents {
+			switch sw := wc.(type) {
+			case *RawTxSigWitness:
+				h := tpl.Hash(uint32(i)).Byte32()
+				sig := xprv.Sign(h[:])
+				sw.Sigs = append(sw.Sigs, sig)
+			}
+		}
+	}
+	return materializeWitnesses(tpl)
+}
+----
+
+The multi-signature approach can be seen in the following modification: (xprvs needs to be the same as the number of signatures Quorum, also note the order of the multi-signatures)
+[source,go]
+----
+func Sign(tpl *Template, xprvs []chainkd.XPrv) error {
+	for i, sigInst := range tpl.SigningInstructions {
+		for _, wc := range sigInst.WitnessComponents {
+			switch sw := wc.(type) {
+			case *RawTxSigWitness:
+				h := tpl.Hash(uint32(i)).Byte32()
+				for k, xprv := range xprvs {
+					if len(sw.Sigs[k]) > 0 {
+						// Already have a signature for this key
+						continue
+					}
+					sig := xprv.Sign(h[:])
+					sw.Sigs[k] = sig
+					break  // the one private sign this tx only once
+				}
+			}
+		}
+	}
+	return materializeWitnesses(tpl)
+}
+----
+
+==== Step 7: Submit Transaction for Uploading
+There is no need to change anything in this step, just refer to the `API` link:#_submit_transaction_endpoint[submit-transaction].

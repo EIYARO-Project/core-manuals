@@ -1111,6 +1111,9 @@ pre.rouge .gs {
 <li><a href="#_step_2_create_a_receive_object_based_on_the_public_key">Step 2: Create a Receive Object Based on the Public Key.</a></li>
 <li><a href="#_step_3_finding_spendable_utxo">Step 3: Finding Spendable <code>UTXO</code></a></li>
 <li><a href="#_step4_constructing_transactions_via_utxo">Step4: Constructing Transactions Via <code>UTXO</code></a></li>
+<li><a href="#_step_5_combine_the_input_and_output_of_a_transaction_to_form_a_transaction_template">Step 5: Combine the Input and Output of a Transaction to Form a Transaction Template</a></li>
+<li><a href="#_step_6_signing_the_constructed_transaction">Step 6: Signing the Constructed Transaction</a></li>
+<li><a href="#_step_7_submit_transaction_for_uploading">Step 7: Submit Transaction for Uploading</a></li>
 </ul>
 </li>
 </ul>
@@ -9546,13 +9549,106 @@ This part of the function can be found in the code <a href="https://github.com/E
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_step_5_combine_the_input_and_output_of_a_transaction_to_form_a_transaction_template"><a class="anchor" href="#_step_5_combine_the_input_and_output_of_a_transaction_to_form_a_transaction_template"></a>Step 5: Combine the Input and Output of a Transaction to Form a Transaction Template</h4>
+<div class="paragraph">
+<p>Construct a transaction <code>txbuilder.Template</code> from the transaction information already generated above, the function of this part can refer to <a href="https://github.com/EIYARO-Project/core/blob/master/blockchain/txbuilder/builder.go#L96" target="_blank" rel="noopener">core/blockchain/txbuilder/builder.go#L96</a> to transform it to.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="k">type</span> <span class="n">InputAndSigInst</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">input</span> <span class="o">*</span><span class="n">types</span><span class="o">.</span><span class="n">TxInput</span>
+	<span class="n">sigInst</span> <span class="o">*</span><span class="n">SigningInstruction</span>
+<span class="p">}</span>
+
+<span class="c">// Build build transactions with template</span>
+<span class="k">func</span> <span class="n">BuildTx</span><span class="p">(</span><span class="n">inputs</span> <span class="p">[]</span><span class="n">InputAndSigInst</span><span class="p">,</span> <span class="n">outputs</span> <span class="p">[]</span><span class="o">*</span><span class="n">types</span><span class="o">.</span><span class="n">TxOutput</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="n">Template</span><span class="p">,</span> <span class="o">*</span><span class="n">types</span><span class="o">.</span><span class="n">TxData</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">tpl</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="n">Template</span><span class="p">{}</span>
+	<span class="n">tx</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="n">types</span><span class="o">.</span><span class="n">TxData</span><span class="p">{}</span>
+	<span class="c">// Add all the built outputs.</span>
+	<span class="n">tx</span><span class="o">.</span><span class="n">Outputs</span> <span class="o">=</span> <span class="nb">append</span><span class="p">(</span><span class="n">tx</span><span class="o">.</span><span class="n">Outputs</span><span class="p">,</span> <span class="n">outputs</span><span class="o">...</span><span class="p">)</span>
+
+	<span class="c">// Add all the built inputs and their corresponding signing instructions.</span>
+	<span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">in</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">inputs</span> <span class="p">{</span>
+		<span class="c">// Empty signature arrays should be serialized as empty arrays, not null.</span>
+		<span class="n">in</span><span class="o">.</span><span class="n">sigInst</span><span class="o">.</span><span class="n">Position</span> <span class="o">=</span> <span class="kt">uint32</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">in</span><span class="o">.</span><span class="n">sigInst</span><span class="o">.</span><span class="n">WitnessComponents</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="n">in</span><span class="o">.</span><span class="n">sigInst</span><span class="o">.</span><span class="n">WitnessComponents</span> <span class="o">=</span> <span class="p">[]</span><span class="n">witnessComponent</span><span class="p">{}</span>
+		<span class="p">}</span>
+		<span class="n">tpl</span><span class="o">.</span><span class="n">SigningInstructions</span> <span class="o">=</span> <span class="nb">append</span><span class="p">(</span><span class="n">tpl</span><span class="o">.</span><span class="n">SigningInstructions</span><span class="p">,</span> <span class="n">in</span><span class="o">.</span><span class="n">sigInst</span><span class="p">)</span>
+		<span class="n">tx</span><span class="o">.</span><span class="n">Inputs</span> <span class="o">=</span> <span class="nb">append</span><span class="p">(</span><span class="n">tx</span><span class="o">.</span><span class="n">Inputs</span><span class="p">,</span> <span class="n">in</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="n">tpl</span><span class="o">.</span><span class="n">Transaction</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">NewTx</span><span class="p">(</span><span class="o">*</span><span class="n">tx</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">tpl</span><span class="p">,</span> <span class="n">tx</span><span class="p">,</span> <span class="no">nil</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_step_6_signing_the_constructed_transaction"><a class="anchor" href="#_step_6_signing_the_constructed_transaction"></a>Step 6: Signing the Constructed Transaction</h4>
+<div class="paragraph">
+<p>The account model is based on the password to find the corresponding private key to sign the transaction, here the user can directly use the private key to sign the transaction, you can refer to the signature code <a href="https://github.com/EIYARO-Project/core/blob/master/blockchain/txbuilder/txbuilder.go#L88" target="_blank" rel="noopener">core/blockchain/txbuilder/txbuilder.go#L88</a> is transformed into: (the following transformation only supports single-signature transactions, multi-signature transactions users can refer to the example for transformation)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="c">// Sign will try to sign all the witness</span>
+<span class="k">func</span> <span class="n">Sign</span><span class="p">(</span><span class="n">tpl</span> <span class="o">*</span><span class="n">Template</span><span class="p">,</span> <span class="n">xprv</span> <span class="n">chainkd</span><span class="o">.</span><span class="n">XPrv</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sigInst</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">tpl</span><span class="o">.</span><span class="n">SigningInstructions</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">wc</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">sigInst</span><span class="o">.</span><span class="n">WitnessComponents</span> <span class="p">{</span>
+			<span class="k">switch</span> <span class="n">sw</span> <span class="o">:=</span> <span class="n">wc</span><span class="o">.</span><span class="p">(</span><span class="k">type</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">case</span> <span class="o">*</span><span class="n">RawTxSigWitness</span><span class="o">:</span>
+				<span class="n">h</span> <span class="o">:=</span> <span class="n">tpl</span><span class="o">.</span><span class="n">Hash</span><span class="p">(</span><span class="kt">uint32</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">.</span><span class="n">Byte32</span><span class="p">()</span>
+				<span class="n">sig</span> <span class="o">:=</span> <span class="n">xprv</span><span class="o">.</span><span class="n">Sign</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="o">:</span><span class="p">])</span>
+				<span class="n">sw</span><span class="o">.</span><span class="n">Sigs</span> <span class="o">=</span> <span class="nb">append</span><span class="p">(</span><span class="n">sw</span><span class="o">.</span><span class="n">Sigs</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">materializeWitnesses</span><span class="p">(</span><span class="n">tpl</span><span class="p">)</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The multi-signature approach can be seen in the following modification: (xprvs needs to be the same as the number of signatures Quorum, also note the order of the multi-signatures)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="k">func</span> <span class="n">Sign</span><span class="p">(</span><span class="n">tpl</span> <span class="o">*</span><span class="n">Template</span><span class="p">,</span> <span class="n">xprvs</span> <span class="p">[]</span><span class="n">chainkd</span><span class="o">.</span><span class="n">XPrv</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sigInst</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">tpl</span><span class="o">.</span><span class="n">SigningInstructions</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">wc</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">sigInst</span><span class="o">.</span><span class="n">WitnessComponents</span> <span class="p">{</span>
+			<span class="k">switch</span> <span class="n">sw</span> <span class="o">:=</span> <span class="n">wc</span><span class="o">.</span><span class="p">(</span><span class="k">type</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">case</span> <span class="o">*</span><span class="n">RawTxSigWitness</span><span class="o">:</span>
+				<span class="n">h</span> <span class="o">:=</span> <span class="n">tpl</span><span class="o">.</span><span class="n">Hash</span><span class="p">(</span><span class="kt">uint32</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">.</span><span class="n">Byte32</span><span class="p">()</span>
+				<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">xprv</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">xprvs</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sw</span><span class="o">.</span><span class="n">Sigs</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">&gt;</span> <span class="m">0</span> <span class="p">{</span>
+						<span class="c">// Already have a signature for this key</span>
+						<span class="k">continue</span>
+					<span class="p">}</span>
+					<span class="n">sig</span> <span class="o">:=</span> <span class="n">xprv</span><span class="o">.</span><span class="n">Sign</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="o">:</span><span class="p">])</span>
+					<span class="n">sw</span><span class="o">.</span><span class="n">Sigs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">sig</span>
+					<span class="k">break</span>  <span class="c">// the one private sign this tx only once</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">materializeWitnesses</span><span class="p">(</span><span class="n">tpl</span><span class="p">)</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_step_7_submit_transaction_for_uploading"><a class="anchor" href="#_step_7_submit_transaction_for_uploading"></a>Step 7: Submit Transaction for Uploading</h4>
+<div class="paragraph">
+<p>There is no need to change anything in this step, just refer to the <code>API</code> <a href="#_submit_transaction_endpoint">submit-transaction</a>.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-06-02 08:53:57 +0100
+Last updated 2024-06-02 09:02:55 +0100
 </div>
 </div>
 </body>
