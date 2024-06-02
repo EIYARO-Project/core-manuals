@@ -4368,7 +4368,7 @@ This section focuses on users sending transactions using Eiyaro's own account mo
 
 ==== Step 1: Build Transaction
 
-API interface `build-transaction`, code https://github.com/EIYARO-Project/core/blob/main/api/transact.go#L114[core/api/transact.go#L114, window=_blank]
+API interface `build-transaction`, code https://github.com/EIYARO-Project/core/blob/main/api/transact.go#L117[core/api/transact.go#L117, window=_blank]
 
 As an example, a standard non-EY asset transfer transaction with an asset ID of full F denotes an EY asset, in this example the EY asset is only used as a handling fee, and the transaction denotes spending 99 specific assets into the specified address. Where the input request json format for building the transaction is as follows:
 [source,json]
@@ -4999,9 +4999,9 @@ The structure fields are described below:
 * `StorageNeu` The handling fee for the storage transaction.
 * `VMNeu` The fee for running the virtual machine.
 
-==== Step2: Sign Transaction
+==== Step 2: Sign Transaction
 
-API interface sign-transaction, code https://github.com/EIYARO-Project/core/blob/main/api/hsm.go#L52[api/hsm.go#L52,window=_blank]
+API interface `sign-transaction`, code https://github.com/EIYARO-Project/core/blob/main/api/hsm.go#L53[api/hsm.go#L53,window=_blank]
 
 The input request json format of the signature transaction is as follows:
 [source,json]
@@ -5156,3 +5156,47 @@ The structure fields are described below:
 
 * `Tx` Transaction template after signing `txbuilder.Template`, if the signature is successful then `signatures` will be changed from null to the value of the signature, and the length of `raw_transaction` will be longer, because the `bc.Tx` part adds the parameter information for verifying the signature.
 * `SignComplete` Signature completion flag, if it is `true` means the signature is complete, otherwise it is `false` means the signature is not complete, if it is a single signature, it may be a wrong password for the signature; if it is multiple signatures, it may be a need for other signatures. In case of signature failure, you just need to re-sign the signed transaction data with the correct password, no need to build the transaction again with `build-transaction`.
+
+==== Step 3: Submit Transaction
+
+API interface `submit-transaction`, code https://github.com/EIYARO-Project/core/blob/main/api/transact.go#L132[api/transact.go#L132,window=_blank]
+
+The input request json format for submit-transaction is as follows:
+[source,json]
+----
+{
+  "raw_transaction": "070100020161015f1190c60818b4aff485c865113c802942f29ce09088cae1b117fc4c8db2292212ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8099c4d599010001160014a86c83ee12e6d790fb388345cc2e2b87056a0773630240273d5fc4fb06909fbc2968ea91c411fd20f690c88e74284ce2732052400129948538562fe432afd6cf17e590e8645b80edf80b9d9581d0a980d5f9f859e3880620d174db6506e35f2decb5be148c2984bfd0f6c67f043365bf642d1af387c04fd50161015fb018097c4040c8dd86d95611a13c24f90d4c9d9d06b25f5c9ed0556ac8abd73442275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f80a094a58d1d0101160014068840e56af74038571f223b1c99f1b60caaf4566302400cf0beefceaf9fbf1efadedeff7aee5b38ee7a25a20d78b630b01613bc2f8c9230555a6e09aaa11a82ba68c0fc9e98a47c852dfe3de851d93f9b2b7ce256f90d2005cdbcc705f07ad87521835bbba226ad7b430cc24e5e3f008edbe6154053541903013effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80bfffcb9901011600140b946646626c55a52a325c8bb48de792284d9b7200013e42275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f9d9f94a58d1d01160014c8b4391bab4923a83b955170d24ee4ca5b6ec3fb00013942275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f6301160014366b275ed9b2266b645cf1b8be51009cc3b260e100"
+}
+----
+
+The request object corresponding to the source code is as follows:
+[source,go]
+----
+type SubmitRequest struct { //function submit request
+	Tx types.Tx `json: "raw_transaction"`
+}
+----
+
+The struct fields are described below:
+
+* `Tx` Information about the transaction after the signature is complete. Note that the `raw_transaction` in this field is not the full return result of the signature transaction `sign-transaction`, but rather the `raw_transaction` field in the `transaction` in the return result of the signature transaction.
+
+The json result returned after a successful `sign-transaction` request is as follows:
+[source,json]
+----
+{
+  "tx_id": "2c0624a7d251c29d4d1ad14297c69919214e78d995affd57e73fbf84ece361cd"
+}
+----
+
+The response object corresponding to the source code is as follows:
+[source,go]
+----
+type submitTxResp struct {
+	TxID *bc.Hash `json: "tx_id"`
+}
+----
+
+The structure fields are described below:
+
+* `TxID` The transaction ID, which is displayed when the transaction has been submitted to the pool, otherwise the transaction fails.
