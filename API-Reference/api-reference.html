@@ -1110,6 +1110,7 @@ pre.rouge .gs {
 <li><a href="#_step_1_create_private_and_public_keys">Step 1: Create Private and Public Keys</a></li>
 <li><a href="#_step_2_create_a_receive_object_based_on_the_public_key">Step 2: Create a Receive Object Based on the Public Key.</a></li>
 <li><a href="#_step_3_finding_spendable_utxo">Step 3: Finding Spendable <code>UTXO</code></a></li>
+<li><a href="#_step4_constructing_transactions_via_utxo">Step4: Constructing Transactions Via <code>UTXO</code></a></li>
 </ul>
 </li>
 </ul>
@@ -9476,13 +9477,82 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_step4_constructing_transactions_via_utxo"><a class="anchor" href="#_step4_constructing_transactions_via_utxo"></a>Step4: Constructing Transactions Via <code>UTXO</code></h4>
+<div class="paragraph">
+<p>Constructing a transaction via utxo means spending the specified utxo using send_account_unspent_output.</p>
+</div>
+<div class="paragraph">
+<p>The first step is to construct the transaction input <code>TxInput</code> and the data information needed for signing <code>SigningInstruction</code> through <code>utxo</code>, this part of the function can refer to the code <a href="https://github.com/EIYARO-Project/core/blob/master/account/builder.go#L305" target="_blank" rel="noopener">core/account/builder.go#L305</a> can be modified accordingly as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="c">// UtxoToInputs convert an utxo to the txinput</span>
+<span class="k">func</span> <span class="n">UtxoToInputs</span><span class="p">(</span><span class="n">xpubs</span> <span class="p">[]</span><span class="n">chainkd</span><span class="o">.</span><span class="n">XPub</span><span class="p">,</span> <span class="n">quorum</span> <span class="kt">int</span><span class="p">,</span> <span class="n">u</span> <span class="o">*</span><span class="n">UTXO</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="n">types</span><span class="o">.</span><span class="n">TxInput</span><span class="p">,</span> <span class="o">*</span><span class="n">txbuilder</span><span class="o">.</span><span class="n">SigningInstruction</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">txInput</span> <span class="o">:=</span> <span class="n">types</span><span class="o">.</span><span class="n">NewSpendInput</span><span class="p">(</span><span class="no">nil</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">SourceID</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">AssetID</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Amount</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">SourcePos</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">ControlProgram</span><span class="p">)</span>
+	<span class="n">sigInst</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="n">txbuilder</span><span class="o">.</span><span class="n">SigningInstruction</span><span class="p">{}</span>
+
+	<span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">Address</span> <span class="o">==</span> <span class="s">""</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">txInput</span><span class="p">,</span> <span class="n">sigInst</span><span class="p">,</span> <span class="no">nil</span>
+	<span class="p">}</span>
+
+	<span class="n">address</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">common</span><span class="o">.</span><span class="n">DecodeAddress</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">Address</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">consensus</span><span class="o">.</span><span class="n">ActiveNetParams</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+	<span class="p">}</span>
+
+  <span class="n">sigInst</span><span class="o">.</span><span class="n">AddRawWitnessKeys</span><span class="p">(</span><span class="n">xpubs</span><span class="p">,</span> <span class="no">nil</span><span class="p">,</span> <span class="n">quorum</span><span class="p">)</span>
+	<span class="k">switch</span> <span class="n">address</span><span class="o">.</span><span class="p">(</span><span class="k">type</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">case</span> <span class="o">*</span><span class="n">common</span><span class="o">.</span><span class="n">AddressWitnessPubKeyHash</span><span class="o">:</span>
+		<span class="n">derivedPK</span> <span class="o">:=</span> <span class="n">xpubs</span><span class="p">[</span><span class="m">0</span><span class="p">]</span><span class="o">.</span><span class="n">PublicKey</span><span class="p">()</span>
+		<span class="n">sigInst</span><span class="o">.</span><span class="n">WitnessComponents</span> <span class="o">=</span> <span class="nb">append</span><span class="p">(</span><span class="n">sigInst</span><span class="o">.</span><span class="n">WitnessComponents</span><span class="p">,</span> <span class="n">txbuilder</span><span class="o">.</span><span class="n">DataWitness</span><span class="p">([]</span><span class="kt">byte</span><span class="p">(</span><span class="n">derivedPK</span><span class="p">)))</span>
+
+	<span class="k">case</span> <span class="o">*</span><span class="n">common</span><span class="o">.</span><span class="n">AddressWitnessScriptHash</span><span class="o">:</span>
+		<span class="n">derivedPKs</span> <span class="o">:=</span> <span class="n">chainkd</span><span class="o">.</span><span class="n">XPubKeys</span><span class="p">(</span><span class="n">xpubs</span><span class="p">)</span>
+		<span class="n">script</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">vmutil</span><span class="o">.</span><span class="n">P2SPMultiSigProgram</span><span class="p">(</span><span class="n">derivedPKs</span><span class="p">,</span> <span class="n">quorum</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+		<span class="p">}</span>
+		<span class="n">sigInst</span><span class="o">.</span><span class="n">WitnessComponents</span> <span class="o">=</span> <span class="nb">append</span><span class="p">(</span><span class="n">sigInst</span><span class="o">.</span><span class="n">WitnessComponents</span><span class="p">,</span> <span class="n">txbuilder</span><span class="o">.</span><span class="n">DataWitness</span><span class="p">(</span><span class="n">script</span><span class="p">))</span>
+
+	<span class="k">default</span><span class="o">:</span>
+		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="no">nil</span><span class="p">,</span> <span class="n">errors</span><span class="o">.</span><span class="n">New</span><span class="p">(</span><span class="s">"unsupport address type"</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="n">txInput</span><span class="p">,</span> <span class="n">sigInst</span><span class="p">,</span> <span class="no">nil</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The second step is to construct the transaction output <code>TxOutput</code> by <code>UTXO</code><br>
+This part of the function can be found in the code <a href="https://github.com/EIYARO-Project/core/blob/master/protocol/bc/types/txoutput.go#L20">core/protocol/bc/types/txoutput.go#L20</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="c">// NewTxOutput create a new output struct</span>
+<span class="k">func</span> <span class="n">NewTxOutput</span><span class="p">(</span><span class="n">assetID</span> <span class="n">bc</span><span class="o">.</span><span class="n">AssetID</span><span class="p">,</span> <span class="n">amount</span> <span class="kt">uint64</span><span class="p">,</span> <span class="n">controlProgram</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="o">*</span><span class="n">TxOutput</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="n">TxOutput</span><span class="p">{</span>
+		<span class="n">AssetVersion</span><span class="o">:</span> <span class="m">1</span><span class="p">,</span>
+		<span class="n">OutputCommitment</span><span class="o">:</span> <span class="n">OutputCommitment</span><span class="p">{</span>
+			<span class="n">AssetAmount</span><span class="o">:</span> <span class="n">bc</span><span class="o">.</span><span class="n">AssetAmount</span><span class="p">{</span>
+				<span class="n">AssetId</span><span class="o">:</span> <span class="o">&amp;</span><span class="n">assetID</span><span class="p">,</span>
+				<span class="n">Amount</span><span class="o">:</span>  <span class="n">amount</span><span class="p">,</span>
+			<span class="p">},</span>
+			<span class="n">VMVersion</span><span class="o">:</span>      <span class="m">1</span><span class="p">,</span>
+			<span class="n">ControlProgram</span><span class="o">:</span> <span class="n">controlProgram</span><span class="p">,</span>
+		<span class="p">},</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-06-02 08:32:41 +0100
+Last updated 2024-06-02 08:53:57 +0100
 </div>
 </div>
 </body>

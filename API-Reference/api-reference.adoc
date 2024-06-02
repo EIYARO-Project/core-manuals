@@ -5357,3 +5357,66 @@ SourcePos      `json:"position"`
 ControlProgram `json:"control_program"`
 Address        `json:"address,omitempty"`
 ----
+
+==== Step4: Constructing Transactions Via `UTXO`
+
+Constructing a transaction via utxo means spending the specified utxo using send_account_unspent_output.
+
+The first step is to construct the transaction input `TxInput` and the data information needed for signing `SigningInstruction` through `utxo`, this part of the function can refer to the code https://github.com/EIYARO-Project/core/blob/master/account/builder.go#L305[core/account/builder.go#L305,window=_blank] can be modified accordingly as follows.
+[source,go]
+----
+// UtxoToInputs convert an utxo to the txinput
+func UtxoToInputs(xpubs []chainkd.XPub, quorum int, u *UTXO) (*types.TxInput, *txbuilder.SigningInstruction, error) {
+	txInput := types.NewSpendInput(nil, u.SourceID, u.AssetID, u.Amount, u.SourcePos, u.ControlProgram)
+	sigInst := &txbuilder.SigningInstruction{}
+
+	if u.Address == "" {
+		return txInput, sigInst, nil
+	}
+
+	address, err := common.DecodeAddress(u.Address, &consensus.ActiveNetParams)
+	if err != nil {
+		return nil, nil, err
+	}
+
+  sigInst.AddRawWitnessKeys(xpubs, nil, quorum)
+	switch address.(type) {
+	case *common.AddressWitnessPubKeyHash:
+		derivedPK := xpubs[0].PublicKey()
+		sigInst.WitnessComponents = append(sigInst.WitnessComponents, txbuilder.DataWitness([]byte(derivedPK)))
+
+	case *common.AddressWitnessScriptHash:
+		derivedPKs := chainkd.XPubKeys(xpubs)
+		script, err := vmutil.P2SPMultiSigProgram(derivedPKs, quorum)
+		if err != nil {
+			return nil, nil, err
+		}
+		sigInst.WitnessComponents = append(sigInst.WitnessComponents, txbuilder.DataWitness(script))
+
+	default:
+		return nil, nil, errors.New("unsupport address type")
+	}
+
+	return txInput, sigInst, nil
+}
+----
+
+The second step is to construct the transaction output `TxOutput` by `UTXO`
+This part of the function can be found in the code https://github.com/EIYARO-Project/core/blob/master/protocol/bc/types/txoutput.go#L20[core/protocol/bc/types/txoutput.go#L20].
+[source,go]
+----
+// NewTxOutput create a new output struct
+func NewTxOutput(assetID bc.AssetID, amount uint64, controlProgram []byte) *TxOutput {
+	return &TxOutput{
+		AssetVersion: 1,
+		OutputCommitment: OutputCommitment{
+			AssetAmount: bc.AssetAmount{
+				AssetId: &assetID,
+				Amount:  amount,
+			},
+			VMVersion:      1,
+			ControlProgram: controlProgram,
+		},
+	}
+}
+----
