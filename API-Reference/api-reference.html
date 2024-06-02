@@ -1096,6 +1096,16 @@ pre.rouge .gs {
 <li><a href="#_ey8xx_hms_errors"><code>EY8XX</code>: <code>HMS</code> errors</a></li>
 </ul>
 </li>
+<li><a href="#_transactions">Transactions</a>
+<ul class="sectlevel2">
+<li><a href="#_acccount_management_mode">Acccount management mode</a>
+<ul class="sectlevel3">
+<li><a href="#_step_1_build_transaction">Step 1: Build Transaction</a></li>
+<li><a href="#_step2_sign_transaction">Step2: Sign Transaction</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -8111,10 +8121,1095 @@ This endpoint teturns a token containing a username and password, separated by a
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_transactions"><a class="anchor" href="#_transactions"></a>Transactions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This addendum tries to explain how to build transactions in more detail.</p>
+</div>
+<div class="sect2">
+<h3 id="_acccount_management_mode"><a class="anchor" href="#_acccount_management_mode"></a>Acccount management mode</h3>
+<div class="paragraph">
+<p>This section focuses on users sending transactions using Eiyaro&#8217;s own account mode.</p>
+</div>
+<div class="sect3">
+<h4 id="_step_1_build_transaction"><a class="anchor" href="#_step_1_build_transaction"></a>Step 1: Build Transaction</h4>
+<div class="paragraph">
+<p>API interface <code>build-transaction</code>, code <a href="https://github.com/EIYARO-Project/core/blob/main/api/transact.go#L114" target="_blank" rel="noopener">core/api/transact.go#L114</a></p>
+</div>
+<div class="paragraph">
+<p>As an example, a standard non-EY asset transfer transaction with an asset ID of full F denotes an EY asset, in this example the EY asset is only used as a handling fee, and the transaction denotes spending 99 specific assets into the specified address. Where the input request json format for building the transaction is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"base_transaction"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"actions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"account_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0ER7MEFGG0A02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">20000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spend_account"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"account_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0ER7MEFGG0A02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">99</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"42275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spend_account"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">99</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"42275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sy1qxe4jwhkekgnxkezu7xutu5gqnnpmyc8ppq98me"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"control_address"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"ttl"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"time_range"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The request objects corresponding to the source code are as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="c">// BuildRequest is main struct when building transactions</span>
+<span class="k">type</span> <span class="n">BuildRequest</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Tx</span>        <span class="o">*</span><span class="n">types</span><span class="o">.</span><span class="n">TxData</span>            <span class="s">`json:"base_transaction"`</span>
+	<span class="n">Actions</span>   <span class="p">[]</span><span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="k">interface</span><span class="p">{}</span> <span class="s">`json:"actions"`</span>
+	<span class="n">TTL</span>       <span class="n">json</span><span class="o">.</span><span class="n">Duration</span>            <span class="s">`json:"ttl"`</span>
+	<span class="n">TimeRange</span> <span class="kt">uint64</span>                   <span class="s">`json:"time_range"`</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The structure fields are described below:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Tx</code> The <code>TxData</code> portion of the transaction, this field is reserved and empty is sufficient</p>
+</li>
+<li>
+<p><code>TTL</code> The time to live (in milliseconds) to build the transaction, meaning that within this timeframe, utxo that has been cached cannot be used to build the transaction again, unless there is enough utxo left to build a new transaction, otherwise an error will be reported. When <code>ttl</code> is 0 it is set to 600s by default, i.e. 5 minutes.</p>
+</li>
+<li>
+<p><code>TimeRange</code> timestamp, which means that the transaction will not be submitted to the chain after that timestamp (block height), to prevent the transaction from waiting too long due to transmission delays in the network, if the transaction isn&#8217;t packaged within a specific time range, the transaction will automatically expire</p>
+</li>
+<li>
+<p><code>Actions</code> The <code>actions</code> structure of a transaction, all transactions are composed of actions, and the <code>interface{}</code> of the <code>map</code> type ensures the extensibility of the action type. Which action must contain type field, used to distinguish between different action types, <code>action</code> mainly contains <code>input</code> and <code>output</code> two types, its detailed description is as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>input action</code> type:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>issue</code> issue asset</p>
+</li>
+<li>
+<p><code>spend_account</code> spend utxo in account mode</p>
+</li>
+<li>
+<p><code>spend_account_unspent_output</code> Spend the specified utxo directly.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>output action</code> Type:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>control_address</code> Receive in address mode.</p>
+</li>
+<li>
+<p><code>control_program</code> Receive in (program) contract mode.</p>
+</li>
+<li>
+<p><code>retire</code> Destroy the asset</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Caveat</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A transaction must contain at least one input and output (except for coinbase transactions, which are generated by the system and are not described here), otherwise the transaction will report an error.</p>
+</li>
+<li>
+<p>Except for EY assets (all transactions use EY assets as fees), when constructing inputs and outputs, the sum of all inputs and outputs must be equal, otherwise the trade will report an input/output imbalance error message.</p>
+</li>
+<li>
+<p>Fee for the transaction: EY asset amount for all inputs - EY asset amount for all outputs</p>
+</li>
+<li>
+<p>The asset count in the transaction is in neu, the unit conversion of EY is as follows: 1 EY = 1000 mEY = 100000000 neu</p>
+</li>
+</ul>
+</div>
+<div class="sect4">
+<h5 id="_introduction_to_action"><a class="anchor" href="#_introduction_to_action"></a>Introduction to Action</h5>
+<div class="paragraph">
+<p>The following is a detailed description of the various <code>action</code> types used when building transactions.</p>
+</div>
+<div class="sect5">
+<h6 id="_issue_issue"><a class="anchor" href="#_issue_issue"></a>Issue: <code>issue</code></h6>
+<div class="paragraph">
+<p>The source code for the <code>issueAction</code> structure is shown below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="k">type</span> <span class="n">issueAction</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">assets</span> <span class="o">*</span><span class="n">Registry</span>
+	<span class="n">bc</span><span class="o">.</span><span class="n">AssetAmount</span>
+<span class="p">}</span>
+
+<span class="k">type</span> <span class="n">AssetAmount</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">AssetId</span> <span class="o">*</span><span class="n">AssetID</span> <span class="s">`protobuf:"bytes,1,opt,name=asset_id,json=assetId" json:"asset_id,omitempty"`</span>
+	<span class="n">Amount</span>  <span class="kt">uint64</span>   <span class="s">`protobuf:"varint,2,opt,name=amount" json:"amount,omitempty"`</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The structure fields are described below:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>assets</code> is mainly used for asset management, no need to set parameter by user.</p>
+</li>
+<li>
+<p><code>AssetAmount</code> indicates the asset ID and the corresponding number of assets that the user needs to issue, here the <code>AssetID</code> needs to be created by <code>create-asset</code>, and the asset ID of <code>EY</code> cannot be used here.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <code>JSON</code> format of <code>issueAction</code> is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">100000000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3152a15da72be51b330e1c0f8e1c0db669269809da4f16443ff266e07cc43680"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"issue"</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example a sample transaction for issuing an asset is shown below:<br>
+(This transaction represents the issuance of an asset of <code>42275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f</code> in the quantity of <code>90,000,000</code> <code>assetIDs</code> to the receiving address <code>sy1qxe4jwhkekgnxkezu7xutu5gqnnpmyc8ppq98me</code>, where the handling fee is <code>20000000</code> neu&#8217;s EY assets)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"base_transaction"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"actions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"account_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0ER7MEFGG0A02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">20000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spend_account"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">900000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"42275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"issue"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">900000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"42275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sy1qxe4jwhkekgnxkezu7xutu5gqnnpmyc8ppq98me"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"control_address"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"ttl"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"time_range"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_spend_account_spend_account"><a class="anchor" href="#_spend_account_spend_account"></a>Spend Account: <code>spend_account</code></h6>
+<div class="paragraph">
+<p>The source code for the <code>spendAction</code> structure is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="k">type</span> <span class="n">spendAction</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">accounts</span> <span class="o">*</span><span class="n">Manager</span>
+	<span class="n">bc</span><span class="o">.</span><span class="n">AssetAmount</span>
+	<span class="n">AccountID</span>   <span class="kt">string</span>  <span class="s">`json:"account_id"`</span>
+	<span class="n">ClientToken</span> <span class="o">*</span><span class="kt">string</span> <span class="s">`json:"client_token"`</span>
+<span class="p">}</span>
+
+<span class="k">type</span> <span class="n">AssetAmount</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">AssetId</span> <span class="o">*</span><span class="n">AssetID</span> <span class="s">`protobuf:"bytes,1,opt,name=asset_id,json=assetId" json:"asset_id,omitempty"`</span>
+	<span class="n">Amount</span>  <span class="kt">uint64</span>   <span class="s">`protobuf:"varint,2,opt,name=amount" json:"amount,omitempty"`</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The structure fields are described below:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Accounts</code> is mainly used for the management of accounts, no need to set parameters by the user</p>
+</li>
+<li>
+<p><code>AccountID</code> Indicates the account ID on which the asset is to be spent.</p>
+</li>
+<li>
+<p><code>AssetAmount</code> Indicates the ID of the asset to be spent and the corresponding asset amount.</p>
+</li>
+<li>
+<p><code>ClientToken</code> indicates the restriction of UTXO for the Reserve user, currently it can be left empty or not filled.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <code>JSON</code> format of <code>spendAction</code> is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"account_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0BF63M2U00A04"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000000000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spend_account"</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example a sample transaction to transfer an asset is as follows:<br>
+(This transaction means transferring EY assets in the amount of <code>100000000`neu to the address `sy1qxe4jwhkekgnxkezu7xutu5gqnnpmyc8ppq98me</code> by means of an account, where the fee of `20000000`neu = the number of input EY assets - the number of output EY assets.)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"base_transaction"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"actions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"account_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0ER7MEFGG0A02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">120000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spend_account"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">100000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sy1qxe4jwhkekgnxkezu7xutu5gqnnpmyc8ppq98me"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"control_address"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"ttl"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"time_range"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_spend_account_unspent_output_spend_account_unspent_output"><a class="anchor" href="#_spend_account_unspent_output_spend_account_unspent_output"></a>Spend Account Unspent Output: <code>spend_account_unspent_output</code></h6>
+<div class="paragraph">
+<p>The source code for the <code>spendUTXOAction</code> structure is shown below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="k">type</span> <span class="n">spendUTXOAction</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">accounts</span> <span class="o">*</span><span class="n">Manager</span>
+	<span class="n">OutputID</span> <span class="o">*</span><span class="n">bc</span><span class="o">.</span><span class="n">Hash</span> <span class="s">`json:"output_id"`</span>
+	<span class="n">ClientToken</span> <span class="o">*</span><span class="kt">string</span> <span class="s">`json:"client_token"`</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The structure fields are described below:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>accounts</code> is mainly used for account management, no need for user to set parameters</p>
+</li>
+<li>
+<p><code>OutputID</code> indicates the ID of the UTXO that needs to be spent, you can query the available UTXOs according to <code>list-unspent-outputs</code>, where <code>OutputID</code> corresponds to the <code>id</code> field of the result returned by this API.</p>
+</li>
+<li>
+<p><code>ClientToken</code> indicates the restriction of Reserve user UTXO, it can be left empty or not filled.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <code>JSON</code> format of <code>spendUTXOAction</code> is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spend_account_unspent_output"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"output_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"58f29f0f85f7bd2a91088bcbe536dee41cd0642dfb1480d3a88589bdbfd642d9"</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example, a sample transaction to transfer an asset by spending UTXO is as follows:<br>
+(This transaction represents the transfer of EY assets of <code>100000000`neu directly by spending UTXO to the address `sy1qxe4jwhkekgnxkezu7xutu5gqnnpmyc8ppq98me</code>, where the fee = the UTXO value of the input EY assets - the number of the output EY assets)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"base_transaction"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"actions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"output_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"58f29f0f85f7bd2a91088bcbe536dee41cd0642dfb1480d3a88589bdbfd642d9"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spend_account_unspent_output"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">100000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sy1qxe4jwhkekgnxkezu7xutu5gqnnpmyc8ppq98me"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"control_address"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"ttl"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"time_range"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_control_address_control_address"><a class="anchor" href="#_control_address_control_address"></a>Control Address: <code>control_address</code></h6>
+<div class="paragraph">
+<p>The source code for the <code>controlAddressAction</code> structure is shown below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="k">type</span> <span class="n">controlAddressAction</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">bc</span><span class="o">.</span><span class="n">AssetAmount</span>
+	<span class="n">Address</span> <span class="kt">string</span> <span class="s">`json:"address"`</span>
+<span class="p">}</span>
+
+<span class="k">type</span> <span class="n">AssetAmount</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">AssetId</span> <span class="o">*</span><span class="n">AssetID</span> <span class="s">`protobuf:"bytes,1,opt,name=asset_id,json=assetId" json:"asset_id,omitempty"`</span>
+	<span class="n">Amount</span>  <span class="kt">uint64</span>   <span class="s">`protobuf:"varint,2,opt,name=amount" json:"amount,omitempty"`</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The structure fields are described below:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Address</code> Indicates the address of the receiving asset, which can be created according to the <code>create-account-receiver</code> API interface</p>
+</li>
+<li>
+<p><code>AssetAmount</code> Indicates the received asset ID and the corresponding number of assets.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <code>JSON</code> format of <code>controlAddressAction</code> is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">100000000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ey1q50u3z8empm5ke0g3ngl2t3sqtr6sd7cepd3z68"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"control_address"</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example a sample transaction to transfer an asset is as follows:<br>
+(This transaction represents the transfer of EY assets of <code>100000000`neu by means of an account to the address `sy1qxe4jwhkekgnxkezu7xutu5gqnnpmyc8ppq98me</code>, where the type <code>control_address</code> indicates that the address is used as the means of receipt.)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"base_transaction"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"actions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"account_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0ER7MEFGG0A02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">120000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spend_account"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">100000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sy1qxe4jwhkekgnxkezu7xutu5gqnnpmyc8ppq98me"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"control_address"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"ttl"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"time_range"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_control_program_control_program"><a class="anchor" href="#_control_program_control_program"></a>Control Program: <code>control_program</code></h6>
+<div class="paragraph">
+<p>The source code for the <code>controlProgramAction</code> structure is shown below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="k">type</span> <span class="n">controlProgramAction</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">bc</span><span class="o">.</span><span class="n">AssetAmount</span>
+	<span class="n">Program</span> <span class="n">json</span><span class="o">.</span><span class="n">HexBytes</span> <span class="s">`json:"control_program"`</span>
+<span class="p">}</span>
+
+<span class="k">type</span> <span class="n">AssetAmount</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">AssetId</span> <span class="o">*</span><span class="n">AssetID</span> <span class="s">`protobuf:"bytes,1,opt,name=asset_id,json=assetId" json:"asset_id,omitempty"`</span>
+	<span class="n">Amount</span>  <span class="kt">uint64</span>   <span class="s">`protobuf:"varint,2,opt,name=amount" json:"amount,omitempty"`</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The structure fields are described below:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Program</code> Indicates the contract script for receiving assets, which can be created according to the <code>create-account-receiver</code> API interface to receive a <code>program</code> (the <code>program</code> and <code>address</code> of the returned result are one-to-one correspondence)</p>
+</li>
+<li>
+<p><code>AssetAmount</code> indicates the received asset ID and the corresponding asset count.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <code>JSON</code> format of <code>controlProgramAction</code> is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">100000000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"control_program"</span><span class="p">:</span><span class="s2">"0014a3f9111f3b0ee96cbd119a3ea5c60058f506fb19"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"control_program"</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example a sample transaction to transfer an asset is as follows:<br>
+(This transaction represents the transfer of an EY asset of <code>100000000`neu by way of an account to the receiving `program</code> (which is a one-to-one correspondence with <code>address</code>) <code>0014a3f9111f3b0ee96cbd119a3ea5c60058f506fb19</code>, where the <code>control_program ` type indicates that `program</code> is used as the receiving method).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"base_transaction"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"actions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"account_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0ER7MEFGG0A02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">120000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spend_account"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">100000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"control_program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0014a3f9111f3b0ee96cbd119a3ea5c60058f506fb19"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"control_program"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"ttl"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"time_range"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_retire_retire"><a class="anchor" href="#_retire_retire"></a>Retire: <code>retire</code></h6>
+<div class="paragraph">
+<p>The source code for the <code>retireAction</code> structure is shown below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="k">type</span> <span class="n">retireAction</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">bc</span><span class="o">.</span><span class="n">AssetAmount</span>
+	<span class="n">Arbitrary</span> <span class="n">json</span><span class="o">.</span><span class="n">HexBytes</span> <span class="s">`json:"arbitrary"`</span>
+<span class="p">}</span>
+
+<span class="k">type</span> <span class="n">AssetAmount</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">AssetId</span> <span class="o">*</span><span class="n">AssetID</span> <span class="s">`protobuf:"bytes,1,opt,name=asset_id,json=assetId" json:"asset_id,omitempty"`</span>
+	<span class="n">Amount</span>  <span class="kt">uint64</span>   <span class="s">`protobuf:"varint,2,opt,name=amount" json:"amount,omitempty"`</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The structure fields are described below:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>AssetAmount</code> Indicates the ID of the asset destroyed and the corresponding asset count</p>
+</li>
+<li>
+<p><code>Arbitrary</code> Indicates arbitrary additional information (hexadecimal string data), can be empty</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <code>JSON</code> format for <code>retireAction</code> is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">900000000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"arbitrary"</span><span class="p">:</span><span class="w"> </span><span class="s2">"77656c636f6d65efbc8ce6aca2e8bf8ee69da5e588b0e58e9fe5ad90e4b896e7958c"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"retire"</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example, a sample transaction for the destruction of an asset is shown below:<br>
+(This transaction represents the destruction of the EY assets of `1`neu by means of an account and adds additional information, where `retire' represents the destruction of a specified quantity of assets).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"base_transaction"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"actions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"account_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0ER7MEFGG0A02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">900000000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spend_account"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"arbitrary"</span><span class="p">:</span><span class="w"> </span><span class="s2">"77656c636f6d65efbc8ce6aca2e8bf8ee69da5e588b0e58e9fe5ad90e4b896e7958c"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"retire"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"ttl"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"time_range"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the <code>build-transaction</code> input has been constructed, the transaction can be sent via an http call, and the json result returned after a successful build-transaction request is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"allow_additional_actions"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"fee"</span><span class="p">:</span><span class="w"> </span><span class="mi">20000000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"raw_transaction"</span><span class="p">:</span><span class="w"> </span><span class="s2">"070100020161015f1190c60818b4aff485c865113c802942f29ce09088cae1b117fc4c8db2292212ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8099c4d599010001160014a86c83ee12e6d790fb388345cc2e2b87056a077301000161015fb018097c4040c8dd86d95611a13c24f90d4c9d9d06b25f5c9ed0556ac8abd73442275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f80a094a58d1d0101160014068840e56af74038571f223b1c99f1b60caaf456010003013effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80bfffcb9901011600140b946646626c55a52a325c8bb48de792284d9b7200013e42275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f9d9f94a58d1d01160014c8b4391bab4923a83b955170d24ee4ca5b6ec3fb00013942275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f6301160014366b275ed9b2266b645cf1b8be51009cc3b260e100"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"signing_instructions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"witness_components"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="nl">"derivation_path"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"010100000000000000"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"0100000000000000"</span><span class="w">
+              </span><span class="p">],</span><span class="w">
+              </span><span class="nl">"xpub"</span><span class="p">:</span><span class="w"> </span><span class="s2">"de0db655c091b2838ccb6cddb675779b0a9a4204b122e61699b339867dd10eb0dbdc926882ff6dd75c099c181c60d63eab0033a4b0a4d0a8c78079e39d7ad1d8"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">],</span><span class="w">
+          </span><span class="nl">"quorum"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"signatures"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"raw_tx_signature"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d174db6506e35f2decb5be148c2984bfd0f6c67f043365bf642d1af387c04fd5"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"witness_components"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="nl">"derivation_path"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"010100000000000000"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"0800000000000000"</span><span class="w">
+              </span><span class="p">],</span><span class="w">
+              </span><span class="nl">"xpub"</span><span class="p">:</span><span class="w"> </span><span class="s2">"de0db655c091b2838ccb6cddb675779b0a9a4204b122e61699b339867dd10eb0dbdc926882ff6dd75c099c181c60d63eab0033a4b0a4d0a8c78079e39d7ad1d8"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">],</span><span class="w">
+          </span><span class="nl">"quorum"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"signatures"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"raw_tx_signature"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"05cdbcc705f07ad87521835bbba226ad7b430cc24e5e3f008edbe61540535419"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The source code of the corresponding response object is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="c">// Template represents a partially- or fully-signed transaction.</span>
+<span class="k">type</span> <span class="n">Template</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Transaction</span>         <span class="o">*</span><span class="n">types</span><span class="o">.</span><span class="n">Tx</span>             <span class="s">`json:"raw_transaction"`</span>
+	<span class="n">SigningInstructions</span> <span class="p">[]</span><span class="o">*</span><span class="n">SigningInstruction</span> <span class="s">`json:"signing_instructions"`</span>
+
+	<span class="c">// AllowAdditional affects whether Sign commits to the tx sighash or</span>
+	<span class="c">// to individual details of the tx so far. When true, signatures</span>
+	<span class="c">// commit to tx details, and new details may be added but existing</span>
+	<span class="c">// ones cannot be changed. When false, signatures commit to the tx</span>
+	<span class="c">// as a whole, and any change to the tx invalidates the signature.</span>
+	<span class="n">AllowAdditional</span> <span class="kt">bool</span> <span class="s">`json:"allow_additional_actions"`</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The structure fields are described below:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Transaction</code> Transaction related information, this field contains <code>TxData</code> and <code>bc.Tx</code> parts:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>TxData</code> The part of the transaction data that is displayed to the user and is visible to the user.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Version</code> The transaction version</p>
+</li>
+<li>
+<p><code>SerialisedSize</code> The size of the transaction after serialisation.</p>
+</li>
+<li>
+<p><code>TimeRange</code> The maximum timestamp (block height) at which the transaction will be committed to the chain (after the main chain block height reaches this timestamp (block height), if the transaction is not committed to the chain, the transaction will be invalidated)</p>
+</li>
+<li>
+<p><code>Inputs</code> Transaction inputs</p>
+</li>
+<li>
+<p><code>Outputs</code> Transaction outputs</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>bc.Tx</code> indicates the conversion structure used to process transactions in the system, this part is not visible to the user and is not described in detail.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>SigningInstructions</code> Signing information for the transaction.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Position</code> The position of the signature on the <code>input action</code>.</p>
+</li>
+<li>
+<p><code>WitnessComponents</code> The data information needed to sign the <code>input action</code>, where <code>signatures</code> of the build transaction is <code>null</code>, which means there is no signature; if the transaction is signed successfully, the signature information will exist in this field. This field is an interface interface and contains 3 different types:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>SignatureWitness</code> hashes the contract program at the transaction <code>input action</code> position in the transaction template <code>Template</code>, and then signs the hash value.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>signatures</code> (array type) signatures for the transaction, the value exists only after the <code>sign-transaction</code> has been executed</p>
+</li>
+<li>
+<p><code>keys</code> (array type) contains the master public key <code>xpub</code> and the derivation path <code>derivation_path</code>, through which the corresponding derivation private key <code>child_xprv</code> can be found during the signing phase, and then the derivation private key can be used to sign the transaction.</p>
+</li>
+<li>
+<p>The number of <code>quorum</code> account <code>keys</code> must be equal to the length of <code>keys</code> above. If <code>quorum</code> is equal to 1, it is a single-signature account, otherwise it is a multi-signature account.</p>
+</li>
+<li>
+<p><code>program</code> The data part of the signature, the hash value of <code>program</code> is used as the signature data. If <code>program</code> is empty, a hash is generated based on the current transaction ID and the InputID of the corresponding action location, and then a <code>program</code> is automatically constructed from them as the command data.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>RawTxSigWitness</code> hashes the transaction ID of the transaction template <code>Template</code> and the InputID of the corresponding <code>input action</code> location (which is located in bc.Tx), and then signs the hash value.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>signatures</code> (array type) signatures for the transaction, the value exists only after the <code>sign-transaction</code> has completed execution</p>
+</li>
+<li>
+<p><code>keys</code> (array type) contains the master public key <code>xpub</code> and the derivation path <code>derivation_path</code>, through which the corresponding derivation private key <code>child_xprv</code> can be found during the signing phase, and then the derivation private key can be used to sign the transaction.</p>
+</li>
+<li>
+<p>The number of <code>quorum</code> account <code>keys</code> must be equal to the length of <code>keys</code> above. If <code>quorum</code> is equal to 1, it is a single-signature account, otherwise it is a multi-signature account.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>DataWitness</code> This type does not require a signature, but verifies additional data on the contract program.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>AllowAdditional</code> If <code>true</code>, additional data will be added to the transaction, but will not affect the executed <code>program</code> script of the transaction, and will have no effect on the signature result; if <code>false</code>, the whole transaction is signed as a whole, and any data changes will affect the signature of the whole transaction. Signature of the whole transaction</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_introduction_to_estimate_transaction_gas"><a class="anchor" href="#_introduction_to_estimate_transaction_gas"></a>Introduction to Estimate Transaction Gas</h5>
+<div class="paragraph">
+<p>The <code>estimate-transaction-gas</code> interface is an estimate of the handling fee for the result of a <code>build-transaction</code>. The estimated total handling fee <code>total_neu</code> needs to be added to the request structure of the <code>build-transaction</code>, and then the transaction is signed and submitted. The main flow is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code>  build - estimate - build - sign - submit</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The input request json format for estimating the handling fee is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"transaction_template"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"allow_additional_actions"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"fee"</span><span class="p">:</span><span class="w"> </span><span class="mi">20000000</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"raw_transaction"</span><span class="p">:</span><span class="w"> </span><span class="s2">"070100020161015f1190c60818b4aff485c865113c802942f29ce09088cae1b117fc4c8db2292212ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8099c4d599010001160014a86c83ee12e6d790fb388345cc2e2b87056a077301000161015fb018097c4040c8dd86d95611a13c24f90d4c9d9d06b25f5c9ed0556ac8abd73442275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f80a094a58d1d0101160014068840e56af74038571f223b1c99f1b60caaf456010003013effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80bfffcb9901011600140b946646626c55a52a325c8bb48de792284d9b7200013e42275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f9d9f94a58d1d01160014c8b4391bab4923a83b955170d24ee4ca5b6ec3fb00013942275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f6301160014366b275ed9b2266b645cf1b8be51009cc3b260e100"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"signing_instructions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"witness_components"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+              </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"derivation_path"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                  </span><span class="s2">"010100000000000000"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"0100000000000000"</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="nl">"xpub"</span><span class="p">:</span><span class="w"> </span><span class="s2">"de0db655c091b2838ccb6cddb675779b0a9a4204b122e61699b339867dd10eb0dbdc926882ff6dd75c099c181c60d63eab0033a4b0a4d0a8c78079e39d7ad1d8"</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"quorum"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"signatures"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"raw_tx_signature"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d174db6506e35f2decb5be148c2984bfd0f6c67f043365bf642d1af387c04fd5"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"witness_components"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+              </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"derivation_path"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                  </span><span class="s2">"010100000000000000"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"0800000000000000"</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="nl">"xpub"</span><span class="p">:</span><span class="w"> </span><span class="s2">"de0db655c091b2838ccb6cddb675779b0a9a4204b122e61699b339867dd10eb0dbdc926882ff6dd75c099c181c60d63eab0033a4b0a4d0a8c78079e39d7ad1d8"</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"quorum"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"signatures"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"raw_tx_signature"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"05cdbcc705f07ad87521835bbba226ad7b430cc24e5e3f008edbe61540535419"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The source code of the corresponding response object is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="k">type</span> <span class="n">request</span> <span class="k">struct</span><span class="p">{</span>
+	<span class="n">TxTemplate</span> <span class="n">txbuilder</span><span class="o">.</span><span class="n">Template</span> <span class="s">`json:"transaction_template"`</span>
+<span class="p">}</span>
+
+<span class="c">// Template represents a partially- or fully-signed transaction.</span>
+<span class="k">type</span> <span class="n">Template</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Transaction</span>         <span class="o">*</span><span class="n">types</span><span class="o">.</span><span class="n">Tx</span>             <span class="s">`json:"raw_transaction"`</span>
+	<span class="n">SigningInstructions</span> <span class="p">[]</span><span class="o">*</span><span class="n">SigningInstruction</span> <span class="s">`json:"signing_instructions"`</span>
+
+	<span class="c">// AllowAdditional affects whether Sign commits to the tx sighash or</span>
+	<span class="c">// to individual details of the tx so far. When true, signatures</span>
+	<span class="c">// commit to tx details, and new details may be added but existing</span>
+	<span class="c">// ones cannot be changed. When false, signatures commit to the tx</span>
+	<span class="c">// as a whole, and any change to the tx invalidates the signature.</span>
+	<span class="n">AllowAdditional</span> <span class="kt">bool</span> <span class="s">`json:"allow_additional_actions"`</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>TxTemplate</code> fields are described in the build-transaction result description.</p>
+</div>
+<div class="paragraph">
+<p>The json result returned after a successful call to the <code>estimate-transaction-gas</code> interface is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"total_neu"</span><span class="p">:</span><span class="w"> </span><span class="mi">5000000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"storage_neu"</span><span class="p">:</span><span class="w"> </span><span class="mi">3840000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"vm_neu"</span><span class="p">:</span><span class="w"> </span><span class="mi">1419000</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The source code of the corresponding response object is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="c">// EstimateTxGasResp estimate transaction consumed gas</span>
+<span class="k">type</span> <span class="n">EstimateTxGasResp</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">TotalNeu</span>   <span class="kt">int64</span> <span class="s">`json:"total_neu"`</span>
+	<span class="n">StorageNeu</span> <span class="kt">int64</span> <span class="s">`json:"storage_neu"`</span>
+	<span class="n">VMNeu</span>      <span class="kt">int64</span> <span class="s">`json:"vm_neu"`</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The structure fields are described below:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>TotalNeu</code> The estimated total handling fee (in neu), this value is added directly to the EY asset input action of build-transaction</p>
+</li>
+<li>
+<p><code>StorageNeu</code> The handling fee for the storage transaction.</p>
+</li>
+<li>
+<p><code>VMNeu</code> The fee for running the virtual machine.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_step2_sign_transaction"><a class="anchor" href="#_step2_sign_transaction"></a>Step2: Sign Transaction</h4>
+<div class="paragraph">
+<p>API interface sign-transaction, code <a href="https://github.com/EIYARO-Project/core/blob/main/api/hsm.go#L52" target="_blank" rel="noopener">api/hsm.go#L52</a></p>
+</div>
+<div class="paragraph">
+<p>The input request json format of the signature transaction is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123456"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"transaction"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"allow_additional_actions"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"fee"</span><span class="p">:</span><span class="w"> </span><span class="mi">20000000</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"raw_transaction"</span><span class="p">:</span><span class="w"> </span><span class="s2">"070100020161015f1190c60818b4aff485c865113c802942f29ce09088cae1b117fc4c8db2292212ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8099c4d599010001160014a86c83ee12e6d790fb388345cc2e2b87056a077301000161015fb018097c4040c8dd86d95611a13c24f90d4c9d9d06b25f5c9ed0556ac8abd73442275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f80a094a58d1d0101160014068840e56af74038571f223b1c99f1b60caaf456010003013effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80bfffcb9901011600140b946646626c55a52a325c8bb48de792284d9b7200013e42275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f9d9f94a58d1d01160014c8b4391bab4923a83b955170d24ee4ca5b6ec3fb00013942275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f6301160014366b275ed9b2266b645cf1b8be51009cc3b260e100"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"signing_instructions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"witness_components"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+              </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"derivation_path"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                  </span><span class="s2">"010100000000000000"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"0100000000000000"</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="nl">"xpub"</span><span class="p">:</span><span class="w"> </span><span class="s2">"de0db655c091b2838ccb6cddb675779b0a9a4204b122e61699b339867dd10eb0dbdc926882ff6dd75c099c181c60d63eab0033a4b0a4d0a8c78079e39d7ad1d8"</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"quorum"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"signatures"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"raw_tx_signature"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d174db6506e35f2decb5be148c2984bfd0f6c67f043365bf642d1af387c04fd5"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"witness_components"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+              </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"derivation_path"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                  </span><span class="s2">"010100000000000000"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"0800000000000000"</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="nl">"xpub"</span><span class="p">:</span><span class="w"> </span><span class="s2">"de0db655c091b2838ccb6cddb675779b0a9a4204b122e61699b339867dd10eb0dbdc926882ff6dd75c099c181c60d63eab0033a4b0a4d0a8c78079e39d7ad1d8"</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"quorum"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"signatures"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"raw_tx_signature"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"05cdbcc705f07ad87521835bbba226ad7b430cc24e5e3f008edbe61540535419"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The source code of the corresponding request object is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="k">type</span> <span class="n">SignRequest</span> <span class="k">struct</span> <span class="p">{</span>    <span class="c">//function pseudohsmSignTemplates request</span>
+	<span class="n">Password</span> <span class="kt">string</span>             <span class="s">`json:"password"`</span>
+	<span class="n">Txs</span>      <span class="n">txbuilder</span><span class="o">.</span><span class="n">Template</span> <span class="s">`json:"transaction"`</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The structure fields are described below:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Password</code> The password for signing, based on which the user&#8217;s private key can be parsed from the node server, and then the transaction can be signed with the private key</p>
+</li>
+<li>
+<p><code>Txs</code> Transaction template, the result of build-transaction, structure type is <code>txbuilder.Template</code>, the related fields are described in the result of build-transaction.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The json result returned after a successful <code>sign-transaction</code> request is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"sign_complete"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"transaction"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"allow_additional_actions"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"fee"</span><span class="p">:</span><span class="w"> </span><span class="mi">20000000</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"raw_transaction"</span><span class="p">:</span><span class="w"> </span><span class="s2">"070100020161015f1190c60818b4aff485c865113c802942f29ce09088cae1b117fc4c8db2292212ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8099c4d599010001160014a86c83ee12e6d790fb388345cc2e2b87056a0773630240273d5fc4fb06909fbc2968ea91c411fd20f690c88e74284ce2732052400129948538562fe432afd6cf17e590e8645b80edf80b9d9581d0a980d5f9f859e3880620d174db6506e35f2decb5be148c2984bfd0f6c67f043365bf642d1af387c04fd50161015fb018097c4040c8dd86d95611a13c24f90d4c9d9d06b25f5c9ed0556ac8abd73442275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f80a094a58d1d0101160014068840e56af74038571f223b1c99f1b60caaf4566302400cf0beefceaf9fbf1efadedeff7aee5b38ee7a25a20d78b630b01613bc2f8c9230555a6e09aaa11a82ba68c0fc9e98a47c852dfe3de851d93f9b2b7ce256f90d2005cdbcc705f07ad87521835bbba226ad7b430cc24e5e3f008edbe6154053541903013effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80bfffcb9901011600140b946646626c55a52a325c8bb48de792284d9b7200013e42275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f9d9f94a58d1d01160014c8b4391bab4923a83b955170d24ee4ca5b6ec3fb00013942275aacbeda1522cd41580f875c3c452daf5174b17ba062bf0ab71a568c123f6301160014366b275ed9b2266b645cf1b8be51009cc3b260e100"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"signing_instructions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"witness_components"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+              </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"derivation_path"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                  </span><span class="s2">"010100000000000000"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"0100000000000000"</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="nl">"xpub"</span><span class="p">:</span><span class="w"> </span><span class="s2">"de0db655c091b2838ccb6cddb675779b0a9a4204b122e61699b339867dd10eb0dbdc926882ff6dd75c099c181c60d63eab0033a4b0a4d0a8c78079e39d7ad1d8"</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"quorum"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"signatures"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+              </span><span class="s2">"273d5fc4fb06909fbc2968ea91c411fd20f690c88e74284ce2732052400129948538562fe432afd6cf17e590e8645b80edf80b9d9581d0a980d5f9f859e38806"</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"raw_tx_signature"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d174db6506e35f2decb5be148c2984bfd0f6c67f043365bf642d1af387c04fd5"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"witness_components"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+              </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"derivation_path"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                  </span><span class="s2">"010100000000000000"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"0800000000000000"</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="nl">"xpub"</span><span class="p">:</span><span class="w"> </span><span class="s2">"de0db655c091b2838ccb6cddb675779b0a9a4204b122e61699b339867dd10eb0dbdc926882ff6dd75c099c181c60d63eab0033a4b0a4d0a8c78079e39d7ad1d8"</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"quorum"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"signatures"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+              </span><span class="s2">"0cf0beefceaf9fbf1efadedeff7aee5b38ee7a25a20d78b630b01613bc2f8c9230555a6e09aaa11a82ba68c0fc9e98a47c852dfe3de851d93f9b2b7ce256f90d"</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"raw_tx_signature"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"05cdbcc705f07ad87521835bbba226ad7b430cc24e5e3f008edbe61540535419"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The source code of the corresponding response object is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="go"><span class="k">type</span> <span class="n">signResp</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Tx</span>           <span class="o">*</span><span class="n">txbuilder</span><span class="o">.</span><span class="n">Template</span> <span class="s">`json:"transaction"`</span>
+	<span class="n">SignComplete</span> <span class="kt">bool</span>                <span class="s">`json:"sign_complete"`</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The structure fields are described below:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Tx</code> Transaction template after signing <code>txbuilder.Template</code>, if the signature is successful then <code>signatures</code> will be changed from null to the value of the signature, and the length of <code>raw_transaction</code> will be longer, because the <code>bc.Tx</code> part adds the parameter information for verifying the signature.</p>
+</li>
+<li>
+<p><code>SignComplete</code> Signature completion flag, if it is <code>true</code> means the signature is complete, otherwise it is <code>false</code> means the signature is not complete, if it is a single signature, it may be a wrong password for the signature; if it is multiple signatures, it may be a need for other signatures. In case of signature failure, you just need to re-sign the signed transaction data with the correct password, no need to build the transaction again with <code>build-transaction</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-22 22:28:30 +0100
+Last updated 2024-06-02 08:01:26 +0100
 </div>
 </div>
 </body>
