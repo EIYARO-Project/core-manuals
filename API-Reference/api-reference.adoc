@@ -5001,7 +5001,7 @@ The structure fields are described below:
 
 ==== Step 2: Sign Transaction
 
-API interface `sign-transaction`, code https://github.com/EIYARO-Project/core/blob/main/api/hsm.go#L53[api/hsm.go#L53,window=_blank]
+API interface `sign-transaction`, code https://github.com/EIYARO-Project/core/blob/main/api/hsm.go#L53[core/api/hsm.go#L53,window=_blank]
 
 The input request json format of the signature transaction is as follows:
 [source,json]
@@ -5159,7 +5159,7 @@ The structure fields are described below:
 
 ==== Step 3: Submit Transaction
 
-API interface `submit-transaction`, code https://github.com/EIYARO-Project/core/blob/main/api/transact.go#L132[api/transact.go#L132,window=_blank]
+API interface `submit-transaction`, code https://github.com/EIYARO-Project/core/blob/main/api/transact.go#L132[core/api/transact.go#L132,window=_blank]
 
 The input request json format for submit-transaction is as follows:
 [source,json]
@@ -5200,3 +5200,82 @@ type submitTxResp struct {
 The structure fields are described below:
 
 * `TxID` The transaction ID, which is displayed when the transaction has been submitted to the pool, otherwise the transaction fails.
+
+=== `UTXO` User Own Management Model
+
+This section is for users to manage their own private keys and addresses, and to build and send transactions via `utxo`.
+
+[NOTE]
+====
+The following steps as well as functional transformation is for reference only, the specific code implementation needs to be debugged by the user according to the actual situation, you can refer to the unit test case code https://github.com/EIYARO-Project/core/blob/main/blockchain/txbuilder/txbuilder_test.go#L252[core/blockchain/txbuilder/txbuilder_test.go#L252,window=_blank]
+====
+
+==== Step 1: Create Private and Public Keys
+
+This part of the function can refer to the code https://github.com/EIYARO-Project/core/blob/master/crypto/ed25519/chainkd/util.go#L11[crypto/ed25519/chainkd/util.go#L11,window=_blank], you can create master private key and master public key by `NewXKeys(nil)`. 
+[source,go]
+----
+func NewXKeys(r io.Reader) (xprv XPrv, xpub XPub, err error) {
+	xprv, err = NewXPrv(r)
+	if err != nil {
+		return
+	}
+	return xprv, xprv.XPub(), nil
+}
+----
+
+==== Step 2: Create a Receive Object Based on the Public Key.
+
+Receiving object contains two forms: `address` form and `program` form, both are one-to-one correspondence, either one can be. Which create a single signature address reference code https://github.com/EIYARO-Project/core/blob/master/account/accounts.go#L253[account/accounts.go#L253,window=_blank] for the corresponding transformation for:
+[source,go]
+----
+func (m *Manager) createP2PKH(xpub chainkd.XPub) (*CtrlProgram, error) {
+	pubKey := xpub.PublicKey()
+	pubHash := crypto.Ripemd160(pubKey)
+
+	// TODO: pass different params due to config
+	address, err := common.NewAddressWitnessPubKeyHash(pubHash, &consensus.ActiveNetParams)
+	if err != nil {
+		return nil, err
+	}
+
+	control, err := vmutil.P2WPKHProgram([]byte(pubHash))
+	if err != nil {
+		return nil, err
+	}
+
+	return &CtrlProgram{
+		Address:        address.EncodeAddress(),
+		ControlProgram: control,
+	}, nil
+}
+----
+
+Create multi-signature address reference code https://github.com/EIYARO-Project/core/blob/master/account/accounts.go#L276[accounts/accounts.go#L276,window=_blank] to be transformed accordingly as follows: (quorum means the is the number of verifications required for multi-signature address, for example, 3-2 multi-signature address, means 3 master public keys, two signatures are required to verify the pass)
+[source,go]
+----
+func (m *Manager) createP2SH(xpubs []chainkd.XPub, quorum int) (*CtrlProgram, error) {
+	derivedPKs := chainkd.XPubKeys(xpubs)
+	signScript, err := vmutil.P2SPMultiSigProgram(derivedPKs, quorum)
+	if err != nil {
+		return nil, err
+	}
+	scriptHash := crypto.Sha256(signScript)
+
+	// TODO: pass different params due to config
+	address, err := common.NewAddressWitnessScriptHash(scriptHash, &consensus.ActiveNetParams)
+	if err != nil {
+		return nil, err
+	}
+
+	control, err := vmutil.P2WSHProgram(scriptHash)
+	if err != nil {
+		return nil, err
+	}
+
+	return &CtrlProgram{
+		Address:        address.EncodeAddress(),
+		ControlProgram: control,
+	}, nil
+}
+----
