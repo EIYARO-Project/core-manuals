@@ -5279,3 +5279,81 @@ func (m *Manager) createP2SH(xpubs []chainkd.XPub, quorum int) (*CtrlProgram, er
 	}, nil
 }
 ----
+
+==== Step 3: Finding Spendable `UTXO`
+
+Finding the spendable utxo is really about finding the receiving address or receiving `program` that is your own `unspend_output`. Where the structure of utxo is:
+[source,go]
+----
+// UTXO describes an individual account utxo.
+type UTXO struct {
+	OutputID bc.Hash
+	SourceID bc.Hash
+
+	// Avoiding AssetAmount here so that new(utxo) doesn't produce an
+	// AssetAmount with a nil AssetId.
+	AssetID bc.AssetID
+	Amount  uint64
+
+	SourcePos      uint64
+	ControlProgram []byte
+
+	AccountID           string
+	Address             string
+	ControlProgramIndex uint64
+	ValidHeight         uint64
+	Change              bool
+}
+----
+
+The related fields involving utxo constructed transactions are described below:
+
+* `SourceID` The mux_id of the previous associated transaction, based on which the output of the previous transaction can be located
+* `AssetID` The asset ID of the utxo.
+* `Amount` The number of assets in the utxo.
+* `SourcePos` The position of the utxo in the output of the previous transaction.
+* `ControlProgram` The receiving program of the utxo.
+* `Address` The receiving address of the utxo.
+
+Information about these fields of the utxo above can be found in the transaction that the `get-block` interface returns the result of, and its related structure is as follows: (refer to the code https://github.com/EIYARO-Project/core/blob/master/api/block_retrieve.go#L29[core/api/block_retrieve.go#L29,window=_blank])
+[source,go]
+----
+// BlockTx is the tx struct for getBlock func
+type BlockTx struct {
+	ID         bc.Hash                  `json:"id"`
+	Version    uint64                   `json:"version"`
+	Size       uint64                   `json:"size"`
+	TimeRange  uint64                   `json:"time_range"`
+	Inputs     []*query.AnnotatedInput  `json:"inputs"`
+	Outputs    []*query.AnnotatedOutput `json:"outputs"`
+	StatusFail bool                     `json:"status_fail"`
+	MuxID      bc.Hash                  `json:"mux_id"`
+}
+
+//AnnotatedOutput means an annotated transaction output.
+type AnnotatedOutput struct {
+	Type            string             `json:"type"`
+	OutputID        bc.Hash            `json:"id"`
+	TransactionID   *bc.Hash           `json:"transaction_id,omitempty"`
+	Position        int                `json:"position"`
+	AssetID         bc.AssetID         `json:"asset_id"`
+	AssetAlias      string             `json:"asset_alias,omitempty"`
+	AssetDefinition *json.RawMessage   `json:"asset_definition,omitempty"`
+	Amount          uint64             `json:"amount"`
+	AccountID       string             `json:"account_id,omitempty"`
+	AccountAlias    string             `json:"account_alias,omitempty"`
+	ControlProgram  chainjson.HexBytes `json:"control_program"`
+	Address         string             `json:"address,omitempty"`
+}
+----
+
+The correspondence between `UTXO` and `get-block` return result fields is as follows:
+[source,go]
+----
+SourceID       `json:"mux_id"`
+AssetID        `json:"asset_id"`
+Amount         `json:"amount"`
+SourcePos      `json:"position"`
+ControlProgram `json:"control_program"`
+Address        `json:"address,omitempty"`
+----
