@@ -19,7 +19,7 @@ You can find a detailed manual with images for the stratum server [here](Stratum
 
 ## Web Interface Transactions
 
-You can find a detailed manual with images of how to perform transactions on the web interface of the node [here](Web-Interface-Transactions/web-interface-transactions.adoc)
+You can find a detailed manual with images of how to perform transactions on the web interface of the node [here](Web-Interface-Transactions/web-interface-transactions.adoc).
 
 ## API Reference
 
