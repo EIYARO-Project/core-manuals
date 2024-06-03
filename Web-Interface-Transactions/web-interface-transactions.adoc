@@ -1,0 +1,129 @@
+= Web Interface Transactions
+:doctype: article
+:encoding: utf-8
+:description: Web Interface Transactions
+:toc: left
+:toclevels: 3
+:stem:
+:sectanchors:
+:hardbreaks-option:
+:icons: font
+:imagesdir: web-interface-transactions-files
+
+This is a manual to illustrate how to perform a transaction via the node's web interface.
+
+[IMPORTANT]
+====
+This manual is predicated on using the aliases for both the account and the asset, so please be mindful of that.
+====
+
+== Step 1: Access the transactions section
+
+You first have to chose the transactions section of the web interface.
+Then you must click on the button that says "Send Coins", as shown in the image below.
+
+.Access Transactions Section
+[#web-interface-transaction-01,link=https://eiyaro.org/web-interface-transactions-files/web-interface-transactions-01.png]
+image::web-interface-transactions-01.png[Access Transactions Section]
+
+== Step 2: Fill the fields
+
+Once you've clicked on the "Send Coins" button, you'll be presented by the screen shown below.
+
+.New Transaction Screen
+[#web-interface-transaction-02,link=https://eiyaro.org/web-interface-transactions-files/web-interface-transactions-02.png]
+image::web-interface-transactions-02.png[New Transaction Screen]
+
+=== Filling the Account Field
+
+As shown on the image below, if you type the first letter of the alias of your account, a drop down with the correct value will show up.
+If you have more than one account, and they start with the same letter, they will be listed.
+Please choose the one that you intend to use for this transaction.
+
+.The Account Field
+[#web-interface-transaction-02-1,link=https://eiyaro.org/web-interface-transactions-files/web-interface-transactions-02-1.png]
+image::web-interface-transactions-02-1.png[The Account Field]
+
+=== Filling the Asset Field
+
+The same process can be used to fill in the Asset: You type the letter `e` and the drop down will show the asset with the alias `EY`, as shown in the image below.
+
+.The Asset Field
+[#web-interface-transaction-02-2,link=https://eiyaro.org/web-interface-transactions-files/web-interface-transactions-02-2.png]
+image::web-interface-transactions-02-2.png[The Asset Field]
+
+=== Filling the Address Field
+
+You then fill in the address you want this transaction to be sent to, as shown in the image below.
+
+.The Address Field
+[#web-interface-transaction-02-3,link=https://eiyaro.org/web-interface-transactions-files/web-interface-transactions-02-3.png]
+image::web-interface-transactions-02-3.png[The Address Field]
+
+=== Filling the Amount Field
+
+The next step is to fill the amount that you want this transaction to send, as shown in the image below.
+
+.The Amount Field
+[#web-interface-transaction-02-4,link=https://eiyaro.org/web-interface-transactions-files/web-interface-transactions-02-4.png]
+image::web-interface-transactions-02-4.png[The Amount Field]
+
+Once you fill in the amount field and exit the box, the "Select Fee" slider should update with the calculated fee for this transaction.
+
+[NOTE]
+====
+Depending on wether you're accessing your node's web interface locally or remotely, the "Select Fee" slider can take different amounts of time to update.
+If it doesn't update after about 3 seconds, please try to move it by yourself.
+====
+
+[IMPORTANT]
+====
+Before trying to submit this transaction, please make sure that the "Select Fee" slider has a **NON ZERO** value.
+The entire process will fail otherwise.
+====
+
+Once all the above steps have been done, you can now click on the "Submit transaction" button.
+
+.Submit Transaction
+[#web-interface-transaction-02-5,link=https://eiyaro.org/web-interface-transactions-files/web-interface-transactions-02-5.png]
+image::web-interface-transactions-02-5.png[Submit Transaction]
+
+[NOTE]
+====
+If for some reason an error about insufficient Gas shows, please try and turn the "Chained Transactions" switch on.
+
+image::web-interface-transactions-02-6.png[Chained Transactions]
+
+====
+
+== Step 3: Input Password
+
+Immediately after you press the "Submit transaction" button, you'll be presented with a dialog that informs you of the details of the transaction and asks you for your password, as shown in the image below.
+
+.Password Dialog
+[#web-interface-transaction-03,link=https://eiyaro.org/web-interface-transactions-files/web-interface-transactions-03.png]
+image::web-interface-transactions-03.png[Password Dialog]
+
+You now need to input the password that you set up for the shown account.
+
+.Password Field
+[#web-interface-transaction-03-1,link=https://eiyaro.org/web-interface-transactions-files/web-interface-transactions-03-1.png]
+image::web-interface-transactions-03-1.png[Password Field]
+
+You then press the "Submit transaction" button.
+
+.Submit Transaction Button
+[#web-interface-transaction-03-2,link=https://eiyaro.org/web-interface-transactions-files/web-interface-transactions-03-2.png]
+image::web-interface-transactions-03-2.png[Submit Transaction Button]
+
+If all goes well, you'll be redirect to the Transactions section, where the new transaction will be listed as unconfirmed, as shown in the picture below.
+
+.Unconfirmed Transaction
+[#web-interface-transaction-03-3,link=https://eiyaro.org/web-interface-transactions-files/web-interface-transactions-03-3.png]
+image::web-interface-transactions-03-3.png[Unconfirmed Transaction]
+
+Once a new block as been minted, that transaction will then show as confirmed, as shown in the image below.
+
+.Confirmed Transaction
+[#web-interface-transaction-03-4,link=https://eiyaro.org/web-interface-transactions-files/web-interface-transactions-03-4.png]
+image::web-interface-transactions-03-4.png[Confirmed Transaction]

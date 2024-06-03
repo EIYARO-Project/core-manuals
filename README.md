@@ -17,6 +17,10 @@ You can find a detailed manual with images for the stratum server [here](Stratum
 
 中文-图文版 stratum server 安装手册 [详情](StratumServer/Stratum_Server_Install_Manual_CN.md).
 
+## Web Interface Transactions
+
+You can find a detailed manual with images of how to perform transactions on the web interface of the node [here](Web-Interface-Transactions/web-interface-transactions.adoc)
+
 ## API Reference
 
 You can find detailed documentation about the `core`'s `API` [here](API-Reference/api-reference.adoc).
