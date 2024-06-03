@@ -24,7 +24,3 @@ You can find a detailed manual with images of how to perform transactions on the
 ## API Reference
 
 You can find detailed documentation about the `core`'s `API` [here](API-Reference/api-reference.adoc).
-
-> **NOTE**\
-> Still a work in progress.\
-> This note will be removed when completed.
